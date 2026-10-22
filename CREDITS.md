@@ -2,11 +2,9 @@
 
 ## Shawn Noel (Shawn64)
 
-Every game in this archive was created by **Shawn Noel**, working as **Shawn64's Creations** and later **S64 Games**.
-
-He drew the graphics, wrote the programs, designed the levels and worlds, composed the game logic, tested and
-released the games, voiced characters (Max Nitro in Street Bike Fury), and ran Shawn64.com and S64Games.com, the
-sites where the games were shared and where a community of players and fellow Game Maker authors gathered.
+Every game in this archive was created by Shawn Noel, working as Shawn64's Creations and later S64 Games. He did
+the graphics, programming and design, voiced Max Nitro in Street Bike Fury, and ran Shawn64.com and
+S64Games.com, where the games were shared.
 
 ## Street Bike Fury (S64 Games, 2005)
 

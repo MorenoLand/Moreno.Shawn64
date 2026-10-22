@@ -1,10 +1,49 @@
 def q(s):
-    return '"' + s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n') + '"'
+    if '"' not in s:
+        return '"' + s + '"'
+    if "'" not in s:
+        return "'" + s + "'"
+    return '"' + s.replace('"', "'") + '"'
+
+
+def strarg(v):
+    v = v.strip()
+    if v[:1] in ('"', "'"):
+        if v.count(v[0]) % 2 == 1:
+            v += v[0]
+        return v
+    return q(v)
+
+
+def font_spec(spec):
+    parts = []
+    cur = ''
+    inq = False
+    for ch in spec:
+        if ch == '"':
+            inq = not inq
+        elif ch == ',' and not inq:
+            parts.append(cur)
+            cur = ''
+        else:
+            cur += ch
+    parts.append(cur)
+    parts += ['0'] * 6
+    return parts
 
 
 def n(v):
     v = v.strip()
     return v if v else '0'
+
+
+def balance(t):
+    t = t.strip()
+    while t.count(')') > t.count('(') and t.endswith(')'):
+        t = t[:-1].rstrip()
+    while t.count('(') > t.count(')'):
+        t += ')'
+    return t
 
 
 def make(ctx):
@@ -57,9 +96,13 @@ def make(ctx):
         op = ['==', '<', '>'][int(e(a, 2))] if e(a, 2) in ('0', '1', '2') else '=='
         return '%s %s %s' % (sd(a, 0), op, e(a, 1))
 
+    def font_action(a):
+        f = font_spec(sd(a, 0))
+        return 'action_draw_font(%s, %s, %s, %s); draw_set_color(%s)' % (q(f[0].strip()), n(f[1]), n(f[3]), n(f[4]), n(f[2]))
+
     def text(a):
         px, py = pos(a, 1)
-        return 'draw_text(%s, %s, %s)' % (px, py, q(sd(a, 0)) if not sd(a, 0).startswith('"') else sd(a, 0))
+        return 'draw_text(%s, %s, %s)' % (px, py, strarg(sd(a, 0)))
 
     def draw_sprite(a):
         px, py = pos(a, 1)
@@ -185,8 +228,8 @@ def make(ctx):
         'action_if_object': ifobj,
         'action_if_number': ifnum,
         'action_if_dice': lambda a: 'random(%s) < 1' % e(a, 0),
-        'action_if_question': lambda a: 'show_question(%s)' % q(sd(a, 0)),
-        'action_if': lambda a: e(a, 0),
+        'action_if_question': lambda a: 'show_question(%s)' % strarg(sd(a, 0)),
+        'action_if': lambda a: balance(e(a, 0)),
         'action_if_mouse': ifmouse,
         'action_if_aligned': lambda a: '(x mod %s == 0) and (y mod %s == 0)' % (e(a, 0), e(a, 1)),
         'action_draw_sprite': draw_sprite,
@@ -196,14 +239,14 @@ def make(ctx):
         'action_draw_line': line,
         'action_color': lambda a: 'draw_set_color(%s)' % e(a, 0),
         'action_font': lambda a: 'draw_set_font(%s); draw_set_halign(%s)' % (e(a, 0), e(a, 1)),
-        'action_draw_score': lambda a: 'draw_text(%s, %s, %s + string(score))' % (pos(a, 0)[0], pos(a, 0)[1], q(sd(a, 2))),
-        'action_draw_life': lambda a: 'draw_text(%s, %s, %s + string(lives))' % (pos(a, 0)[0], pos(a, 0)[1], q(sd(a, 2))),
+        'action_draw_score': lambda a: 'draw_text(%s, %s, %s + string(score))' % (pos(a, 0)[0], pos(a, 0)[1], strarg(sd(a, 2))),
+        'action_draw_life': lambda a: 'draw_text(%s, %s, %s + string(lives))' % (pos(a, 0)[0], pos(a, 0)[1], strarg(sd(a, 2))),
         'action_draw_health': lambda a: 'draw_healthbar(%s, %s, %s, %s, health, c_black, c_red, c_lime, 0, 1, 1)' % (e(a, 0), e(a, 1), e(a, 2), e(a, 3)),
         'action_effect': effect,
-        'action_webpage': lambda a: 'execute_shell(%s, "")' % q(sd(a, 0)),
+        'action_webpage': lambda a: 'execute_shell(%s, "")' % strarg(sd(a, 0)),
         'action_restart_game': lambda a: 'game_restart()',
         'action_end_game': lambda a: 'game_end()',
-        'action_message': lambda a: 'show_message(%s)' % q(sd(a, 0)),
+        'action_message': lambda a: 'show_message(%s)' % strarg(sd(a, 0)),
         'action_execute_script': execscript,
         'action_inherited': lambda a: 'event_inherited()',
         'action_snapshot': lambda a: '',
@@ -219,14 +262,32 @@ def make(ctx):
         'action_cd_resume': lambda a: '',
         'action_partsyst_create': lambda a: '',
         'action_comment': lambda a: '',
+        'action_set_sprite': sprite_set,
+        'action_draw_font': font_action,
+        'action_draw_font_old': font_action,
+        'action_path': lambda a: 'path_start(%s, %s, %s, %s)' % (e(a, 0), e(a, 1), e(a, 2), e(a, 3)),
+        'action_set_cursor': lambda a: '',
+        'action_if_health': lambda a: 'health %s %s' % (['==', '<', '>'][int(e(a, 1))] if e(a, 1) in ('0', '1', '2') else '==', e(a, 0)),
+        'action_line_color': lambda a: 'draw_set_color(%s)' % e(a, 0),
     }
 
     def action_text(a):
         lib, aid, nm = a['library'], a['action_id'], a['name']
         if lib == 1 and aid == 603:
-            return a['args'][0] if a['args'] else ''
+            return '{\n%s\n}' % (a['args'][0] if a['args'] else '')
+        if lib == 1 and aid == 611:
+            return setvar(a)
+        if lib == 1 and aid == 612:
+            return ifvar(a)
+        if lib == 1 and aid == 613:
+            return 'draw_text(%s, %s, string(%s))' % (pos(a, 1)[0], pos(a, 1)[1], sd(a, 0))
+        if lib == 1 and aid == 605:
+            return ''
         if nm in table:
-            return table[nm](a)
+            t = table[nm](a)
+            if not a['question'] and (';' in t or '\n' in t) and not t.startswith('{'):
+                t = '{ %s }' % t
+            return t
         raise ValueError('unsupported action %r' % ((lib, aid, nm, a['kind']),))
 
     return action_text
@@ -265,7 +326,8 @@ def to_gml(actions, ctx):
             return 'repeat (%s) %s' % (n(a['args'][0]) if a['args'] else '1', body), j
         text = action_text(a)
         if a['question']:
-            body, j = item(i + 1) if i + 1 < n_ else ('', i + 1)
+            body, j = item(i + 1) if i + 1 < n_ else (';', i + 1)
+            body = body or ';'
             neg = 'not ' if a['negate'] else ''
             els = ''
             if j < n_ and actions[j]['kind'] == 3:

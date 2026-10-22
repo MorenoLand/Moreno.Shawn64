@@ -63,8 +63,6 @@ func _show_launcher(games):
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	intro.add_child(logo)
-	_label("Games created by Shawn Noel", 28, Color(0.55, 0.75, 1.0), intro)
-	_label("S64 Games  -  Shawn64's Creations", 18, Color(0.4, 0.55, 0.8), intro)
 	var menu = VBoxContainer.new()
 	menu.add_theme_constant_override("separation", 12)
 	menu.modulate.a = 0.0
@@ -72,21 +70,28 @@ func _show_launcher(games):
 	center.add_child(menu)
 	var small = TextureRect.new()
 	small.texture = _logo_texture()
-	small.custom_minimum_size = Vector2(300, 190)
+	small.custom_minimum_size = Vector2(200, 130)
 	small.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	small.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	menu.add_child(small)
-	_label("Games by Shawn Noel", 22, Color(0.55, 0.75, 1.0), menu)
+	var scroll = ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(620, 300)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	menu.add_child(scroll)
+	var grid = GridContainer.new()
+	grid.columns = 2
+	grid.add_theme_constant_override("h_separation", 10)
+	grid.add_theme_constant_override("v_separation", 8)
+	scroll.add_child(grid)
 	for g in games:
 		var b = Button.new()
-		b.text = "%s
-%s" % [g["title"], g.get("credit", "S64 Games")]
-		b.custom_minimum_size = Vector2(440, 62)
-		b.add_theme_font_size_override("font_size", 20)
+		b.text = g["title"]
+		b.custom_minimum_size = Vector2(300, 44)
+		b.add_theme_font_size_override("font_size", 18)
 		var slug = g["slug"]
 		b.pressed.connect(func(): _launch(slug))
-		menu.add_child(b)
-	_label("In memory of Shawn Noel", 16, Color(0.4, 0.55, 0.8), menu)
+		grid.add_child(b)
+	_label("S64 Games, by Shawn Noel", 13, Color(0.32, 0.36, 0.45), menu)
 	var state = {"done": false}
 	var show_menu = func():
 		if state["done"]:
@@ -100,9 +105,25 @@ func _show_launcher(games):
 		t2.tween_property(menu, "modulate:a", 1.0, 0.5)
 	var t = create_tween()
 	t.tween_property(intro, "modulate:a", 1.0, 0.9)
-	t.tween_interval(2.0)
+	t.tween_interval(1.4)
 	t.tween_callback(show_menu)
 	launcher.set_meta("skip", show_menu)
+
+
+func _default_touch(size):
+	var w = float(size[0])
+	var h = float(size[1])
+	var u = minf(w, h) * 0.17
+	var m = u * 0.12
+	return [
+		{"label": "LEFT", "x": m, "y": h - u * 1.1 - m, "w": u, "h": u, "vk": [37]},
+		{"label": "RIGHT", "x": m * 2 + u, "y": h - u * 1.1 - m, "w": u, "h": u, "vk": [39]},
+		{"label": "UP", "x": m + u * 0.55, "y": h - u * 2.2 - m * 2, "w": u, "h": u, "vk": [38]},
+		{"label": "SPACE", "x": w - u * 1.1 - m, "y": h - u * 1.1 - m, "w": u * 1.1, "h": u, "vk": [32]},
+		{"label": "CTRL", "x": w - u * 2.3 - m * 2, "y": h - u * 1.1 - m, "w": u * 1.1, "h": u, "vk": [17]},
+		{"label": "ENTER", "x": w - u * 1.1 - m, "y": h - u * 2.2 - m * 2, "w": u * 1.1, "h": u, "vk": [13]},
+		{"label": "ESC", "x": w - u * 0.95 - m, "y": m, "w": u * 0.95, "h": u * 0.6, "vk": [27]},
+	]
 
 
 func _launch(slug):
@@ -120,7 +141,10 @@ func _start_game(slug):
 	add_child(overlay)
 	touch = preload("res://gm/gm_touch.gd").new()
 	add_child(touch)
-	touch.configure(GM.data.get("touch", []).map(func(b): return {"label": b["label"], "rect": Rect2(b["x"], b["y"], b["w"], b["h"]), "vk": b.get("vk", []), "mouse": b.get("mouse", 0), "down": false}))
+	var tdefs = GM.data.get("touch", [])
+	if tdefs.is_empty():
+		tdefs = _default_touch(size)
+	touch.configure(tdefs.map(func(b): return {"label": b["label"], "rect": Rect2(b["x"], b["y"], b["w"], b["h"]), "vk": b.get("vk", []), "mouse": b.get("mouse", 0), "down": false}))
 	for a in OS.get_cmdline_user_args():
 		if a == "--fast":
 			GM.debug_fast = true

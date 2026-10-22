@@ -1,0 +1,12 @@
+extends "res://games/bounty_hunter_sx/scripts.gd"
+func ev_step():
+	(self.script_hover(0.0, 0.0, 0.0, 0.0, 0.0))
+func ev_mouse_4():
+	if ((GM.G["diamonds"] > 0.0)):
+		(GM.f_sound_play(310.0))
+		GM.G["diamonds"] = GM.G["diamonds"] - 1.0
+		GM.G["zz"] = GM.G["zz"] + 100.0
+	else:
+		(GM.f_sound_play(309.0))
+	if ((GM.G["diamonds"] < 1.0)):
+		(GM.f_instance_destroy(self))

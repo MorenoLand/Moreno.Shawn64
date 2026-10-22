@@ -445,8 +445,7 @@ def detect(exe):
             return info
     for off in (1250000, 1450000, 1500000):
         if off + 4 <= len(b) and struct.unpack_from('<I', b, off)[0] == 1230500:
-            info.update(format='Game Maker 5.3', data_offset=off, supported=False,
-                        note='detected, but the 5.3 reader is not written yet')
+            info.update(format='Game Maker 5.x', data_offset=off, supported=True)
             return info
     if b'Game Maker' in b or b'Mark Overmars' in b:
         info.update(format='older Game Maker (5.0 to 5.2?)', note='not supported yet')
@@ -454,6 +453,9 @@ def detect(exe):
 
 
 def extract(exe, out):
+    if detect(exe).get('format') == 'Game Maker 5.x':
+        from . import extract53
+        return extract53.extract(exe, out)
     b = open(exe, 'rb').read()
     start = None
     for off in (700000, 800000, 1420000, 1600000):

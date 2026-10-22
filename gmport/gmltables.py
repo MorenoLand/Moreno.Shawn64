@@ -36,6 +36,8 @@ CONSTANTS = {
     'ev_user6': 16, 'ev_user7': 17, 'ev_user8': 18, 'ev_user9': 19, 'ev_user10': 20, 'ev_user11': 21,
     'ev_user12': 22, 'ev_user13': 23, 'ev_user14': 24, 'ev_user15': 25,
     'noone': -4, 'all': -3,
+    'fs_normal': 0, 'fs_bold': 1, 'fs_italic': 2, 'fs_bold_italic': 3,
+    'ef_ring_': 1, 'se_none': 0, 'dll_cdecl': 0, 'dll_stdcall': 1, 'ty_real': 0, 'ty_string': 1,
 }
 
 INSTANCE_VARS = {
@@ -78,6 +80,11 @@ GLOBAL_VARS = {
     'show_score': ('GM.show_score', R), 'show_lives': ('GM.show_lives', R), 'show_health': ('GM.show_health', R),
     'cursor_sprite': ('GM.cursor_sprite', R), 'game_id': ('GM.game_id', R),
     'transition_kind': ('GM.transition_kind', R), 'secure_mode': ('0.0', R),
+    'view_left': ('GM.view_xview[0]', R), 'view_top': ('GM.view_yview[0]', R),
+    'view_width': ('GM.view_wview[0]', R), 'view_height': ('GM.view_hview[0]', R),
+    'font_align': ('GM.font_align', R), 'font_color': ('GM.font_color', R),
+    'screen_width': ('GM.screen_w', R), 'screen_height': ('GM.screen_h', R),
+    'keyboard_string': ('GM.keyboard_string', S),
     'room_first': ('GM.room_first()', R), 'room_last': ('GM.room_last()', R),
     'instance_count': ('GM.instance_count()', R), 'argument_relative': ('0.0', R),
     'error_occurred': ('0.0', R), 'error_last': ('""', S), 'working_directory': ('"."', S),
@@ -270,3 +277,23 @@ BUILTIN_FUNCS['instance_position'] = f(False, U)
 BUILTIN_FUNCS['draw_circle'] = f(False, R)
 BUILTIN_FUNCS['draw_line_color'] = f(False, R)
 BUILTIN_FUNCS['event_perform'] = f(True, R)
+
+for _n in ('path_start', 'path_end', 'move_outside_all', 'move_outside_solid', 'move_snap', 'variable_local_exists'):
+    BUILTIN_FUNCS[_n] = f(True, R)
+
+
+def _scan_runtime():
+    import os
+    import re
+    base = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'gm')
+    for fname, selfcap in (('gm.gd', True), ('gm_lib.gd', False)):
+        text = open(os.path.join(base, fname), encoding='utf-8').read()
+        for m in re.finditer(r'^func f_(\w+)\((.*?)\):', text, re.M):
+            name = m.group(1)
+            params = [x.strip() for x in m.group(2).split(',') if x.strip()]
+            needs_self = selfcap and bool(params) and params[0] == 's'
+            old = BUILTIN_FUNCS.get(name)
+            BUILTIN_FUNCS[name] = (needs_self, old[1] if old else U)
+
+
+_scan_runtime()

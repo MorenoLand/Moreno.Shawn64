@@ -1,0 +1,5 @@
+extends "res://games/bubblegum/scripts.gd"
+func ev_create():
+	(GM.f_action_move(self, "000001000", 4.0, 0.0))
+func ev_other_0():
+	(GM.f_room_goto_next())

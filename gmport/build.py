@@ -89,7 +89,11 @@ def build(slug, extracted=None):
     def add(label, src, kind, ref):
         for secret in cfg.get('redact', []):
             src = src.replace(secret, '')
-        ast = gml_parse.parse(src)
+        try:
+            ast = gml_parse.parse(src)
+        except Exception as ex:
+            print('warning: code in %s does not parse (%s); replaced with an empty block' % (label, str(ex)[:60]))
+            ast = gml_parse.parse('')
         infer.collect(ast, ref if kind == 'script' else None)
         sources.append((label, kind, ref, ast))
         return ast

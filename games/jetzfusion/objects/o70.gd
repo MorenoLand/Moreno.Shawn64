@@ -1,0 +1,99 @@
+extends "res://games/jetzfusion/scripts.gd"
+var v_image_single = 0.0
+var v_mypower = 0.0
+var v_poom = 0.0
+func ev_create():
+	v_mypower = 5.0
+	if (((absf(sprite_index - 73.0) < 0.00001))):
+		alarm[int(0.0)] = 1.0
+func ev_alarm_0():
+	v_poom = (GM.f_round((GM.f_random(5.0))))
+	if ((absf(GM.room - 0.0) < 0.00001)):
+		if ((absf(v_poom - 0.0) < 0.00001)):
+			if ((absf(GM.vget(49.0, "v_s0") - 1.0) < 0.00001)):
+				v_image_single = 0.0
+				GM.vset(49.0, "v_s0", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 1.0) < 0.00001)):
+			if ((absf(GM.vget(49.0, "v_s1") - 1.0) < 0.00001)):
+				v_image_single = 1.0
+				GM.vset(49.0, "v_s1", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 2.0) < 0.00001)):
+			if ((absf(GM.vget(49.0, "v_s2") - 1.0) < 0.00001)):
+				v_image_single = 2.0
+				GM.vset(49.0, "v_s2", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 3.0) < 0.00001)):
+			if ((absf(GM.vget(49.0, "v_s3") - 1.0) < 0.00001)):
+				v_image_single = 3.0
+				GM.vset(49.0, "v_s3", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 4.0) < 0.00001)):
+			if ((absf(GM.vget(49.0, "v_s4") - 1.0) < 0.00001)):
+				v_image_single = 4.0
+				GM.vset(49.0, "v_s4", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 5.0) < 0.00001)):
+			if ((absf(GM.vget(49.0, "v_s5") - 1.0) < 0.00001)):
+				v_image_single = 5.0
+				GM.vset(49.0, "v_s5", 0.0)
+			else:
+				(GM.f_instance_create(x, y, 70.0))
+				(GM.f_instance_destroy(self))
+	else:
+		if ((absf(v_poom - 0.0) < 0.00001)):
+			if ((absf(GM.vget(207.0, "v_s0") - 1.0) < 0.00001)):
+				v_image_single = 0.0
+				GM.vset(207.0, "v_s0", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 1.0) < 0.00001)):
+			if ((absf(GM.vget(207.0, "v_s1") - 1.0) < 0.00001)):
+				v_image_single = 1.0
+				GM.vset(207.0, "v_s1", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 2.0) < 0.00001)):
+			if ((absf(GM.vget(207.0, "v_s2") - 1.0) < 0.00001)):
+				v_image_single = 2.0
+				GM.vset(207.0, "v_s2", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 3.0) < 0.00001)):
+			if ((absf(GM.vget(207.0, "v_s3") - 1.0) < 0.00001)):
+				v_image_single = 3.0
+				GM.vset(207.0, "v_s3", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 4.0) < 0.00001)):
+			if ((absf(GM.vget(207.0, "v_s4") - 1.0) < 0.00001)):
+				v_image_single = 4.0
+				GM.vset(207.0, "v_s4", 0.0)
+			else:
+				v_poom = v_poom + 1.0
+		if ((absf(v_poom - 5.0) < 0.00001)):
+			if ((absf(GM.vget(207.0, "v_s5") - 1.0) < 0.00001)):
+				v_image_single = 5.0
+				GM.vset(207.0, "v_s5", 0.0)
+			else:
+				(GM.f_instance_create(x, y, 70.0))
+				(GM.f_instance_destroy(self))
+func ev_col_53():
+	if (((absf(v_mypower - 2.0) < 0.00001))):
+		(GM.f_sound_play(36.0))
+		for _r93 in range(int((10.0))):
+			(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 27.0))
+		for _r94 in range(int((80.0))):
+			(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 47.0))
+		(GM.f_instance_destroy(self))
+	else:
+		(GM.f_sound_play(34.0))
+		for _r95 in range(int((15.0))):
+			(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 27.0))
+	v_mypower = v_mypower + (-1.0)

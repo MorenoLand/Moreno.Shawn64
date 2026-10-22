@@ -37,6 +37,26 @@ var graveyard := []
 var next_id := 100001
 var persistent_keep := []
 var any_inactive := false
+var sys_font_name := "Arial"
+var sys_font_size := 12
+var sys_bold := false
+var sys_italic := false
+var sys_fonts := {}
+var keyboard_string := ""
+var screen_w := 800.0
+var screen_h := 600.0
+var file_handles := {}
+var file_next := 1
+var font_align:
+	get:
+		return float(draw_halign)
+	set(v):
+		draw_halign = int(v)
+var font_color:
+	get:
+		return float(draw_color)
+	set(v):
+		draw_color = int(v)
 var tile_buckets := {}
 var ogrid := {}
 var grid_dirty := true
@@ -260,6 +280,12 @@ func _input(event):
 		var vk = vk_from_godot.get(event.keycode, -1)
 		if vk < 0:
 			return
+		if event.pressed and event.unicode > 31 and event.unicode < 127:
+			keyboard_string += char(event.unicode)
+			if keyboard_string.length() > 1024:
+				keyboard_string = keyboard_string.substr(keyboard_string.length() - 1024)
+		if event.pressed and event.keycode == KEY_BACKSPACE and keyboard_string.length() > 0:
+			keyboard_string = keyboard_string.substr(0, keyboard_string.length() - 1)
 		if event.pressed and not event.echo:
 			keys_down[vk] = true
 			pend_pressed[vk] = true
@@ -576,13 +602,13 @@ func f_instance_create(px, py, obj):
 	return inst
 
 
-func f_instance_destroy(i):
-	if i._dead:
+func f_instance_destroy(s):
+	if s._dead:
 		return 0.0
-	var es = evset[int(i.object_index)]
+	var es = evset[int(s.object_index)]
 	if es.has("ev_destroy"):
-		i.ev_destroy()
-	_kill(i)
+		s.ev_destroy()
+	_kill(s)
 	return 0.0
 
 
@@ -929,10 +955,10 @@ func f_sin(v):
 	return sin(v)
 
 
-func f_ord(s):
-	if s.length() == 0:
+func f_ord(txt):
+	if txt.length() == 0:
 		return 0.0
-	return float(s.unicode_at(0))
+	return float(txt.unicode_at(0))
 
 
 func f_string(v):
@@ -949,22 +975,22 @@ func f_string(v):
 	return t
 
 
-func f_string_length(s):
-	return float(str(s).length())
+func f_string_length(txt):
+	return float(str(txt).length())
 
 
-func f_string_char_at(s, idx):
+func f_string_char_at(txt, idx):
 	var i = int(idx)
-	if i < 1 or i > s.length():
+	if i < 1 or i > txt.length():
 		return ""
-	return s.substr(i - 1, 1)
+	return txt.substr(i - 1, 1)
 
 
-func f_string_copy(s, idx, cnt):
+func f_string_copy(txt, idx, cnt):
 	var i = int(idx)
 	if i < 1:
 		i = 1
-	return s.substr(i - 1, int(cnt))
+	return txt.substr(i - 1, int(cnt))
 
 
 func f_point_direction(x1, y1, x2, y2):
@@ -1635,6 +1661,9 @@ func _motion():
 			continue
 		i.xprevious = i.x
 		i.yprevious = i.y
+		if i.path_index >= 0.0:
+			_path_step(i)
+			continue
 		var fr = i.friction
 		if fr != 0.0:
 			var sp = i._sp
@@ -2162,6 +2191,7 @@ func _begin_slice():
 	cur_slice = slices[slice_used]
 	slice_used += 1
 	cur_slice.cmds.clear()
+	cur_slice.tcmds.clear()
 	cur_slice.visible = true
 	cur_slice.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if interpolation else CanvasItem.TEXTURE_FILTER_NEAREST
 	cur_cmds = cur_slice.cmds
@@ -2354,7 +2384,7 @@ func f_draw_sprite_ext(spr, sub, px, py, xs, ys, rot, blend, alpha):
 	return 0.0
 
 
-func f_draw_rectangle(x1, y1, x2, y2, outline):
+func f_draw_rectangle(x1, y1, x2, y2, outline = 0.0):
 	var col = _bgr_to_color(draw_color, draw_alpha, draw_blend)
 	var l = minf(x1, x2)
 	var t = minf(y1, y2)
@@ -2420,6 +2450,8 @@ func f_draw_text(px, py, s):
 
 
 func f_draw_text_transformed(px, py, s, xs, ys, ang):
+	if fonts.is_empty() or draw_font == -2 or draw_font >= fonts.size():
+		return _draw_sys_text(px, py, s, xs, ys, ang)
 	var fi = draw_font
 	if fi < 0 or fi >= fonts.size() or fonts[fi] == null:
 		fi = 0
@@ -2746,7 +2778,7 @@ func f_draw_line_color(x1, y1, x2, y2, c1, c2):
 	return 0.0
 
 
-func f_draw_circle(px, py, r, outline):
+func f_draw_circle(px, py, r, outline = 0.0):
 	var col = _bgr_to_color(draw_color, draw_alpha, draw_blend)
 	_cmds().append([6, Vector2(px, py), r, col, not truth(outline)])
 	return 0.0
@@ -2763,4 +2795,748 @@ func f_draw_background(bg, px, py):
 		return 0.0
 	var b = backgrounds[bi]
 	_cmds().append([1, b["tex"], Rect2(0, 0, b["w"], b["h"]), Rect2(px, py, b["w"], b["h"]), _bgr_to_color(16777215, draw_alpha, draw_blend)])
+	return 0.0
+
+
+func _sys_font():
+	var key = "%s|%d|%s|%s" % [sys_font_name, sys_font_size, sys_bold, sys_italic]
+	if sys_fonts.has(key):
+		return sys_fonts[key]
+	var fv = FontVariation.new()
+	fv.base_font = ThemeDB.fallback_font
+	if sys_bold:
+		fv.variation_embolden = 0.6
+	if sys_italic:
+		fv.variation_transform = Transform2D(Vector2(1, 0), Vector2(-0.25, 1), Vector2.ZERO)
+	sys_fonts[key] = fv
+	return fv
+
+
+func _px_size():
+	return maxi(int(round(sys_font_size * 4.0 / 3.0)), 6)
+
+
+func text_size_sys(txt):
+	var f = _sys_font()
+	var sz = _px_size()
+	var lines = _text_lines(f_string(txt))
+	var w = 0.0
+	for line in lines:
+		w = maxf(w, f.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, sz).x)
+	return Vector2(w, f.get_height(sz) * lines.size())
+
+
+func _draw_sys_text(px, py, s, xs, ys, ang):
+	var f = _sys_font()
+	var sz = _px_size()
+	var col = _bgr_to_color(draw_color, draw_alpha, 0)
+	col = Color(col.r / maxf(draw_alpha, 0.0001), col.g / maxf(draw_alpha, 0.0001), col.b / maxf(draw_alpha, 0.0001), draw_alpha)
+	_cmds()
+	var lines = _text_lines(f_string(s))
+	var oy = 0.0
+	var lh = f.get_height(sz)
+	for line in lines:
+		var w = f.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, sz).x
+		var ox = 0.0
+		if draw_halign == 1:
+			ox = -w / 2.0
+		elif draw_halign == 2:
+			ox = -w
+		cur_slice.tcmds.append([7, line, Vector2(ox, oy + f.get_ascent(sz)), sz, col, px, py, xs, ys, -deg_to_rad(ang), f])
+		oy += lh
+	return 0.0
+
+
+func f_action_draw_font(name, size, bold, italic):
+	sys_font_name = name
+	sys_font_size = int(size)
+	sys_bold = bold > 0.5
+	sys_italic = italic > 0.5
+	draw_font = -2
+	return 0.0
+
+
+func f_string_width(txt):
+	if fonts.is_empty() or draw_font == -2:
+		return text_size_sys(txt).x
+	var fi = clampi(draw_font, 0, fonts.size() - 1)
+	var w = 0.0
+	for line in _text_lines(f_string(txt)):
+		w = maxf(w, _glyph_width(fonts[fi], line))
+	return w
+
+
+func f_string_height(txt):
+	if fonts.is_empty() or draw_font == -2:
+		return text_size_sys(txt).y
+	var fi = clampi(draw_font, 0, fonts.size() - 1)
+	return float(fonts[fi]["lh"] * _text_lines(f_string(txt)).size())
+
+
+func f_draw_text_ext(px, py, s, sep, w):
+	var words = f_string(s).replace("#", " # ").split(" ")
+	var line = ""
+	var out := []
+	for word in words:
+		if word == "#":
+			out.append(line)
+			line = ""
+			continue
+		var test = word if line == "" else line + " " + word
+		if w > 0.0 and f_string_width(test) > w and line != "":
+			out.append(line)
+			line = word
+		else:
+			line = test
+	out.append(line)
+	var lh = f_string_height("Ag") if sep < 0.0 else sep
+	for k in range(out.size()):
+		f_draw_text_transformed(px, py + k * lh, out[k], 1.0, 1.0, 0.0)
+	return 0.0
+
+
+func f_draw_text_color(px, py, s, c1, c2, c3, c4, a):
+	var oc = draw_color
+	var oa = draw_alpha
+	draw_color = int(c1)
+	draw_alpha = a
+	f_draw_text_transformed(px, py, s, 1.0, 1.0, 0.0)
+	draw_color = oc
+	draw_alpha = oa
+	return 0.0
+
+
+func f_draw_sprite_scaled(spr, sub, px, py, xs, ys = null):
+	return f_draw_sprite_ext(spr, sub, px, py, xs, xs if ys == null else ys, 0.0, 16777215.0, 1.0)
+
+
+func f_draw_roundrect(x1, y1, x2, y2, outline = 0.0):
+	return f_draw_rectangle(x1, y1, x2, y2, outline)
+
+
+func f_draw_rectangle_color(x1, y1, x2, y2, c1, c2, c3, c4, outline):
+	if truth(outline):
+		var oc = draw_color
+		draw_color = int(c1)
+		f_draw_rectangle(x1, y1, x2, y2, 1.0)
+		draw_color = oc
+		return 0.0
+	var l = minf(x1, x2)
+	var t = minf(y1, y2)
+	var r = maxf(x1, x2) + 1.0
+	var b = maxf(y1, y2) + 1.0
+	var cols = PackedColorArray([_bgr_to_color(int(c1), draw_alpha, draw_blend), _bgr_to_color(int(c2), draw_alpha, draw_blend), _bgr_to_color(int(c3), draw_alpha, draw_blend), _bgr_to_color(int(c4), draw_alpha, draw_blend)])
+	_cmds().append([8, PackedVector2Array([Vector2(l, t), Vector2(r, t), Vector2(r, b), Vector2(l, b)]), cols])
+	return 0.0
+
+
+func f_draw_arrow(x1, y1, x2, y2, size):
+	f_draw_line(x1, y1, x2, y2)
+	var d = atan2(y2 - y1, x2 - x1)
+	var a1 = Vector2(x2, y2) - Vector2(cos(d - 0.4), sin(d - 0.4)) * size
+	var a2 = Vector2(x2, y2) - Vector2(cos(d + 0.4), sin(d + 0.4)) * size
+	var col = _bgr_to_color(draw_color, draw_alpha, draw_blend)
+	_cmds().append([9, PackedVector2Array([Vector2(x2, y2), a1, a2]), PackedColorArray([col, col, col])])
+	return 0.0
+
+
+func f_draw_triangle(x1, y1, x2, y2, x3, y3, outline = 0.0):
+	var col = _bgr_to_color(draw_color, draw_alpha, draw_blend)
+	if truth(outline):
+		f_draw_line(x1, y1, x2, y2)
+		f_draw_line(x2, y2, x3, y3)
+		f_draw_line(x3, y3, x1, y1)
+	else:
+		_cmds().append([9, PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2), Vector2(x3, y3)]), PackedColorArray([col, col, col])])
+	return 0.0
+
+
+func f_draw_ellipse(x1, y1, x2, y2, outline = 0.0):
+	var c = Vector2((x1 + x2) * 0.5, (y1 + y2) * 0.5)
+	var rx = absf(x2 - x1) * 0.5
+	var ry = absf(y2 - y1) * 0.5
+	var pts = PackedVector2Array()
+	for k in range(40):
+		var a = TAU * k / 40.0
+		pts.append(c + Vector2(cos(a) * rx, sin(a) * ry))
+	var col = _bgr_to_color(draw_color, draw_alpha, draw_blend)
+	if truth(outline):
+		for k in range(40):
+			_cmds().append([3, pts[k], pts[(k + 1) % 40], col, 1.0])
+	else:
+		var cols = PackedColorArray()
+		for k in range(40):
+			cols.append(col)
+		_cmds().append([9, pts, cols])
+	return 0.0
+
+
+func f_screen_gamma(r, g, b):
+	return 0.0
+
+
+func f_set_graphics_mode(a, b, c, d, e, f, g = null):
+	return 0.0
+
+
+func f_set_program_priority(p):
+	return 0.0
+
+
+func f_window_get_width():
+	return screen_w
+
+
+func f_window_get_height():
+	return screen_h
+
+
+func f_window_center():
+	return 0.0
+
+
+func f_window_set_size(w, h):
+	return 0.0
+
+
+func f_display_reset():
+	return 0.0
+
+
+func f_display_set_all(a, b, c, d):
+	return 0.0
+
+
+func f_display_get_colordepth():
+	return 32.0
+
+
+func f_mouse_set_screen_position(px, py):
+	return 0.0
+
+
+func f_keyboard_check_direct(vk):
+	return f_keyboard_check(vk)
+
+
+func f_keyboard_wait():
+	return 0.0
+
+
+func f_make_color(r, g, b):
+	return f_make_color_rgb(r, g, b)
+
+
+func f_color_get_hue(c):
+	var col = Color(f_color_get_red(c) / 255.0, f_color_get_green(c) / 255.0, f_color_get_blue(c) / 255.0)
+	return col.h * 255.0
+
+
+func f_color_get_saturation(c):
+	var col = Color(f_color_get_red(c) / 255.0, f_color_get_green(c) / 255.0, f_color_get_blue(c) / 255.0)
+	return col.s * 255.0
+
+
+func f_color_get_value(c):
+	var col = Color(f_color_get_red(c) / 255.0, f_color_get_green(c) / 255.0, f_color_get_blue(c) / 255.0)
+	return col.v * 255.0
+
+
+func f_variable_local_exists(s, name):
+	return 1.0 if (s.get("v_" + name) != null or s._v.has("v_" + name)) else 0.0
+
+
+func f_sound_add(fname, kind, pre, x = null):
+	return -1.0
+
+
+func f_sound_replace(i, fname, kind, pre, x = null):
+	return 0.0
+
+
+func f_sprite_replace(i, fname, n, a, b, c, d, e = null, f = null):
+	return 0.0
+
+
+func f_sprite_exists(i):
+	var si = int(i)
+	return 1.0 if si >= 0 and si < sprites.size() and sprites[si] != null else 0.0
+
+
+func f_background_exists(i):
+	var bi = int(i)
+	return 1.0 if bi >= 0 and bi < backgrounds.size() and backgrounds[bi] != null else 0.0
+
+
+func f_sprite_get_width(i):
+	return sprite_dim(i, 0)
+
+
+func f_sprite_get_height(i):
+	return sprite_dim(i, 1)
+
+
+func f_background_get_width(i):
+	var bi = int(i)
+	return float(backgrounds[bi]["w"]) if bi >= 0 and bi < backgrounds.size() and backgrounds[bi] != null else 0.0
+
+
+func f_background_get_height(i):
+	var bi = int(i)
+	return float(backgrounds[bi]["h"]) if bi >= 0 and bi < backgrounds.size() and backgrounds[bi] != null else 0.0
+
+
+func f_registry_write_string(name, v):
+	registry.set_value("reg", name, v)
+	registry.save("user://" + game_dir.get_file() + "_registry.cfg")
+	return 0.0
+
+
+func f_registry_read_string(name):
+	return str(registry.get_value("reg", name, ""))
+
+
+func f_game_save(fname):
+	return 0.0
+
+
+func f_game_load(fname):
+	return 0.0
+
+
+func f_move_outside_all(s, d, maxd):
+	var r = deg_to_rad(d)
+	var dx = cos(r)
+	var dy = -sin(r)
+	var lim = 1000.0 if maxd <= 0.0 else maxd
+	var dist = 0.0
+	while dist < lim and f_place_empty(s, s.x, s.y) < 0.5:
+		s.x += dx
+		s.y += dy
+		dist += 1.0
+	return 0.0
+
+
+func f_move_outside_solid(s, d, maxd):
+	var r = deg_to_rad(d)
+	var dx = cos(r)
+	var dy = -sin(r)
+	var lim = 1000.0 if maxd <= 0.0 else maxd
+	var dist = 0.0
+	while dist < lim and not _solid_free(s, s.x, s.y):
+		s.x += dx
+		s.y += dy
+		dist += 1.0
+	return 0.0
+
+
+func f_move_snap(s, h, v):
+	if h > 0.0:
+		s.x = roundf(s.x / h) * h
+	if v > 0.0:
+		s.y = roundf(s.y / v) * v
+	return 0.0
+
+
+func f_instance_find(obj, n):
+	var l = with_list(obj, null)
+	var k = int(n)
+	return l[k] if k >= 0 and k < l.size() else -4.0
+
+
+func _fpath(path):
+	var pi = int(path)
+	var plist = data["paths"]
+	if pi < 0 or pi >= plist.size() or plist[pi] == null:
+		return null
+	return plist[pi]
+
+
+func f_path_start(s, path, speed, endaction, absolute):
+	var p = _fpath(path)
+	if p == null or p["points"].is_empty():
+		return 0.0
+	s.path_index = float(int(path))
+	s.path_speed = speed
+	s._v["_path_end"] = int(endaction)
+	s._v["_path_pos"] = 0.0 if speed >= 0.0 else 1.0
+	var pts = p["points"]
+	if truth(absolute):
+		s.x = pts[0][0]
+		s.y = pts[0][1]
+		s._v["_path_ox"] = 0.0
+		s._v["_path_oy"] = 0.0
+	else:
+		s._v["_path_ox"] = s.x - pts[0][0]
+		s._v["_path_oy"] = s.y - pts[0][1]
+	return 0.0
+
+
+func f_path_end(s):
+	s.path_index = -1.0
+	return 0.0
+
+
+func _path_lengths(p):
+	if p.has("_len"):
+		return p["_len"]
+	var pts = p["points"].duplicate()
+	if p.get("closed", false) and pts.size() > 1:
+		pts.append(pts[0])
+	var cum := [0.0]
+	for k in range(1, pts.size()):
+		cum.append(cum[k - 1] + sqrt(pow(pts[k][0] - pts[k - 1][0], 2) + pow(pts[k][1] - pts[k - 1][1], 2)))
+	p["_len"] = [pts, cum]
+	return p["_len"]
+
+
+func _path_step(i):
+	var p = _fpath(i.path_index)
+	if p == null:
+		i.path_index = -1.0
+		return
+	var pl = _path_lengths(p)
+	var pts = pl[0]
+	var cum = pl[1]
+	var total = cum[cum.size() - 1]
+	if total <= 0.0:
+		i.path_index = -1.0
+		return
+	var pos = i._v.get("_path_pos", 0.0)
+	var d = pos * total
+	var seg = 1
+	while seg < cum.size() - 1 and cum[seg] < d:
+		seg += 1
+	var sp = pts[seg - 1][2] / 100.0 if pts[seg - 1].size() > 2 else 1.0
+	pos += (i.path_speed * sp) / total
+	var endact = i._v.get("_path_end", 0)
+	if pos >= 1.0 or pos <= 0.0:
+		if endact == 0:
+			pos = clampf(pos, 0.0, 1.0)
+			i.path_index = -1.0
+		elif endact == 1:
+			pos = fposmod(pos, 1.0)
+		elif endact == 2:
+			pos = fposmod(pos, 1.0)
+			i._v["_path_ox"] = i.x - pts[0][0]
+			i._v["_path_oy"] = i.y - pts[0][1]
+		else:
+			i.path_speed = -i.path_speed
+			pos = clampf(pos, 0.0, 1.0)
+		if evset[int(i.object_index)].has("ev_other_8"):
+			i._v["_path_pos"] = pos
+			i.ev_other_8()
+	i._v["_path_pos"] = pos
+	var dd = pos * total
+	var sg = 1
+	while sg < cum.size() - 1 and cum[sg] < dd:
+		sg += 1
+	var seglen = cum[sg] - cum[sg - 1]
+	var t = 0.0 if seglen <= 0.0 else (dd - cum[sg - 1]) / seglen
+	var a = pts[sg - 1]
+	var b = pts[sg]
+	i.xprevious = i.x
+	i.yprevious = i.y
+	i.x = lerpf(a[0], b[0], t) + i._v.get("_path_ox", 0.0)
+	i.y = lerpf(a[1], b[1], t) + i._v.get("_path_oy", 0.0)
+
+
+func f_file_exists(fname):
+	return 1.0 if FileAccess.file_exists("user://" + fname.get_file()) or FileAccess.file_exists(game_dir + "/assets/includes/" + fname.get_file()) else 0.0
+
+
+func f_file_delete(fname):
+	var p = ProjectSettings.globalize_path("user://" + fname.get_file())
+	if FileAccess.file_exists("user://" + fname.get_file()):
+		DirAccess.remove_absolute(p)
+	return 1.0
+
+
+func f_file_rename(a, b):
+	if FileAccess.file_exists("user://" + a.get_file()):
+		DirAccess.rename_absolute(ProjectSettings.globalize_path("user://" + a.get_file()), ProjectSettings.globalize_path("user://" + b.get_file()))
+	return 1.0
+
+
+var file_cur_read = -1
+var file_cur_write = -1
+
+
+func _fopen(fname, mode):
+	var name = fname.get_file()
+	var f = null
+	if mode == FileAccess.READ:
+		if FileAccess.file_exists("user://" + name):
+			f = FileAccess.open("user://" + name, FileAccess.READ)
+		elif FileAccess.file_exists(game_dir + "/assets/includes/" + name):
+			f = FileAccess.open(game_dir + "/assets/includes/" + name, FileAccess.READ)
+	elif mode == FileAccess.READ_WRITE:
+		f = FileAccess.open("user://" + name, FileAccess.READ_WRITE) if FileAccess.file_exists("user://" + name) else FileAccess.open("user://" + name, FileAccess.WRITE)
+		if f != null:
+			f.seek_end()
+	else:
+		f = FileAccess.open("user://" + name, FileAccess.WRITE)
+	if f == null:
+		return -1.0
+	var id = file_next
+	file_next += 1
+	file_handles[id] = {"f": f, "line": null}
+	return float(id)
+
+
+func _fh(id, writing):
+	var k = int(id) if id != null else (file_cur_write if writing else file_cur_read)
+	return file_handles.get(k, null)
+
+
+func f_file_text_open_read(fname):
+	return _fopen(fname, FileAccess.READ)
+
+
+func f_file_text_open_write(fname):
+	return _fopen(fname, FileAccess.WRITE)
+
+
+func f_file_text_open_append(fname):
+	return _fopen(fname, FileAccess.READ_WRITE)
+
+
+func f_file_open_read(fname):
+	var h = _fopen(fname, FileAccess.READ)
+	file_cur_read = int(h)
+	return h
+
+
+func f_file_open_write(fname):
+	var h = _fopen(fname, FileAccess.WRITE)
+	file_cur_write = int(h)
+	return h
+
+
+func f_file_open_append(fname):
+	var h = _fopen(fname, FileAccess.READ_WRITE)
+	file_cur_write = int(h)
+	return h
+
+
+func f_file_text_close(id = null):
+	var k = int(id) if id != null else file_cur_read
+	if file_handles.has(k):
+		file_handles[k]["f"].close()
+		file_handles.erase(k)
+	return 0.0
+
+
+func f_file_close(id = null):
+	if id == null:
+		f_file_text_close(file_cur_read)
+		f_file_text_close(file_cur_write)
+		return 0.0
+	return f_file_text_close(id)
+
+
+func f_file_text_eof(id = null):
+	var h = _fh(id, false)
+	if h == null:
+		return 1.0
+	return 1.0 if h["line"] == null and h["f"].eof_reached() else 0.0
+
+
+func f_file_eof(id = null):
+	return f_file_text_eof(id)
+
+
+func f_file_text_read_string(id = null):
+	var h = _fh(id, false)
+	if h == null:
+		return ""
+	if h["line"] == null:
+		h["line"] = h["f"].get_line()
+	return h["line"]
+
+
+func f_file_text_readln(id = null):
+	var h = _fh(id, false)
+	if h == null:
+		return 0.0
+	if h["line"] == null:
+		h["f"].get_line()
+	h["line"] = null
+	return 0.0
+
+
+func f_file_read_string(id = null):
+	return f_file_text_read_string(id)
+
+
+func f_file_readln(id = null):
+	return f_file_text_readln(id)
+
+
+func f_file_text_read_real(id = null):
+	var t = f_file_text_read_string(id).strip_edges()
+	return float(t) if t.is_valid_float() else 0.0
+
+
+func f_file_read_real(id = null):
+	return f_file_text_read_real(id)
+
+
+func f_file_text_write_string(id, v = null):
+	var h = null
+	var val = v
+	if v == null:
+		val = id
+		h = _fh(null, true)
+	else:
+		h = _fh(id, true)
+	if h != null:
+		h["f"].store_string(f_string(val))
+	return 0.0
+
+
+func f_file_write_string(id, v = null):
+	return f_file_text_write_string(id, v)
+
+
+func f_file_text_write_real(id, v = null):
+	return f_file_text_write_string(id, null if v == null else f_string(v)) if v != null else f_file_text_write_string(f_string(id))
+
+
+func f_file_write_real(id, v = null):
+	return f_file_text_write_real(id, v)
+
+
+func f_file_text_writeln(id = null):
+	var h = _fh(id, true)
+	if h != null:
+		h["f"].store_string("\n")
+	return 0.0
+
+
+func f_file_writeln(id = null):
+	return f_file_text_writeln(id)
+
+
+func f_filename_name(p):
+	return p.replace("\\", "/").get_file()
+
+
+func f_filename_path(p):
+	var q = p.replace("\\", "/")
+	return q.substr(0, q.rfind("/") + 1) if "/" in q else ""
+
+
+func f_filename_dir(p):
+	var q = p.replace("\\", "/")
+	return q.substr(0, q.rfind("/")) if "/" in q else ""
+
+
+func f_filename_ext(p):
+	var e = p.get_extension()
+	return "." + e if e != "" else ""
+
+
+func f_filename_change_ext(p, ext):
+	return p.get_basename() + ext
+
+
+func f_parameter_string(n):
+	return ""
+
+
+func f_clipboard_set_text(t):
+	DisplayServer.clipboard_set(str(t))
+	return 0.0
+
+
+func f_get_open_filename(a, b):
+	return ""
+
+
+func f_get_save_filename(a, b):
+	return ""
+
+
+func f_get_color(c):
+	return c
+
+
+func f_tile_exists(i):
+	return 0.0
+
+
+func f_keyboard_set_map(a, b):
+	return 0.0
+
+
+func f_mplay_init_tcpip(a, b = null, c = null):
+	return 0.0
+
+
+func f_mplay_init_ipx():
+	return 0.0
+
+
+func f_mplay_session_create(a, b, c = null):
+	return 0.0
+
+
+func f_mplay_session_find():
+	return 0.0
+
+
+func f_mplay_session_join(a, b = null):
+	return 0.0
+
+
+func f_mplay_session_end():
+	return 0.0
+
+
+func f_mplay_session_mode(a):
+	return 0.0
+
+
+func f_mplay_end():
+	return 0.0
+
+
+func f_mplay_data_mode(a):
+	return 0.0
+
+
+func f_mplay_player_find():
+	return 0.0
+
+
+func f_mplay_player_name(a):
+	return ""
+
+
+func f_mplay_message_receive(a):
+	return 0.0
+
+
+func f_mplay_message_id():
+	return 0.0
+
+
+func f_mplay_message_value():
+	return 0.0
+
+
+func f_mplay_message_name():
+	return ""
+
+
+func f_mplay_message_send(a, b = null, c = null):
+	return 0.0
+
+
+func f_mplay_message_send_guaranteed(a, b = null, c = null):
+	return 0.0
+
+
+func f_mplay_connect_status():
 	return 0.0

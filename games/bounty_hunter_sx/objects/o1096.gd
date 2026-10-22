@@ -1,0 +1,11 @@
+extends "res://games/bounty_hunter_sx/scripts.gd"
+var v_psound = 0.0
+func ev_create():
+	v_psound = 0.0
+	x = ((GM.room_width / 2.0) - (sprite_width / 2.0))
+func ev_step():
+	(self.script_hover(0.0, 0.0, 0.0, 0.0, 0.0))
+func ev_mouse_0():
+	(GM.f_sound_stop(323.0))
+	(GM.f_sound_play(299.0))
+	(GM.f_room_goto(83.0))

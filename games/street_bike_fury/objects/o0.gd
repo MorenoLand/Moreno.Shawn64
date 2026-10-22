@@ -1091,8 +1091,8 @@ func ev_keypress_39():
 func ev_keypress_27():
 	if ((((await GM.f_show_question("Do you want to go to the Menu?"))))) >= 0.5:
 		(GM.f_sound_stop_all())
-	(GM.f_sound_play(16.0))
-	(GM.f_game_restart())
+		(GM.f_sound_play(16.0))
+		(GM.f_game_restart())
 func ev_keyrelease_38():
 	if ((absf(v_intro2 - 0.0) < 0.00001)):
 		(GM.f_sound_stop(1.0))

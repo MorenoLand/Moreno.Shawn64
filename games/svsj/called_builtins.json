@@ -1,0 +1,1 @@
+["f_action_draw_font", "f_draw_set_color", "f_draw_text", "f_game_restart", "f_instance_create", "f_instance_destroy", "f_instance_exists", "f_instance_nearest", "f_instance_number", "f_keyboard_check", "f_motion_add", "f_mouse_check_button", "f_position_meeting", "f_random", "f_room_goto", "f_round", "f_sound_loop", "f_sound_play", "f_string"]

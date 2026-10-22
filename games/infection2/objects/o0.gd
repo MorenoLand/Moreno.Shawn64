@@ -386,7 +386,7 @@ func ev_draw():
 func ev_keypress_87():
 	if ((((GM.f_place_meeting(self, (x + 0.0), (y + 10.0), 1.0))))) >= 0.5:
 		(GM.f_motion_add(self, 90.0, 14.0))
-	(GM.f_sound_play(10.0))
+		(GM.f_sound_play(10.0))
 func ev_keypress_38():
 	if ((((GM.f_place_meeting(self, (x + 0.0), (y + 15.0), 1.0))))) >= 0.5:
 		(GM.f_motion_add(self, 90.0, 14.0))
