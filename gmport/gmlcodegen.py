@@ -5,7 +5,7 @@ from . import gmlparse as gml_parse
 from .gmltables import (BUILTIN_FUNCS, CONSTANTS, INSTANCE_VARS, GLOBAL_VARS, ARRAY_GLOBALS)
 
 R, S, B, U = 'R', 'S', 'B', 'U'
-PAUSING = {'show_question', 'get_string', 'show_message', 'get_integer'}
+PAUSING = {'show_question', 'get_string', 'show_message', 'get_integer', 'show_message_ext'}
 
 
 def q(s):
@@ -393,6 +393,18 @@ class Gen:
             return ic[0]
         return 'GM.k2(%s, %s)' % (ic[0], ic[1])
 
+    def safe_s(self, e):
+        t = e[0]
+        if t == 'str':
+            return True
+        if t == 'paren':
+            return self.safe_s(e[1])
+        if t == 'bin' and e[1] == '+':
+            return self.safe_s(e[2]) and self.safe_s(e[3])
+        if t == 'call' and e[1] in BUILTIN_FUNCS and BUILTIN_FUNCS[e[1]][1] == S:
+            return True
+        return False
+
     def binop(self, e):
         op, a, b = e[1], e[2], e[3]
         if op in ('&&', '||', '^^'):
@@ -421,7 +433,7 @@ class Gen:
         if op == '+':
             if at == R and bt == R:
                 return '(%s + %s)' % (ac, bc), R
-            if at == S and bt == S:
+            if at == S and bt == S and self.safe_s(a) and self.safe_s(b):
                 return '(%s + %s)' % (ac, bc), S
             return 'GM.add(%s, %s)' % (ac, bc), self.inf.etype(e) if self.inf.etype(e) != '?' else U
         if op in ('-', '*', '/'):

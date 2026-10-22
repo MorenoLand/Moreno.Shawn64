@@ -1,0 +1,18 @@
+extends "res://games/mini_golf_pro/scripts.gd"
+var v_clear = 0.0
+func ev_create():
+	v_clear = 0.0
+	image_speed = 0.0
+	image_index = 0.0
+func ev_alarm_0():
+	v_clear = 0.0
+func ev_col_0():
+	if ((absf(GM.vget(self.other, "v_implayer") - 10.0) < 0.00001)):
+		return
+	v_clear = 1.0
+	alarm[int(0.0)] = 2.0
+func ev_draw():
+	if ((absf(v_clear - 0.0) < 0.00001)):
+		(GM.f_draw_sprite_ext(54.0, 0.0, x, y, 1.0, 1.0, 0.0, 16777215.0, 1.0))
+	else:
+		(GM.f_draw_sprite_ext(54.0, 0.0, x, y, 1.0, 1.0, 0.0, 16777215.0, 0.5))

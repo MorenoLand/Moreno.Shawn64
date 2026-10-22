@@ -179,26 +179,39 @@ func f_chr(v):
 
 
 func f_string_upper(s):
+	s = str(s)
 	return s.to_upper()
 
 
 func f_string_lower(s):
+	s = str(s)
 	return s.to_lower()
 
 
 func f_string_pos(sub, s):
+	sub = str(sub)
+	s = str(s)
+	s = str(s)
 	return float(s.find(sub) + 1)
 
 
 func f_string_repeat(s, n):
+	s = str(s)
 	return s.repeat(int(n))
 
 
 func f_string_count(sub, s):
+	sub = str(sub)
+	s = str(s)
+	s = str(s)
 	return float(s.count(sub))
 
 
 func f_string_replace(s, a, b):
+	s = str(s)
+	a = str(a)
+	b = str(b)
+	s = str(s)
 	var i = s.find(a)
 	if i < 0:
 		return s
@@ -206,20 +219,29 @@ func f_string_replace(s, a, b):
 
 
 func f_string_replace_all(s, a, b):
+	s = str(s)
+	a = str(a)
+	b = str(b)
+	s = str(s)
 	return s.replace(a, b)
 
 
 func f_string_delete(s, i, n):
+	s = str(s)
 	var p = int(i) - 1
 	return s.substr(0, p) + s.substr(p + int(n))
 
 
 func f_string_insert(sub, s, i):
+	sub = str(sub)
+	s = str(s)
+	s = str(s)
 	var p = int(i) - 1
 	return s.substr(0, p) + sub + s.substr(p)
 
 
 func f_string_digits(s):
+	s = str(s)
 	var out = ""
 	for c in s:
 		if c >= "0" and c <= "9":
@@ -228,6 +250,7 @@ func f_string_digits(s):
 
 
 func f_string_letters(s):
+	s = str(s)
 	var out = ""
 	for c in s:
 		if (c >= "a" and c <= "z") or (c >= "A" and c <= "Z"):

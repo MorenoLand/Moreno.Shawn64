@@ -87,8 +87,8 @@ GLOBAL_VARS = {
     'keyboard_string': ('GM.keyboard_string', S),
     'room_first': ('GM.room_first()', R), 'room_last': ('GM.room_last()', R),
     'instance_count': ('GM.instance_count()', R), 'argument_relative': ('0.0', R),
-    'error_occurred': ('0.0', R), 'error_last': ('""', S), 'working_directory': ('"."', S),
-    'program_directory': ('"."', S), 'temp_directory': ('"."', S), 'cursor_sprite_': ('0.0', R),
+    'error_occurred': ('GM.error_occurred', R), 'error_last': ('GM.error_last', S), 'working_directory': ('GM.working_directory', S),
+    'program_directory': ('GM.program_directory', S), 'temp_directory': ('GM.temp_directory', S), 'cursor_sprite_': ('0.0', R),
 }
 
 ARRAY_GLOBALS = {'background_x', 'background_y', 'background_hspeed', 'background_vspeed', 'background_index',

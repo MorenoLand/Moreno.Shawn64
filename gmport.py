@@ -130,7 +130,7 @@ def cmd_run(a):
 
 def cmd_export(a):
     from gmport import devtools
-    return devtools.export_web(a.out)
+    return devtools.export_web(a.out, split=not a.single, base_only=a.base_only)
 
 
 def main():
@@ -195,6 +195,8 @@ def main():
 
     s = sub.add_parser('export', help='export the project as a web build')
     s.add_argument('-o', '--out', help='output folder (default: dist/web)')
+    s.add_argument('--single', action='store_true', help='one big pack with every game instead of one pack per game')
+    s.add_argument('--base-only', action='store_true', help='only refresh the launcher files, keep existing game packs')
     s.set_defaults(fn=cmd_export)
 
     a = p.parse_args()

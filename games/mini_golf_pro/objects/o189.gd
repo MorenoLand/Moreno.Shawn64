@@ -1,0 +1,5 @@
+extends "res://games/mini_golf_pro/scripts.gd"
+func ev_create():
+	alarm[int(0.0)] = 30.0
+func ev_alarm_0():
+	(GM.f_room_goto_next())

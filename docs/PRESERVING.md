@@ -8,7 +8,7 @@ desktop. It was written to archive the games of Shawn Noel, and it is general en
 | Format | Status |
 | --- | --- |
 | Game Maker 6.0 / 6.1 executables | Supported |
-| Game Maker 5.3 / 5.3A executables | Detected (`gmport.py info`), reader not written yet |
+| Game Maker 5.0 to 5.3A executables | Supported (`gmport/extract53.py`) |
 | Game Maker 5.0 to 5.2 | Not supported yet |
 | Game Maker 7 / 8 | Not supported yet |
 
@@ -83,3 +83,11 @@ instance as its first argument.
 
 `run` accepts `--click STEP:X,Y`, `--hold KEY` and `--hold-from STEP`, `--spawn STEP:OBJECT:COUNT`, `--prof`
 and `--overlay`. With `--shot` it renders off-screen and minimized, never in a visible window.
+
+## Notes
+
+- GML is translated to GDScript when building. Code made at run time (`execute_string`, `object_event_add` and similar) goes through the small interpreter in `gm/gm_interp.gd`.
+- A game's config can list a `files` array: folders or files next to the original exe that the game reads while running (they ship as `.gmfile`).
+- `gmport.py export` writes a small base page plus one `.pck` per game; `--base-only` skips the game packs, `--single` makes one bundle.
+- F3 toggles the debug overlay, F2 toggles widescreen.
+- `games/.gdignore` keeps the Godot editor from scanning the generated scripts; test runs and exports use copies without it.

@@ -1,0 +1,13 @@
+{
+ "title": "Mini Golf Pro",
+ "credit": "S64 Games, 2004/2005",
+ "touch": [],
+ "auto_answers": {},
+ "exclude_sounds": [],
+ "exe": "source/Mini Golf Pro/Mini Golf Pro.exe",
+ "files": [
+  "Balls",
+  "Sounds",
+  "Editor"
+ ]
+}

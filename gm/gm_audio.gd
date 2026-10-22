@@ -167,3 +167,24 @@ func set_global_volume(v):
 	global_volume = v
 	for i in players.keys():
 		set_volume(i, vols.get(i, float(gm.sound_info[i]["volume"])))
+
+
+func add_file(path):
+	if path == "" or not FileAccess.file_exists(path):
+		return -1
+	var bytes = FileAccess.get_file_as_bytes(path)
+	var st = null
+	if bytes.size() > 12 and bytes.slice(0, 4).get_string_from_ascii() == "RIFF":
+		st = _parse_wav(bytes)
+	elif bytes.size() > 3 and bytes.slice(0, 3).get_string_from_ascii() == "ID3":
+		st = AudioStreamMP3.load_from_buffer(bytes)
+	elif bytes.size() > 4 and bytes.slice(0, 4).get_string_from_ascii() == "OggS":
+		st = AudioStreamOggVorbis.load_from_buffer(bytes)
+	elif bytes.size() > 2 and bytes[0] == 0xFF and (bytes[1] & 0xE0) == 0xE0:
+		st = AudioStreamMP3.load_from_buffer(bytes)
+	if st == null:
+		return -1
+	gm.sound_info.append({"name": "dyn_sound", "volume": 1.0, "kind": 0})
+	var idx = gm.sound_info.size() - 1
+	streams[idx] = st
+	return idx

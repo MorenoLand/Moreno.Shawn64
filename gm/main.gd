@@ -133,6 +133,10 @@ func _launch(slug):
 
 
 func _start_game(slug):
+	if not FileAccess.file_exists("res://games/" + slug + "/data.json") and OS.has_feature("web"):
+		if not ProjectSettings.load_resource_pack("/" + slug + ".pck"):
+			JavaScriptBridge.eval("window.location.search = '?game=" + slug + "'")
+			return
 	GM.load_game("res://games/" + slug)
 	var size = GM.data.get("size", [800, 600])
 	get_window().content_scale_size = Vector2i(int(size[0]), int(size[1]))
@@ -185,7 +189,7 @@ func _input(event):
 	if launcher != null and launcher.has_meta("skip"):
 		if (event is InputEventKey and event.pressed) or (event is InputEventMouseButton and event.pressed) or (event is InputEventScreenTouch and event.pressed):
 			launcher.get_meta("skip").call()
-	if event is InputEventKey and event.pressed and not event.echo and overlay != null and event.keycode == KEY_F1:
+	if event is InputEventKey and event.pressed and not event.echo and overlay != null and event.keycode == KEY_F3:
 		overlay.toggle()
 		get_viewport().set_input_as_handled()
 		return

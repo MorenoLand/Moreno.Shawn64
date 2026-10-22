@@ -4,6 +4,7 @@ const SliceScript = preload("res://gm/gm_slice.gd")
 const EffectsScript = preload("res://gm/gm_effects.gd")
 const AudioScript = preload("res://gm/gm_audio.gd")
 const DialogScript = preload("res://gm/gm_dialog.gd")
+const InterpScript = preload("res://gm/gm_interp.gd")
 
 var G := {}
 var data := {}
@@ -24,6 +25,10 @@ var qstamp := 0
 var desc := []
 var res_names := {}
 var script_holder = null
+var interp = null
+var has_dyn := false
+var dyn_ev := {}
+var base_script = null
 var dialog = null
 var auto_answers := {}
 var dialog_open := false
@@ -37,6 +42,12 @@ var graveyard := []
 var next_id := 100001
 var persistent_keep := []
 var any_inactive := false
+var error_occurred := 0.0
+var error_last := ""
+var working_directory := "."
+var program_directory := "."
+var temp_directory := "."
+var file_index := {}
 var sys_font_name := "Arial"
 var sys_font_size := 12
 var sys_bold := false
@@ -314,7 +325,7 @@ func _input(event):
 func load_game(dir):
 	game_dir = dir
 	data = JSON.parse_string(FileAccess.get_file_as_string(dir + "/data.json"))
-	obj_scripts = load(dir + "/object_scripts.gd").SCRIPTS
+	obj_scripts = load(dir + "/object_scripts.gd").SCRIPTS.duplicate()
 	script_holder = load(dir + "/scripts.gd").new()
 	objects = data["objects"]
 	rooms = data["rooms"]
@@ -396,6 +407,11 @@ func load_game(dir):
 	add_child(audio)
 	dialog = DialogScript.new()
 	add_child(dialog)
+	base_script = script_holder.get_script()
+	interp = InterpScript.new()
+	interp.setup(self)
+	for fpath in data.get("files", []):
+		file_index[fpath.to_lower().replace("\\", "/")] = fpath
 	if data.has("auto_answers"):
 		auto_answers = data["auto_answers"]
 	effects = EffectsScript.new()
@@ -596,7 +612,7 @@ func f_instance_create(px, py, obj):
 		make_us += Time.get_ticks_usec() - t0
 		create_n += 1
 	if evset[int(inst.object_index)].has("ev_create"):
-		inst.ev_create()
+		_fire(inst, "ev_create")
 	if prof_on:
 		create_us += Time.get_ticks_usec() - t0
 	return inst
@@ -607,7 +623,7 @@ func f_instance_destroy(s):
 		return 0.0
 	var es = evset[int(s.object_index)]
 	if es.has("ev_destroy"):
-		s.ev_destroy()
+		_fire(s, "ev_destroy")
 	_kill(s)
 	return 0.0
 
@@ -956,6 +972,7 @@ func f_sin(v):
 
 
 func f_ord(txt):
+	txt = f_string(txt)
 	if txt.length() == 0:
 		return 0.0
 	return float(txt.unicode_at(0))
@@ -976,10 +993,12 @@ func f_string(v):
 
 
 func f_string_length(txt):
+	txt = f_string(txt)
 	return float(str(txt).length())
 
 
 func f_string_char_at(txt, idx):
+	txt = f_string(txt)
 	var i = int(idx)
 	if i < 1 or i > txt.length():
 		return ""
@@ -987,6 +1006,7 @@ func f_string_char_at(txt, idx):
 
 
 func f_string_copy(txt, idx, cnt):
+	txt = f_string(txt)
 	var i = int(idx)
 	if i < 1:
 		i = 1
@@ -1375,7 +1395,7 @@ func _enter_room(r, first):
 	if not first:
 		for i in instances:
 			if not i._dead and evset[int(i.object_index)].has("ev_other_5"):
-				i.ev_other_5()
+				_fire(i, "ev_other_5")
 		var keep := []
 		for i in instances:
 			if i.persistent >= 0.5 and not i._dead:
@@ -1456,6 +1476,14 @@ func _enter_room(r, first):
 		if not tile_buckets.has(dk):
 			tile_buckets[dk] = []
 		tile_buckets[dk].append(t)
+	var cw = int(view_wport[0]) if view_visible[0] > 0.5 else int(room_width)
+	var ch = int(view_hport[0]) if view_visible[0] > 0.5 else int(room_height)
+	if cw > 0 and ch > 0 and (cw != screen_w or ch != screen_h):
+		screen_w = float(cw)
+		screen_h = float(ch)
+		var win = get_window()
+		if win != null:
+			win.content_scale_size = Vector2i(cw, ch)
 	var made := []
 	var rid = int(rd["id"])
 	var k = 0
@@ -1474,7 +1502,7 @@ func _enter_room(r, first):
 		if inst._dead:
 			continue
 		if evset[int(inst.object_index)].has("ev_create"):
-			inst.ev_create()
+			_fire(inst, "ev_create")
 		var key = "%d_%d" % [rid, pair[1]]
 		if data["inst_code"].has(key) and not inst._dead:
 			inst.call("ic_%d_%d" % [rid, pair[1]])
@@ -1484,10 +1512,10 @@ func _enter_room(r, first):
 	if first:
 		for i in instances.duplicate():
 			if not i._dead and evset[int(i.object_index)].has("ev_other_2"):
-				i.ev_other_2()
+				_fire(i, "ev_other_2")
 	for i in instances.duplicate():
 		if not i._dead and evset[int(i.object_index)].has("ev_other_4"):
-			i.ev_other_4()
+			_fire(i, "ev_other_4")
 	_flush_dead()
 	grid_dirty = true
 	if prof_on:
@@ -1512,12 +1540,12 @@ func _run(method):
 		if evset[int(i.object_index)].has(method):
 			if prof_on:
 				var t = Time.get_ticks_usec()
-				i.call(method)
+				_fire(i, method)
 				var dt = (Time.get_ticks_usec() - t) / 1000.0
 				if dt > 2.0:
 					_note_slow(dt, i, method)
 			else:
-				i.call(method)
+				_fire(i, method)
 	_flush_dead()
 
 
@@ -1538,7 +1566,7 @@ func _alarms():
 					al[k] = -1.0
 					if evset[int(i.object_index)].has("ev_alarm_%d" % k):
 						var ta = Time.get_ticks_usec()
-						i.call("ev_alarm_%d" % k)
+						_fire(i, "ev_alarm_%d" % k)
 						if prof_on:
 							var dta = (Time.get_ticks_usec() - ta) / 1000.0
 							if dta > 2.0:
@@ -1567,7 +1595,7 @@ func _timelines():
 
 
 func script_holder_call(i, method):
-	i.call(method)
+	_fire(i, method)
 
 
 func _keyboard():
@@ -1576,22 +1604,22 @@ func _keyboard():
 		var m = "ev_key_%d" % kv
 		for i in snap:
 			if not i._dead and i._active and evset[int(i.object_index)].has(m):
-				i.call(m)
+				_fire(i, m)
 	if keys_down.is_empty():
 		var m0 = "ev_key_0"
 		for i in snap:
 			if not i._dead and i._active and evset[int(i.object_index)].has(m0):
-				i.call(m0)
+				_fire(i, m0)
 	for kv in keys_pressed:
 		var m2 = "ev_keypress_%d" % kv
 		for i in snap:
 			if not i._dead and i._active and evset[int(i.object_index)].has(m2):
-				i.call(m2)
+				_fire(i, m2)
 	for kv in keys_released:
 		var m3 = "ev_keyrelease_%d" % kv
 		for i in snap:
 			if not i._dead and i._active and evset[int(i.object_index)].has(m3):
-				i.call(m3)
+				_fire(i, m3)
 	_flush_dead()
 
 
@@ -1623,13 +1651,13 @@ func _mouse():
 				over = point_in(i, mouse_x, mouse_y)
 				checked = true
 			if over:
-				i.call(m)
+				_fire(i, m)
 		if es.has("ev_mouse_3") and not mouse_down.has(1) and not mouse_down.has(2) and not mouse_down.has(3):
 			if not checked:
 				over = point_in(i, mouse_x, mouse_y)
 				checked = true
 			if over:
-				i.call("ev_mouse_3")
+				_fire(i, "ev_mouse_3")
 		for n in [50, 51, 52, 53, 54, 55, 56, 57, 58]:
 			var m = "ev_mouse_%d" % n
 			if not es.has(m):
@@ -1643,14 +1671,14 @@ func _mouse():
 			else:
 				fire = mouse_released.has(btn)
 			if fire:
-				i.call(m)
+				_fire(i, m)
 		if es.has("ev_mouse_10") or es.has("ev_mouse_11"):
 			var now = point_in(i, mouse_x, mouse_y)
 			var was = i._v.get("_mouse_over", false)
 			if now and not was and es.has("ev_mouse_10"):
-				i.call("ev_mouse_10")
+				_fire(i, "ev_mouse_10")
 			if was and not now and es.has("ev_mouse_11"):
-				i.call("ev_mouse_11")
+				_fire(i, "ev_mouse_11")
 			i._v["_mouse_over"] = now
 	_flush_dead()
 
@@ -1702,7 +1730,7 @@ func _animate():
 				ii = fposmod(ii, float(n))
 				i.image_index = ii
 				if evset[int(i.object_index)].has("ev_other_7"):
-					i.ev_other_7()
+					_fire(i, "ev_other_7")
 			else:
 				i.image_index = ii
 	_flush_dead()
@@ -1889,7 +1917,7 @@ func _collisions():
 						i.x = i.xprevious
 						i.y = i.yprevious
 					var tc = Time.get_ticks_usec()
-					i.call(m)
+					_fire(i, m)
 					if prof_on:
 						var dtc = (Time.get_ticks_usec() - tc) / 1000.0
 						if dtc > 2.0:
@@ -2247,7 +2275,7 @@ func _render():
 			if i._dead:
 				continue
 			if evset[int(i.object_index)].has("ev_draw"):
-				i.ev_draw()
+				_fire(i, "ev_draw")
 			else:
 				var si = int(i.sprite_index)
 				if si >= 0 and si < sprites.size() and sprites[si] != null:
@@ -2734,7 +2762,7 @@ func f_event_perform(s, typ, num):
 		10:
 			m = "ev_keyrelease_%d" % n
 	if m != "" and evset[int(s.object_index)].has(m):
-		s.call(m)
+		_fire(s, m)
 	return 0.0
 
 
@@ -2750,7 +2778,7 @@ func f_instance_change(s, obj, perf):
 	ni.depth = s.depth
 	_kill(s)
 	if evset[int(ni.object_index)].has("ev_create") and perf > 0.5:
-		ni.ev_create()
+		_fire(ni, "ev_create")
 	return 0.0
 
 
@@ -3047,8 +3075,7 @@ func f_variable_local_exists(s, name):
 
 
 func f_sound_add(fname, kind, pre, x = null):
-	return -1.0
-
+	return float(audio.add_file(res_file(fname)))
 
 func f_sound_replace(i, fname, kind, pre, x = null):
 	return 0.0
@@ -3225,7 +3252,7 @@ func _path_step(i):
 			pos = clampf(pos, 0.0, 1.0)
 		if evset[int(i.object_index)].has("ev_other_8"):
 			i._v["_path_pos"] = pos
-			i.ev_other_8()
+			_fire(i, "ev_other_8")
 	i._v["_path_pos"] = pos
 	var dd = pos * total
 	var sg = 1
@@ -3539,4 +3566,555 @@ func f_mplay_message_send_guaranteed(a, b = null, c = null):
 
 
 func f_mplay_connect_status():
+	return 0.0
+
+
+func _fire(i, method):
+	if has_dyn:
+		var o = int(i.object_index)
+		var code = null
+		for c in chain_i[o]:
+			var d = dyn_ev.get(c, null)
+			if d != null and d.has(method):
+				code = d[method]
+				break
+		if code != null:
+			if i.has_method(method):
+				i.call(method)
+			interp.run(code, i)
+			return
+	i.call(method)
+
+
+func _event_method(typ, num):
+	var t = int(typ)
+	var n = int(num)
+	match t:
+		0:
+			return "ev_create"
+		1:
+			return "ev_destroy"
+		2:
+			return "ev_alarm_%d" % n
+		3:
+			return ["ev_step", "ev_stepbegin", "ev_stepend"][clampi(n, 0, 2)]
+		4:
+			return "ev_col_%d" % n
+		5:
+			return "ev_key_%d" % n
+		6:
+			return "ev_mouse_%d" % n
+		7:
+			return "ev_other_%d" % n
+		8:
+			return "ev_draw"
+		9:
+			return "ev_keypress_%d" % n
+		10:
+			return "ev_keyrelease_%d" % n
+	return ""
+
+
+func f_execute_string(s, code, a0 = null, a1 = null, a2 = null, a3 = null, a4 = null, a5 = null, a6 = null, a7 = null):
+	var args := []
+	for a in [a0, a1, a2, a3, a4, a5, a6, a7]:
+		if a != null:
+			args.append(a)
+	return interp.run(f_string(code), s, args)
+
+
+func f_script_execute(s, id, a0 = null, a1 = null, a2 = null, a3 = null, a4 = null, a5 = null, a6 = null, a7 = null):
+	var args := []
+	for a in [a0, a1, a2, a3, a4, a5, a6, a7]:
+		if a != null:
+			args.append(a)
+	var sid = int(id)
+	var names = data.get("scripts", [])
+	if sid >= 0 and sid < names.size() and names[sid] != null:
+		return s.callv("script_" + names[sid], args)
+	return 0.0
+
+
+func f_object_add():
+	var idx = objects.size()
+	objects.append({"name": "object%d" % idx, "sprite": -1, "solid": false, "visible": true, "depth": 0, "persistent": false,
+		"parent": -1, "mask": -1, "events": [], "chain": [idx]})
+	obj_scripts.append(base_script)
+	evset.append({})
+	colev.append([])
+	colmap.append({})
+	chain_i.append([idx])
+	desc.append([idx])
+	desc_set.append({idx: true})
+	target_of.append(false)
+	inst_by_obj[idx] = []
+	return float(idx)
+
+
+func f_object_delete(obj):
+	var o = int(obj)
+	if o < 0 or o >= objects.size():
+		return 0.0
+	for i in inst_by_obj.get(o, []).duplicate():
+		_kill(i)
+	return 0.0
+
+
+func _obj_set(obj, key, val):
+	var o = int(obj)
+	if o >= 0 and o < objects.size() and objects[o] != null:
+		objects[o][key] = val
+	return 0.0
+
+
+func f_object_set_sprite(obj, spr):
+	return _obj_set(obj, "sprite", int(spr))
+
+
+func f_object_set_depth(obj, d):
+	return _obj_set(obj, "depth", int(d))
+
+
+func f_object_set_visible(obj, v):
+	return _obj_set(obj, "visible", truth(v))
+
+
+func f_object_set_solid(obj, v):
+	return _obj_set(obj, "solid", truth(v))
+
+
+func f_object_set_persistent(obj, v):
+	return _obj_set(obj, "persistent", truth(v))
+
+
+func f_object_set_mask(obj, m):
+	return _obj_set(obj, "mask", int(m))
+
+
+func f_object_exists(obj):
+	var o = int(obj)
+	return 1.0 if o >= 0 and o < objects.size() and objects[o] != null else 0.0
+
+
+func f_object_get_name(obj):
+	var o = int(obj)
+	return objects[o]["name"] if o >= 0 and o < objects.size() and objects[o] != null else ""
+
+
+func f_object_event_add(obj, typ, num, code):
+	var o = int(obj)
+	if o < 0 or o >= objects.size():
+		return 0.0
+	var m = _event_method(typ, num)
+	if m == "":
+		return 0.0
+	has_dyn = true
+	if not dyn_ev.has(o):
+		dyn_ev[o] = {}
+	dyn_ev[o][m] = (dyn_ev[o][m] + "\n" + f_string(code)) if dyn_ev[o].has(m) else f_string(code)
+	for d in desc[o]:
+		evset[d][m] = true
+	if int(typ) == 4:
+		var t = int(num)
+		if not colmap[o].has(t):
+			colmap[o][t] = []
+		if not colmap[o][t].has(m):
+			colmap[o][t].append(m)
+		target_obj[t] = true
+		for k in range(objects.size()):
+			target_of[k] = false
+			for c in chain_i[k]:
+				if target_obj.has(c):
+					target_of[k] = true
+					break
+		match_memo.clear()
+	return 0.0
+
+
+func f_object_event_clear(obj, typ, num):
+	var o = int(obj)
+	var m = _event_method(typ, num)
+	if dyn_ev.has(o):
+		dyn_ev[o].erase(m)
+	return 0.0
+
+
+func f_room_add():
+	var idx = rooms.size()
+	rooms.append({"id": idx, "name": "room%d" % idx, "caption": "", "width": 640, "height": 480, "speed": 30, "persistent": false,
+		"clear_color": 12632256, "clear": true, "creation_code": "", "backgrounds": [], "enable_views": false, "views": [],
+		"instances": [], "tiles": []})
+	return float(idx)
+
+
+func _room_set(room_id, key, val):
+	var r = int(room_id)
+	if r >= 0 and r < rooms.size() and rooms[r] != null:
+		rooms[r][key] = val
+	return 0.0
+
+
+func f_room_set_width(r, v):
+	return _room_set(r, "width", int(v))
+
+
+func f_room_set_height(r, v):
+	return _room_set(r, "height", int(v))
+
+
+func f_room_set_persistent(r, v):
+	return _room_set(r, "persistent", truth(v))
+
+
+func f_room_set_code(r, code):
+	_room_set(r, "creation_code_dyn", f_string(code))
+	return 0.0
+
+
+func f_room_set_view_enabled(r, v):
+	return _room_set(r, "enable_views", truth(v))
+
+
+func f_room_set_view(r, vi, vis, xv, yv, wv, hv, xp, yp, wp, hp, hb, vb, hs, vs, obj):
+	var rm = rooms[int(r)]
+	var k = int(vi)
+	while rm["views"].size() <= k:
+		rm["views"].append({"visible": false, "view_x": 0, "view_y": 0, "view_w": 640, "view_h": 480, "port_x": 0, "port_y": 0, "port_w": 640, "port_h": 480, "h_border": 32, "v_border": 32, "h_speed": -1, "v_speed": -1, "target": -1})
+	rm["views"][k] = {"visible": truth(vis), "view_x": int(xv), "view_y": int(yv), "view_w": int(wv), "view_h": int(hv), "port_x": int(xp), "port_y": int(yp), "port_w": int(wp), "port_h": int(hp), "h_border": int(hb), "v_border": int(vb), "h_speed": int(hs), "v_speed": int(vs), "target": int(obj)}
+	return 0.0
+
+
+func res_file(fname):
+	var q = f_string(fname).replace("\\", "/")
+	if q.begins_with("./"):
+		q = q.substr(2)
+	var key = q.to_lower()
+	if file_index.has(key):
+		return game_dir + "/assets/files/" + file_index[key] + ".gmfile"
+	var base = key.get_file()
+	for k in file_index:
+		if k.get_file() == base:
+			return game_dir + "/assets/files/" + file_index[k] + ".gmfile"
+	var up = "user://" + q.get_file()
+	if FileAccess.file_exists(up):
+		return up
+	return ""
+
+
+func _img_from_file(path):
+	if path == "":
+		return null
+	var bytes = FileAccess.get_file_as_bytes(path)
+	if bytes.size() < 4:
+		return null
+	var img = Image.new()
+	var err = ERR_FILE_UNRECOGNIZED
+	if bytes.slice(0, 2) == PackedByteArray([66, 77]):
+		err = img.load_bmp_from_buffer(bytes)
+	elif bytes.slice(1, 4) == PackedByteArray([80, 78, 71]):
+		err = img.load_png_from_buffer(bytes)
+	elif bytes[0] == 0xFF and bytes[1] == 0xD8:
+		err = img.load_jpg_from_buffer(bytes)
+	if err != OK:
+		return null
+	img.convert(Image.FORMAT_RGBA8)
+	return img
+
+
+func _make_sprite(frames, ox, oy, precise, removeback):
+	var w = frames[0].get_width()
+	var h = frames[0].get_height()
+	var sp := {"name": "dyn_sprite", "w": w, "h": h, "ox": int(ox), "oy": int(oy), "bl": 0, "br": w - 1, "bt": 0, "bb": h - 1,
+		"precise": precise, "tex": [], "img": [], "masks": []}
+	for im in frames:
+		if removeback:
+			var key = im.get_pixel(0, im.get_height() - 1)
+			for yy in range(im.get_height()):
+				for xx in range(im.get_width()):
+					var c = im.get_pixel(xx, yy)
+					if absf(c.r - key.r) < 0.01 and absf(c.g - key.g) < 0.01 and absf(c.b - key.b) < 0.01:
+						im.set_pixel(xx, yy, Color(0, 0, 0, 0))
+		im.premultiply_alpha()
+		sp["tex"].append(ImageTexture.create_from_image(im))
+		sp["img"].append(im)
+		sp["masks"].append(null)
+	sprites.append(sp)
+	return float(sprites.size() - 1)
+
+
+func f_sprite_add(fname, imgnum, removeback, smooth, xorig, yorig, a = null, b = null):
+	var img = _img_from_file(res_file(fname))
+	if img == null:
+		return -1.0
+	var n = maxi(int(imgnum), 1)
+	var fw = img.get_width() / n
+	var frames := []
+	for k in range(n):
+		frames.append(img.get_region(Rect2i(k * fw, 0, fw, img.get_height())))
+	return _make_sprite(frames, xorig, yorig, true, truth(removeback))
+
+
+func f_sprite_delete(spr):
+	var si = int(spr)
+	if si >= 0 and si < sprites.size():
+		sprites[si] = null
+	return 0.0
+
+
+func f_sprite_set_offset(spr, x, y):
+	var si = int(spr)
+	if si >= 0 and si < sprites.size() and sprites[si] != null:
+		sprites[si]["ox"] = int(x)
+		sprites[si]["oy"] = int(y)
+	return 0.0
+
+
+func f_sprite_merge(a, b):
+	return 0.0
+
+
+func f_sprite_create_from_screen(x, y, w, h, removeback, smooth, a = null, b = null, c = null, d = null):
+	return -1.0
+
+
+func f_sprite_set_alpha_from_sprite(a, b):
+	return 0.0
+
+
+func f_background_add(fname, removeback, smooth, pre = null):
+	var img = _img_from_file(res_file(fname))
+	if img == null:
+		return -1.0
+	img.premultiply_alpha()
+	backgrounds.append({"name": "dyn_bg", "w": img.get_width(), "h": img.get_height(), "tex": ImageTexture.create_from_image(img)})
+	return float(backgrounds.size() - 1)
+
+
+func f_background_delete(i):
+	var bi = int(i)
+	if bi >= 0 and bi < backgrounds.size():
+		backgrounds[bi] = null
+	return 0.0
+
+func f_sound_delete(i):
+	return 0.0
+
+
+func f_font_delete(i):
+	return 0.0
+
+
+func f_directory_exists(d):
+	var q = f_string(d).replace("\\", "/").to_lower().trim_suffix("/")
+	for k in file_index:
+		if k.begins_with(q + "/"):
+			return 1.0
+	return 0.0
+
+
+func f_get_directory_alt(a, b):
+	return ""
+
+
+func f_window_handle():
+	return 0.0
+
+
+func f_window_get_cursor():
+	return 0.0
+
+
+func f_display_mouse_get_x():
+	return mouse_x
+
+
+func f_display_mouse_get_y():
+	return mouse_y
+
+
+func f_clipboard_has_text():
+	return 1.0 if DisplayServer.clipboard_has() else 0.0
+
+
+func f_clipboard_get_text():
+	return DisplayServer.clipboard_get()
+
+
+func f_execute_program(a, b, c):
+	return 0.0
+
+
+func f_show_message_ext(m, b1, b2, b3):
+	return await f_show_message(m)
+
+
+func f_message_background(b):
+	return 0.0
+
+
+func f_message_button(b):
+	return 0.0
+
+
+func f_path_delete(p):
+	return 0.0
+
+
+func f_timeline_delete(t):
+	return 0.0
+
+
+var ext_defs := {}
+var ext_next := 1
+
+
+func f_external_define(dll, name, calltype = 0.0, restype = 0.0, argc = 0.0, a0 = null, a1 = null, a2 = null, a3 = null, a4 = null, a5 = null, a6 = null, a7 = null, a8 = null, a9 = null, a10 = null, a11 = null, a12 = null, a13 = null, a14 = null, a15 = null):
+	var id = ext_next
+	ext_next += 1
+	ext_defs[id] = {"name": name, "res": int(restype)}
+	return float(id)
+
+
+func f_external_call(id, a0 = null, a1 = null, a2 = null, a3 = null, a4 = null, a5 = null, a6 = null, a7 = null, a8 = null, a9 = null, a10 = null, a11 = null, a12 = null, a13 = null, a14 = null, a15 = null):
+	var d = ext_defs.get(int(id), null)
+	if d != null and d["res"] == 1:
+		return ""
+	return 0.0
+
+
+func f_external_free(dll):
+	return 0.0
+
+
+func f_mplay_ipaddress():
+	return "127.0.0.1"
+
+
+func f_mplay_data_write(a, b = null):
+	return 0.0
+
+
+func f_mplay_data_read(a):
+	return 0.0
+
+
+var bin_handles := {}
+var bin_next := 1
+
+
+func f_file_bin_open(fname, mode):
+	var m = int(mode)
+	var path = ""
+	var f = null
+	if m == 0:
+		path = res_file(fname)
+		if path != "":
+			f = FileAccess.open(path, FileAccess.READ)
+	else:
+		path = "user://" + f_string(fname).replace("\\", "/").get_file()
+		if m == 1 or not FileAccess.file_exists(path):
+			f = FileAccess.open(path, FileAccess.WRITE_READ)
+		else:
+			f = FileAccess.open(path, FileAccess.READ_WRITE)
+	if f == null:
+		return -1.0
+	var id = bin_next
+	bin_next += 1
+	bin_handles[id] = f
+	return float(id)
+
+
+func f_file_bin_close(id):
+	if bin_handles.has(int(id)):
+		bin_handles[int(id)].close()
+		bin_handles.erase(int(id))
+	return 0.0
+
+
+func f_file_bin_read_byte(id):
+	var f = bin_handles.get(int(id), null)
+	if f == null or f.eof_reached():
+		return 0.0
+	return float(f.get_8())
+
+
+func f_file_bin_write_byte(id, v):
+	var f = bin_handles.get(int(id), null)
+	if f != null:
+		f.store_8(int(v) & 255)
+	return 0.0
+
+
+func f_file_bin_seek(id, pos):
+	var f = bin_handles.get(int(id), null)
+	if f != null:
+		f.seek(int(pos))
+	return 0.0
+
+
+func f_file_bin_position(id):
+	var f = bin_handles.get(int(id), null)
+	return float(f.get_position()) if f != null else 0.0
+
+
+func f_file_bin_size(id):
+	var f = bin_handles.get(int(id), null)
+	return float(f.get_length()) if f != null else 0.0
+
+
+var find_list := []
+var find_pos := 0
+
+
+func f_file_find_first(mask, attr):
+	var q = f_string(mask).replace("\\", "/").to_lower()
+	find_list = []
+	for k in file_index:
+		if k.match(q):
+			find_list.append(k.get_file())
+	find_pos = 0
+	return f_file_find_next()
+
+
+func f_file_find_next():
+	if find_pos < find_list.size():
+		find_pos += 1
+		return find_list[find_pos - 1]
+	return ""
+
+
+func f_file_find_close():
+	find_list = []
+	return 0.0
+
+
+func f_tile_get_x(i):
+	return 0.0
+
+
+func f_tile_get_y(i):
+	return 0.0
+
+
+func f_tile_get_left(i):
+	return 0.0
+
+
+func f_tile_get_top(i):
+	return 0.0
+
+
+func f_tile_get_depth(i):
+	return 0.0
+
+
+func f_tile_set_position(i, x, y):
+	return 0.0
+
+
+func f_tile_add(bg, left, top, w, h, x, y, depth):
+	return -1.0
+
+
+func f_tile_delete(i):
 	return 0.0

@@ -13,15 +13,17 @@ The games run in a web browser (WebAssembly) and as a normal desktop program, us
 
 | Game | Made | Status |
 | --- | --- | --- |
-| **Street Bike Fury** | S64 Games, 2005 | Playable |
-| **Infection 2: Meltdown** | S64 Games | Playable |
-| Mini Golf Pro | S64 Games, 2004/2005 | Not ported yet (needs a runtime script interpreter) |
-| Bounty Hunter SX | Shawn64's Creations, 2003 | Not ported yet |
-| Thrust! | Shawn64's Creations, 2003/2004 | Not ported yet |
-| Jetz Rampage, 2, 4 and Jetz Fusion | Shawn64's Creations | Not ported yet |
-| Bubblegum, Cookie Buster, FWM, Galaxy Arcade 1 and 2, GM Hoops, Holiday Hunting, Marblex, Missile Wave 3D, MW2, Net Racer, SVSJ, Ski-Racer 2 | Shawn64's Creations | Not ported yet |
+| Street Bike Fury | S64 Games, 2005 | Playable |
+| Infection 2: Meltdown | S64 Games | Playable |
+| Mini Golf Pro | S64 Games, 2004/2005 | Menus and course select work; play-testing in progress, online and editor parts are disabled |
+| Bounty Hunter SX, Thrust!, Bubblegum, Cookie Buster, Holiday Hunting | Shawn64's Creations | Ported, title screens verified |
+| Jetz Rampage, Jetz Rampage 2, Jetz Rampage 4: Revenge, Jetz Fusion | Shawn64's Creations | Ported, title screens verified |
+| Marblex, Missile Wave 3D, Net Racer, Ski-Racer 2, SVSJ | Shawn64's Creations | Ported, title screens verified |
+| FWM, Galaxy Arcade 1 and 2, GM Hoops, MW2 | Shawn64's Creations | Not ported yet |
 
-Keys while playing: **F1** shows a performance overlay, **F2** switches between stretched widescreen and the
+On the web each game is its own download, fetched only when you pick it.
+
+Keys while playing: **F3** shows a performance overlay, **F2** switches between stretched widescreen and the
 original 4:3 picture. Touch screens get on-screen buttons.
 
 ## Credits

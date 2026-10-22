@@ -7,6 +7,8 @@ import sys
 from . import gmlparse as gml_parse
 from . import dnd
 from .gmlcodegen import Game, TypeInfer, Gen, Ctx, q, num, walk, PAUSING
+from .gmltables import CONSTANTS, INSTANCE_VARS, GLOBAL_VARS
+from .config import ROOT
 from .config import load_game_config, game_build_dir, game_dir
 
 def event_method(etype, number):
@@ -265,6 +267,48 @@ def build(slug, extracted=None):
     out['title'] = cfg.get('title', slug)
     out['size'] = cfg.get('size') or detect_size(data)
     out['credit'] = cfg.get('credit', 'S64 Games')
+    consts = dict((k, float(v)) for k, v in CONSTANTS.items())
+    for rname, (rkind, rid) in game.res.items():
+        consts[rname] = float(rid)
+    globals_map = {}
+    for gname, (code, gtype) in GLOBAL_VARS.items():
+        m = re.match(r'^GM\.(\w+)\[(\d+)\]$', code)
+        m2 = re.match(r'^GM\.(\w+)\(\)$', code)
+        m3 = re.match(r'^GM\.(\w+)$', code)
+        if m:
+            globals_map[gname] = [m.group(1), int(m.group(2))]
+        elif m2:
+            globals_map[gname] = [m2.group(1), 'call']
+        elif m3:
+            globals_map[gname] = [m3.group(1), None]
+        else:
+            lit = code.strip()
+            consts[gname] = lit.strip('"') if lit.startswith('"') else float(lit)
+    out['gml_constants'] = consts
+    out['gml_globals'] = globals_map
+    out['gml_instance_vars'] = sorted(INSTANCE_VARS)
+    file_index = []
+    exe_rel = cfg.get('exe')
+    if exe_rel and cfg.get('files'):
+        base = os.path.dirname(os.path.join(ROOT, exe_rel))
+        file_root = os.path.join(outdir, '_files_stage')
+        for item in cfg['files']:
+            src = os.path.join(base, item)
+            if os.path.isfile(src):
+                pairs = [(src, item)]
+            else:
+                pairs = []
+                for dp, dn, fn in os.walk(src):
+                    for f in fn:
+                        full = os.path.join(dp, f)
+                        pairs.append((full, os.path.relpath(full, base)))
+            for full, rel in pairs:
+                rel = rel.replace('\\', '/')
+                dst = os.path.join(file_root, rel + '.gmfile')
+                os.makedirs(os.path.dirname(dst), exist_ok=True)
+                shutil.copyfile(full, dst)
+                file_index.append(rel)
+    out['files'] = file_index
     os.makedirs(outdir, exist_ok=True)
     raw_json = json.dumps(out)
     stage = os.path.join(outdir, '_stage')
@@ -282,6 +326,10 @@ def build(slug, extracted=None):
             snd['excluded'] = True
     raw_json = json.dumps(out)
     os.makedirs(stage, exist_ok=True)
+    files_stage = os.path.join(outdir, '_files_stage')
+    if os.path.isdir(files_stage):
+        shutil.copytree(files_stage, os.path.join(stage, 'files'))
+        shutil.rmtree(files_stage)
     open(os.path.join(stage, 'data.raw.json'), 'w').write(raw_json)
     print('unknown calls:', game.unknown_calls)
     called = set()

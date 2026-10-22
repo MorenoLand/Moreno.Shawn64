@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://y2u67f5p1xng"
+path="res://.godot/imported/taunt9.wav-4afef991d501586180a6a479bed900b8.sample"
+
+[deps]
+
+source_file="res://source/Mini Golf Pro/Sounds/taunt9.wav"
+dest_files=["res://.godot/imported/taunt9.wav-4afef991d501586180a6a479bed900b8.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
