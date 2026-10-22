@@ -1,0 +1,6 @@
+extends "res://games/street_bike_fury/scripts.gd"
+func ev_step():
+	if ((absf(GM.room - 2.0) < 0.00001)):
+		if ((GM.vb(0.0, "x") > x)):
+			(GM.f_instance_create(x, y, 207.0))
+			(GM.f_instance_destroy(self))

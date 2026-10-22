@@ -1,0 +1,4 @@
+extends "res://games/street_bike_fury/scripts.gd"
+func ev_create():
+	image_index = (GM.f_floor((GM.f_random(3.0))))
+	image_speed = 0.0

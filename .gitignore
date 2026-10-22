@@ -1,0 +1,17 @@
+# original executables and notes (not published)
+/source/
+
+# Godot / Redot
+.godot/
+*.import
+export/
+dist/
+
+# python
+__pycache__/
+*.pyc
+
+# editor and OS
+.vscode/
+.idea/
+Thumbs.db

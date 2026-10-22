@@ -1,0 +1,86 @@
+{
+ "title": "Street Bike Fury",
+ "credit": "S64 Games, 2005",
+ "exclude_sounds": [
+  "menumusic",
+  "music2",
+  "music4"
+ ],
+ "exe": "source/Street Bike Fury/SBF.exe",
+ "size": [
+  800,
+  600
+ ],
+ "touch": [
+  {
+   "label": "LEFT",
+   "x": 14,
+   "y": 486,
+   "w": 100,
+   "h": 100,
+   "vk": [
+    65,
+    37
+   ]
+  },
+  {
+   "label": "RIGHT",
+   "x": 124,
+   "y": 486,
+   "w": 100,
+   "h": 100,
+   "vk": [
+    68,
+    39
+   ]
+  },
+  {
+   "label": "DOWN",
+   "x": 69,
+   "y": 376,
+   "w": 100,
+   "h": 100,
+   "vk": [
+    83,
+    40
+   ]
+  },
+  {
+   "label": "GAS",
+   "x": 676,
+   "y": 476,
+   "w": 110,
+   "h": 110,
+   "vk": [
+    87,
+    38
+   ]
+  },
+  {
+   "label": "WEAPON",
+   "x": 556,
+   "y": 496,
+   "w": 110,
+   "h": 90,
+   "mouse": 2
+  },
+  {
+   "label": "MENU",
+   "x": 724,
+   "y": 8,
+   "w": 68,
+   "h": 44,
+   "vk": [
+    27
+   ]
+  }
+ ],
+ "auto_answers": {
+  "Do you want to submit your score Online?": 0,
+  "Would you like to show your support by donating to S64 Games?": 0,
+  "Do you want to open the online score table?": 0
+ },
+ "redact": [
+  "slsl3"
+ ]
+}

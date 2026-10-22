@@ -1,0 +1,81 @@
+{
+ "title": "Infection 2: Meltdown",
+ "credit": "S64 Games",
+ "exe": "source/Infection 2 Meltdown/infection2.exe",
+ "size": [
+  640,
+  480
+ ],
+ "touch": [
+  {
+   "label": "LEFT",
+   "x": 10,
+   "y": 380,
+   "w": 90,
+   "h": 90,
+   "vk": [
+    37
+   ]
+  },
+  {
+   "label": "RIGHT",
+   "x": 110,
+   "y": 380,
+   "w": 90,
+   "h": 90,
+   "vk": [
+    39
+   ]
+  },
+  {
+   "label": "DOWN",
+   "x": 60,
+   "y": 280,
+   "w": 90,
+   "h": 90,
+   "vk": [
+    40
+   ]
+  },
+  {
+   "label": "JUMP",
+   "x": 540,
+   "y": 380,
+   "w": 90,
+   "h": 90,
+   "vk": [
+    38
+   ]
+  },
+  {
+   "label": "GRENADE",
+   "x": 436,
+   "y": 400,
+   "w": 96,
+   "h": 70,
+   "mouse": 2
+  },
+  {
+   "label": "MENU",
+   "x": 574,
+   "y": 6,
+   "w": 60,
+   "h": 40,
+   "vk": [
+    27
+   ]
+  },
+  {
+   "label": "SKIP",
+   "x": 506,
+   "y": 6,
+   "w": 60,
+   "h": 40,
+   "vk": [
+    13
+   ]
+  }
+ ],
+ "auto_answers": {},
+ "exclude_sounds": []
+}
