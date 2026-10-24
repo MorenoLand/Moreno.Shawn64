@@ -127,6 +127,8 @@ func _default_touch(size):
 
 
 func _launch(slug):
+	if launcher == null:
+		return
 	launcher.queue_free()
 	launcher = null
 	_start_game(slug)

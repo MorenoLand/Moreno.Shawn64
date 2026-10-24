@@ -78,6 +78,6 @@ func _draw():
 				if tinted:
 					draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 					tinted = false
-				draw_colored_polygon(c[1], c[2])
+				draw_polygon(c[1], c[2])
 	if tinted:
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)

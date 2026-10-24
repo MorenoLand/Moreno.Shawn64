@@ -693,6 +693,8 @@ func vset(i, n, v):
 func vb(i, n):
 	var o = res(i)
 	if o == null:
+		if n == "alarm":
+			return [-1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0]
 		return 0.0
 	return o.get(n)
 
