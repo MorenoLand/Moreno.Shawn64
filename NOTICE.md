@@ -12,7 +12,7 @@ permission to sell them or to remove the credits.
 Files under `games/` (the converted assets, `data.json`, and the generated `.gd` scripts, which are a direct
 translation of his Game Maker code) fall under this notice.
 
-Third party material that appeared in the original games, such as commercial music, has been left out.
+Music by other artists that appeared in the original games remains the property of those artists and is credited in [CREDITS.md](CREDITS.md).
 
 ## The tools
 

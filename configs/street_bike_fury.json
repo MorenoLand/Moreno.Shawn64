@@ -1,11 +1,7 @@
 {
  "title": "Street Bike Fury",
  "credit": "S64 Games, 2005",
- "exclude_sounds": [
-  "menumusic",
-  "music2",
-  "music4"
- ],
+ "exclude_sounds": [],
  "exe": "source/Street Bike Fury/SBF.exe",
  "size": [
   800,

@@ -17,7 +17,7 @@ As credited in the game:
 - Programming tools: **Mark Overmars** (Game Maker).
 - Testing team: **Jorge Hernandez**, **Brandon Rohrer**, **Dave Perritte**.
 - Additional support: S64 Games community members, Game Maker community members, and the Shangri-La staff (Graal Online).
-- Music in the original release: three songs by Staind (not included in this archive).
+- Music: three songs by **Staind**, as in the original release.
 
 ## Bounty Hunter SX (2003)
 

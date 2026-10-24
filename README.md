@@ -57,9 +57,8 @@ already in `games/`, so you only need the executables to rebuild them.
 
 ## Music
 
-Street Bike Fury's original soundtrack used three commercial songs by Staind. Those recordings are not Shawn's and
-are not included here, so the menu and some levels are quieter than the original. If you own them you can add them
-back; see [docs/PRESERVING.md](docs/PRESERVING.md#sounds).
+Street Bike Fury's soundtrack includes three songs by Staind, kept as they were in the original game. They belong to
+Staind and their label, not to Shawn.
 
 ## License
 
