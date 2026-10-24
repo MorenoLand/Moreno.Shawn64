@@ -350,7 +350,7 @@ class Gen:
         if base[0] == 'id':
             n = base[1]
             if n == 'alarm':
-                return 'alarm', 'alarm'
+                return ('alarm' if self.ctx.self_expr == 'self' else '%s.alarm' % self.ctx.self_expr), 'alarm'
             if n in ('background_x', 'background_y', 'background_hspeed', 'background_vspeed', 'background_index',
                      'background_visible', 'background_foreground', 'background_alpha', 'view_xview', 'view_yview',
                      'view_wview', 'view_hview', 'view_angle', 'view_hborder', 'view_vborder', 'view_visible',

@@ -1,0 +1,7 @@
+extends "res://games/mw2/scripts.gd"
+func ev_create():
+	gravity_direction = gravity_direction + 0.0
+	gravity = gravity + 0.5
+	(GM.f_action_move(self, "000000111", (GM.f_random(13.0)), 0.0))
+func ev_other_0():
+	(GM.f_instance_destroy(self))

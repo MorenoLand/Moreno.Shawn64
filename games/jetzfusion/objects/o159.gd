@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w157.other = self
 				GM.vset(_w157, "v_mytext", "Phunky Monkey:  Does the famous Jetz think he can defeat me!  Man I'm packing some serious fire power but if your up for the challenge PUSH ENTER")
-				alarm[int(0.0)] = 15.0
+				_w157.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):

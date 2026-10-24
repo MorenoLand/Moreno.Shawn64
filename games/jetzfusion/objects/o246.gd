@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w333.other = self
 				GM.vset(_w333, "v_mytext", "GRENADES - $100 for 10 - Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w333.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):
 		if ((((GM.f_place_meeting(self, x, y, 7.0))))) >= 0.5:

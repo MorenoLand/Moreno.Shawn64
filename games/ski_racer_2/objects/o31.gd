@@ -1,17 +1,15 @@
 extends "res://games/ski_racer_2/scripts.gd"
 var v_alive = 0.0
-var v_image_single = 0.0
-var v_view_top = 0.0
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 	v_alive = 1.0
 func ev_step():
 	if (((absf(GM.room - 3.0) < 0.00001))):
-		if ((GM.aget(v_view_top, 0.0) < GM.aget(v_view_top, 1.0))):
-			if ((y < (GM.aget(v_view_top, 0.0) - sprite_height))):
+		if ((GM.view_yview[int(0.0)] < GM.view_yview[int(1.0)])):
+			if ((y < (GM.view_yview[int(0.0)] - sprite_height))):
 				(GM.f_instance_destroy(self))
-		if ((GM.aget(v_view_top, 1.0) < GM.aget(v_view_top, 0.0))):
-			if ((y < (GM.aget(v_view_top, 1.0) - sprite_height))):
+		if ((GM.view_yview[int(1.0)] < GM.view_yview[int(0.0)])):
+			if ((y < (GM.view_yview[int(1.0)] - sprite_height))):
 				(GM.f_instance_destroy(self))
 	else:
 		if (((y < (GM.view_yview[0] - sprite_height)))):
@@ -36,5 +34,5 @@ func ev_col_0():
 	if (((absf(v_alive - 1.0) < 0.00001))):
 		GM.score = GM.score + 200.0
 		(GM.f_sound_play(11.0))
-		v_image_single = 1.0
+		image_single = 1.0
 		v_alive = 0.0

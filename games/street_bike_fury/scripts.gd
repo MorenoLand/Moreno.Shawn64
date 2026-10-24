@@ -582,7 +582,7 @@ func script_url_encode(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argume
 	l_out = ""
 	l_i = 1.0
 	while (l_i <= (GM.f_string_length(GM.vget(self, "v_str")))):
-		l_out = GM.add(l_out, ("%" + (self.script_dec_to_hex((GM.f_ord((GM.f_string_char_at(GM.vget(self, "v_str"), l_i))))))))
+		l_out = GM.add(l_out, GM.add("%", (self.script_dec_to_hex((GM.f_ord((GM.f_string_char_at(GM.vget(self, "v_str"), l_i))))))))
 		l_i = GM.add(l_i, 1.0)
 	return l_out
 	return 0.0
@@ -600,8 +600,8 @@ func script_submit_score(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argu
 	l_auth_code = (GM.f_string((self.script_crc16(l_glob))))
 	l_url_string = GM.vget(self, "v_url")
 	l_url_string = GM.add(l_url_string, ("?score=" + (GM.f_string(GM.vget(self, "v_sc")))))
-	l_url_string = GM.add(l_url_string, ("&player_name=" + (self.script_url_encode(GM.vget(self, "v_name")))))
-	l_url_string = GM.add(l_url_string, ("&game_id=" + GM.vget(self, "v_game")))
+	l_url_string = GM.add(l_url_string, GM.add("&player_name=", (self.script_url_encode(GM.vget(self, "v_name")))))
+	l_url_string = GM.add(l_url_string, GM.add("&game_id=", GM.vget(self, "v_game")))
 	l_url_string = GM.add(l_url_string, GM.add("&sub_id=", GM.vget(self, "v_sub")))
 	l_url_string = GM.add(l_url_string, GM.add("&auth_code=", l_auth_code))
 	(GM.f_execute_shell(GM.add("http://", l_url_string), ""))

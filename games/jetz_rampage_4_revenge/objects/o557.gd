@@ -1,13 +1,12 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_firepower = 0.0
-var v_image_single = 0.0
 var v_whater = 0.0
 var v_woot = 0.0
 var v_woot2 = 0.0
 var v_woot3 = 0.0
 func ev_create():
 	v_whater = 1.0
-	v_image_single = 0.0
+	image_single = 0.0
 	v_firepower = 3.0
 func ev_alarm_1():
 	self.ev_user(0.0)

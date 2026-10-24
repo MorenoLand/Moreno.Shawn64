@@ -13,7 +13,7 @@ func ev_mouse_4():
 			if _w47._dead:
 				continue
 			_w47.other = self
-			alarm[int(0.0)] = 1.0
+			_w47.alarm[int(0.0)] = 1.0
 func ev_draw():
 	if (((GM.f_position_meeting(GM.mouse_x, GM.mouse_y, self)))) >= 0.5:
 		(GM.f_draw_sprite(160.0, 1.0, x, y))

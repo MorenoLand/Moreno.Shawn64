@@ -10,10 +10,6 @@ var v_malfo = 0.0
 var v_mode = 0.0
 var v_nohelmet = 0.0
 var v_start = 0.0
-var v_view_height = 0.0
-var v_view_left = 0.0
-var v_view_top = 0.0
-var v_view_width = 0.0
 var v_weapon = 0.0
 var v_weaponready = 0.0
 func ev_create():
@@ -51,13 +47,13 @@ func ev_alarm_0():
 	v_fade = 1.0
 	(GM.f_screen_gamma(v_fade, 0.0, 0.0))
 	alarm[int(1.0)] = (GM.room_speed * 1.5)
-	(GM.f_instance_create(GM.add(GM.aget(v_view_left, 0.0), (GM.aget(v_view_width, 0.0) / 2.0)), GM.add(GM.aget(v_view_top, 0.0), (GM.aget(v_view_height, 0.0) / 2.0)), 40.0))
+	(GM.f_instance_create((GM.view_xview[int(0.0)] + (GM.view_wview[int(0.0)] / 2.0)), (GM.view_yview[int(0.0)] + (GM.view_hview[int(0.0)] / 2.0)), 40.0))
 	GM.view_object[int(0.0)] = 40.0
 func ev_step():
 	if (((absf(v_start - 1.0) < 0.00001))):
 		if (absf(v_mode - 1.0) < 0.00001):
 			for _r1 in range(int(10.0)):
-				(GM.f_instance_create(GM.add(GM.aget(v_view_left, 0.0), (GM.f_random(GM.aget(v_view_width, 0.0)))), GM.add(GM.aget(v_view_top, 0.0), (GM.f_random(GM.aget(v_view_height, 0.0)))), 38.0))
+				(GM.f_instance_create((GM.view_xview[int(0.0)] + (GM.f_random(GM.view_wview[int(0.0)]))), (GM.view_yview[int(0.0)] + (GM.f_random(GM.view_hview[int(0.0)]))), 38.0))
 			speed = speed - 0.5
 		if (absf(v_mode - 2.0) < 0.00001):
 			if (v_fade > 0.0):

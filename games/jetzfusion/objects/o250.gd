@@ -1,7 +1,6 @@
 extends "res://games/jetzfusion/scripts.gd"
-var v_image_single = 0.0
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 	(GM.f_sound_stop(54.0))
 	(GM.f_instance_create((x + 0.0), (y + (-10.0)), 253.0))
 	for _r334 in range(int((3.0))):

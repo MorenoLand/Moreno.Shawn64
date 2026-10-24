@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w405.other = self
 				GM.vset(_w405, "v_mytext", "Sparlatacus:  Hmmmmmm.  You know what would be funny?  Taking this stack of bricks and then see if you can drop them on 5 people in 30 seconds.  Yeah... that sounds funny.  Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w405.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

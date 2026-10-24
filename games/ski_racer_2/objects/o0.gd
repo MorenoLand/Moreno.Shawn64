@@ -1,7 +1,6 @@
 extends "res://games/ski_racer_2/scripts.gd"
 var v_blinker = 0.0
 var v_hitme = 0.0
-var v_image_single = 0.0
 var v_is = 0.0
 var v_showme = 0.0
 var v_speedy = 0.0
@@ -66,7 +65,7 @@ func ev_col_76():
 func ev_col_73():
 	(GM.f_sound_play(28.0))
 	(GM.f_instance_create((x + 0.0), (y + 0.0), 75.0))
-	GM.vset(75.0, "v_image_single", v_image_single)
+	GM.vsetb(75.0, "image_single", image_single)
 	GM.score = GM.score + 1000.0
 	(GM.f_registry_write_string("secretChar", "0"))
 	await GM.f_show_message("Nice Job:  Unlocked Snowman")

@@ -1,11 +1,9 @@
 extends "res://games/jetz_rampage_4_revenge/objects/o578.gd"
-var v_view_left = {}
-var v_view_width = 0.0
 func ev_create():
 	if ((absf(GM.room - 1.0) < 0.00001)):
-		(GM.f_sound_replace(234.0, ("." + "\\Music\\default_music\\bass_1.wav"), 1.0, 1.0, 0.0))
+		(GM.f_sound_replace(234.0, GM.add(GM.working_directory, "\\Music\\default_music\\bass_1.wav"), 1.0, 1.0, 0.0))
 	if ((absf(GM.room - 16.0) < 0.00001)):
-		(GM.f_sound_replace(233.0, ("." + "\\Music\\default_music\\bass_2.wav"), 1.0, 1.0, 0.0))
+		(GM.f_sound_replace(233.0, GM.add(GM.working_directory, "\\Music\\default_music\\bass_2.wav"), 1.0, 1.0, 0.0))
 	(GM.f_sound_volume(234.0, 0.0))
 	(GM.f_sound_pan(234.0, 0.0))
 	alarm[int(0.0)] = 2.0
@@ -29,10 +27,10 @@ func ev_alarm_0():
 func ev_step():
 	if ((absf(GM.room - 1.0) < 0.00001)):
 		(GM.f_sound_volume(234.0, (1.0 - (((GM.f_distance_to_point(self, (GM.view_xview[0] + 400.0), (GM.view_yview[0] + 300.0))) / 3000.0)))))
-		(GM.f_sound_pan(234.0, (0.5 - (((((GM.add(GM.aget(v_view_left, 0.0), ((GM.aget(v_view_width, 0.0) / 2.0)))) - x)) / 1000.0)))))
+		(GM.f_sound_pan(234.0, (0.5 - ((((((GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0)))) - x)) / 1000.0)))))
 	if ((absf(GM.room - 16.0) < 0.00001)):
 		(GM.f_sound_volume(233.0, (1.0 - (((GM.f_distance_to_point(self, (GM.view_xview[0] + 400.0), (GM.view_yview[0] + 300.0))) / 3000.0)))))
-		(GM.f_sound_pan(233.0, (0.5 - (((((GM.add(GM.aget(v_view_left, 0.0), ((GM.aget(v_view_width, 0.0) / 2.0)))) - x)) / 1000.0)))))
+		(GM.f_sound_pan(233.0, (0.5 - ((((((GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0)))) - x)) / 1000.0)))))
 func ev_col_656():
 	(GM.f_sound_stop(234.0))
 	(GM.f_sound_stop(233.0))

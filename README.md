@@ -19,7 +19,7 @@ The games run in a web browser (WebAssembly) and as a normal desktop program, us
 | Bounty Hunter SX, Thrust!, Bubblegum, Cookie Buster, Holiday Hunting | Shawn64's Creations | Ported, title screens verified |
 | Jetz Rampage, Jetz Rampage 2, Jetz Rampage 4: Revenge, Jetz Fusion | Shawn64's Creations | Ported, title screens verified |
 | Marblex, Missile Wave 3D, Net Racer, Ski-Racer 2, SVSJ | Shawn64's Creations | Ported, title screens verified |
-| FWM, Galaxy Arcade 1 and 2, GM Hoops, MW2 | Shawn64's Creations | Not ported yet |
+| Fireworks Maker, GM Hoops, Missile Wave 2, Galaxy Arcade, Galaxy Arcade 2 | Shawn64's Creations | Ported (Game Maker 4), title screens and first levels checked |
 
 On the web each game is its own download, fetched only when you pick it.
 

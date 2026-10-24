@@ -1,7 +1,6 @@
 extends "res://games/jetzfusion/scripts.gd"
-var v_image_single = 0.0
 func ev_create():
-	v_image_single = (GM.f_random(6.0))
+	image_single = (GM.f_random(6.0))
 	if not ((((GM.f_place_meeting(self, x, y, 71.0)))) >= 0.5):
 		(GM.f_instance_destroy(self))
 	direction = (40.0 + (GM.f_random(100.0)))

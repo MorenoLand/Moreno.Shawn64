@@ -44,7 +44,7 @@ func ev_col_772():
 func ev_col_753():
 	if ((((GM.f_random(20.0)) < 1.0))):
 		if ((x > (GM.vb(self.other, "x") - 10.0))):
-			GM.vset(606.0, "v_image_single", 1.0)
+			GM.vsetb(606.0, "image_single", 1.0)
 			GM.vb(606.0, "alarm")[int(0.0)] = 3.0
 			(GM.f_instance_destroy(self))
 			if (((GM.vb(self.other, "x") + (GM.vb(self.other, "sprite_width") / 2.0)) > (x + (sprite_width / 2.0)))):

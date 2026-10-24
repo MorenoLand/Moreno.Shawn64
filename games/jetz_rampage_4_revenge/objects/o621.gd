@@ -1,7 +1,6 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_firepower = 0.0
 var v_fluh = 0.0
-var v_image_single = 0.0
 var v_mypower = 0.0
 var v_weez = 0.0
 var v_whater = 0.0
@@ -10,7 +9,7 @@ var v_woot2 = 0.0
 var v_woot3 = 0.0
 var v_wow = 0.0
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 	v_mypower = 3.0
 	v_whater = 1.0
 	v_firepower = 20.0
@@ -52,7 +51,7 @@ func ev_col_502():
 		for _r251 in range(int((15.0))):
 			(GM.f_instance_create((x + (GM.f_random((sprite_width - 2.5)))), (y + (GM.f_random((sprite_height - 2.5)))), 599.0))
 		v_mypower = v_mypower - 1.0
-		v_image_single = v_image_single + 1.0
+		image_single = image_single + 1.0
 	else:
 		for _r252 in range(int((4.0))):
 			v_wow = (GM.f_instance_create((x + 10.0), (y + 20.0), 788.0))

@@ -8,6 +8,7 @@ desktop. It was written to archive the games of Shawn Noel, and it is general en
 | Format | Status |
 | --- | --- |
 | Game Maker 6.0 / 6.1 executables | Supported |
+| Game Maker 4.1 to 4.3 executables | Supported (`gmport/extract4.py`) |
 | Game Maker 5.0 to 5.3A executables | Supported (`gmport/extract53.py`) |
 | Game Maker 5.0 to 5.2 | Not supported yet |
 | Game Maker 7 / 8 | Not supported yet |
@@ -91,3 +92,4 @@ and `--overlay`. With `--shot` it renders off-screen and minimized, never in a v
 - `gmport.py export` writes a small base page plus one `.pck` per game; `--base-only` skips the game packs, `--single` makes one bundle.
 - F3 toggles the debug overlay, F2 toggles widescreen.
 - `games/.gdignore` keeps the Godot editor from scanning the generated scripts; test runs and exports use copies without it.
+- Game Maker 4 numbers its drag and drop actions differently from later versions. The table in `gmport/extract4.py` was read from the runner's own action table; actions that no game used yet are left out and are reported when met.

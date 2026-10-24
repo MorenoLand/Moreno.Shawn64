@@ -3,7 +3,7 @@ var v_val1 = 0.0
 var v_val2 = 0.0
 var v_val3 = 0.0
 func ev_create():
-	(GM.f_file_open_read(("." + "J4_Settings.txt")))
+	(GM.f_file_open_read(GM.add(GM.working_directory, "J4_Settings.txt")))
 	(GM.f_file_readln())
 	(GM.f_file_readln())
 	(GM.f_file_readln())

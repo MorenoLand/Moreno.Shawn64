@@ -81,7 +81,7 @@ func ev_keypress_32():
 		GM.vset(v_wowza, "v_electric", 1.0)
 		GM.vsetb(v_wowza, "vspeed", vspeed)
 		GM.vsetb(v_wowza, "gravity", gravity)
-		GM.vset(v_wowza, "v_image_single", 2.0)
+		GM.vsetb(v_wowza, "image_single", 2.0)
 		GM.vsetb(v_wowza, "depth", depth)
 		GM.vb(v_wowza, "alarm")[int(0.0)] = 15.0
 		self.ev_user(0.0)

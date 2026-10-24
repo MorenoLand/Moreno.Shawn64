@@ -1,7 +1,6 @@
 extends "res://games/jetzfusion/scripts.gd"
-var v_image_single = 0.0
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 func ev_col_7():
 	for _w520 in GM.with_list((390.0), self):
 		if _w520._dead:

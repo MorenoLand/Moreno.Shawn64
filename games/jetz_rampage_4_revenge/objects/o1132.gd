@@ -1,8 +1,7 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
-var v_image_single = 0.0
 func ev_create():
 	x = 120.0
-	v_image_single = 1.0
+	image_single = 1.0
 	alarm[int(0.0)] = (60.0 + (GM.f_random(30.0)))
 	GM.vsetb(7.0, "x", 670.0)
 	GM.vsetb(7.0, "speed", 0.0)

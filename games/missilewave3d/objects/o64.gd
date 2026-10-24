@@ -5,8 +5,6 @@ var v_pup1 = 0.0
 var v_pup2 = 0.0
 var v_pup3 = 0.0
 var v_randoom = 0.0
-var v_view_left = {}
-var v_view_top = 0.0
 var v_wave1 = 0.0
 var v_wave2 = 0.0
 var v_wave3 = 0.0
@@ -38,7 +36,7 @@ func ev_step():
 	if (((GM.health < 0.0))):
 		if (((absf((GM.f_instance_number(105.0)) - 0.0) < 0.00001))):
 			(GM.f_instance_create(315.5, 20.0, 105.0))
-	(GM.f_instance_create(GM.add(GM.aget(v_view_left, 0.0), (GM.f_random(800.0))), GM.add(GM.aget(v_view_top, 0.0), (GM.f_random(600.0))), 23.0))
+	(GM.f_instance_create((GM.view_xview[int(0.0)] + (GM.f_random(800.0))), (GM.view_yview[int(0.0)] + (GM.f_random(600.0))), 23.0))
 	if ((((GM.f_random(v_mspeed)) < 1.0))):
 		v_randoom = (GM.f_round((GM.f_random(10.0))))
 		if ((absf(v_randoom - 1.0) < 0.00001)):

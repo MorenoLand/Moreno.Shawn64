@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w560.other = self
 				GM.vset(_w560, "v_mytext", "Tapeworm:  DAMN!  That was some tasty stew.  Bring me 4 mother fuckers this time for $200.  Sound good?  Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w560.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

@@ -8,14 +8,14 @@ func ev_col_7():
 						continue
 					_w155.other = self
 					GM.vset(_w155, "v_mytext", "CapnChubby:  Need blooood!  Use your chainsaw to fill up the blood meter in under 40 seconds for a nifty $100.  Push enter to start the fun!")
-					alarm[int(0.0)] = 15.0
+					_w155.alarm[int(0.0)] = 15.0
 			else:
 				for _w156 in GM.with_list((49.0), self):
 					if _w156._dead:
 						continue
 					_w156.other = self
 					GM.vset(_w156, "v_mytext", "Man you gotta be packing a chainsaw to do my mission... get outa here...")
-					alarm[int(0.0)] = 15.0
+					_w156.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf(GM.G["chainsaw"] - 1.0) < 0.00001))):

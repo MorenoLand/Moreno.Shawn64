@@ -5,7 +5,7 @@ func ev_create():
 		sprite_index = 519.0
 	if ((absf(GM.room - 16.0) < 0.00001)):
 		sprite_index = 871.0
-	v_image_single = (image_number - 1.0)
+	image_single = (image_number - 1.0)
 	gravity_direction = 270.0
 	gravity = 0.4
 func ev_step():

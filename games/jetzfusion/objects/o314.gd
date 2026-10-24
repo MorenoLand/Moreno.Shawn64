@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w434.other = self
 				GM.vset(_w434, "v_mytext", "Dex CG:  Yeah now lets test your skills at hitting moving targets.  10 targets again but this time for $200.  Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w434.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

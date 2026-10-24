@@ -1,7 +1,6 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_firepower = 0.0
 var v_fluh = 0.0
-var v_image_single = 0.0
 var v_mypower = 0.0
 var v_weez = 0.0
 var v_weezzz = 0.0
@@ -11,7 +10,7 @@ var v_woot3 = 0.0
 var v_wowzz = 0.0
 func ev_create():
 	v_mypower = 3.0
-	v_image_single = 0.0
+	image_single = 0.0
 	v_firepower = 20.0
 func ev_alarm_2():
 	self.ev_user(0.0)
@@ -24,7 +23,7 @@ func ev_alarm_1():
 	GM.vsetb(v_woot3, "depth", depth)
 	alarm[int(1.0)] = 1.0
 func ev_alarm_0():
-	v_image_single = 0.0
+	image_single = 0.0
 func ev_col_656():
 	for _r206 in range(int((25.0))):
 		v_wowzz = (GM.f_instance_create(((x + (sprite_width / 2.0)) - 2.5), ((y + (sprite_height / 2.0)) - 2.5), 600.0))
@@ -43,11 +42,11 @@ func ev_col_502():
 			v_wowzz = (GM.f_instance_create(((x + (sprite_width / 2.0)) - 2.5), ((y + (sprite_height / 2.0)) - 2.5), 600.0))
 			if ((GM.vb(self.other, "hspeed") > 0.0)):
 				GM.vsetb(v_wowzz, "direction", (80.0 + (GM.f_random(10.0))))
-				v_image_single = 2.0
+				image_single = 2.0
 				alarm[int(0.0)] = 2.0
 			if ((GM.vb(self.other, "hspeed") < 0.0)):
 				GM.vsetb(v_wowzz, "direction", (90.0 + (GM.f_random(10.0))))
-				v_image_single = 1.0
+				image_single = 1.0
 				alarm[int(0.0)] = 2.0
 		v_mypower = v_mypower - 1.0
 	else:

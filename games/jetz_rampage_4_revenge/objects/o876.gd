@@ -1,7 +1,7 @@
 extends "res://games/jetz_rampage_4_revenge/objects/o598.gd"
 func ev_create():
 	v_mypower = 3.0
-	v_image_single = 0.0
+	image_single = 0.0
 	v_firepower = 20.0
 func ev_col_959():
 	for _r853 in range(int((25.0))):
@@ -25,7 +25,7 @@ func ev_col_502():
 			(GM.f_instance_create((x + 52.0), (y + 89.0), 599.0))
 		for _r858 in range(int((10.0))):
 			(GM.f_instance_create((GM.vb(self.other, "x") + (GM.vb(self.other, "sprite_width") / 2.0)), (GM.vb(self.other, "y") + (GM.vb(self.other, "sprite_height") / 2.0)), 599.0))
-		v_image_single = v_image_single + 1.0
+		image_single = image_single + 1.0
 		v_mypower = v_mypower - 1.0
 	else:
 		for _r859 in range(int((25.0))):

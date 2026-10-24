@@ -1,5 +1,4 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
-var v_image_single = 0.0
 var v_sett = 0.0
 var v_wee = 0.0
 var v_xxx = 0.0
@@ -19,7 +18,7 @@ func ev_col_656():
 		GM.vsetb(v_wee, "vspeed", GM.vb(v_wee, "vspeed") + vspeed)
 		(self.script_adddamage())
 		(GM.f_sound_play(155.0))
-		v_image_single = 1.0
+		image_single = 1.0
 		for _r475 in range(int((20.0))):
 			(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 668.0))
 		gravity = 0.3
@@ -48,7 +47,7 @@ func ev_col_502():
 		GM.vsetb(v_wee, "vspeed", GM.vb(v_wee, "vspeed") + vspeed)
 		(self.script_adddamage())
 		(GM.f_sound_play(155.0))
-		v_image_single = 1.0
+		image_single = 1.0
 		for _r478 in range(int((20.0))):
 			(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 668.0))
 		gravity = 0.3

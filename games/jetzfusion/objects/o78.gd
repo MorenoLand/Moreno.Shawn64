@@ -1,6 +1,5 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_alive = 0.0
-var v_image_single = 0.0
 func ev_create():
 	x = (GM.f_random(GM.room_width))
 	y = (GM.f_random(300.0))
@@ -25,9 +24,9 @@ func ev_col_310():
 			image_index = 1.0
 		image_speed = 0.0
 		if ((hspeed > 0.0)):
-			v_image_single = 0.0
+			image_single = 0.0
 		if ((hspeed < 0.0)):
-			v_image_single = 1.0
+			image_single = 1.0
 		alarm[int(0.0)] = 1.0
 		v_alive = 0.0
 func ev_col_53():
@@ -42,9 +41,9 @@ func ev_col_53():
 			image_index = 1.0
 		image_speed = 0.0
 		if ((hspeed > 0.0)):
-			v_image_single = 0.0
+			image_single = 0.0
 		if ((hspeed < 0.0)):
-			v_image_single = 1.0
+			image_single = 1.0
 		alarm[int(0.0)] = 1.0
 		v_alive = 0.0
 		for _w104 in GM.with_list((self.other), self):

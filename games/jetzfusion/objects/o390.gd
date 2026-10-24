@@ -11,7 +11,7 @@ func ev_col_7():
 					continue
 				_w518.other = self
 				GM.vset(_w518, "v_mytext", "OB1-C8:  One of those flying transporters carries your light saber young one.  Shoot it down and collect it.  If you think you are worthy of the sward push enter.")
-				alarm[int(0.0)] = 15.0
+				_w518.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

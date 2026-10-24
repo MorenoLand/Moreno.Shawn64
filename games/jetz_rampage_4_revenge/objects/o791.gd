@@ -1,9 +1,8 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_frictin = 0.0
-var v_image_single = 0.0
 func ev_create():
 	v_frictin = 0.1
-	v_image_single = 2.0
+	image_single = 2.0
 	(GM.f_sound_pan(222.0, 0.5))
 	(GM.f_sound_volume(222.0, 1.0))
 	(GM.f_sound_loop(222.0))
@@ -25,9 +24,9 @@ func ev_stepend():
 	if (((GM.f_keyboard_check(40.0)))) >= 0.5:
 		(GM.f_motion_add(self, 270.0, 0.4))
 	if ((hspeed <= 0.0)):
-		v_image_single = 2.0
+		image_single = 2.0
 	if ((hspeed > 0.0)):
-		v_image_single = 1.0
+		image_single = 1.0
 	if ((speed > 20.0)):
 		speed = 20.0
 	GM.vsetb(7.0, "hspeed", hspeed)

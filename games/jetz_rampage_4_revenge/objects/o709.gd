@@ -9,16 +9,16 @@ func ev_col_753():
 		if (((GM.vb(self.other, "x") + (GM.vb(self.other, "sprite_width") / 2.0)) > (x + (sprite_width / 2.0)))):
 			v_wee = (GM.f_instance_create(GM.vb(self.other, "x"), GM.vb(self.other, "y"), 605.0))
 			if ((absf(GM.room - 1.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 0.0)
+				GM.vsetb(v_wee, "image_single", 0.0)
 			if ((absf(GM.room - 16.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 2.0)
+				GM.vsetb(v_wee, "image_single", 2.0)
 			GM.vb(v_wee, "alarm")[int(1.0)] = 25.0
 		else:
 			v_wee = (GM.f_instance_create(GM.vb(self.other, "x"), GM.vb(self.other, "y"), 605.0))
 			if ((absf(GM.room - 1.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 1.0)
+				GM.vsetb(v_wee, "image_single", 1.0)
 			if ((absf(GM.room - 16.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 3.0)
+				GM.vsetb(v_wee, "image_single", 3.0)
 			GM.vb(v_wee, "alarm")[int(1.0)] = 25.0
 		if (((self.script_view_check(self)))) >= 0.5:
 			(GM.f_sound_play(173.0))
@@ -28,16 +28,16 @@ func ev_col_518():
 		if (((GM.vb(self.other, "x") + (GM.vb(self.other, "sprite_width") / 2.0)) > (x + (sprite_width / 2.0)))):
 			v_wee = (GM.f_instance_create(GM.vb(self.other, "x"), GM.vb(self.other, "y"), 605.0))
 			if ((absf(GM.room - 1.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 0.0)
+				GM.vsetb(v_wee, "image_single", 0.0)
 			if ((absf(GM.room - 16.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 2.0)
+				GM.vsetb(v_wee, "image_single", 2.0)
 			GM.vb(v_wee, "alarm")[int(1.0)] = 25.0
 		else:
 			v_wee = (GM.f_instance_create(GM.vb(self.other, "x"), GM.vb(self.other, "y"), 605.0))
 			if ((absf(GM.room - 1.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 1.0)
+				GM.vsetb(v_wee, "image_single", 1.0)
 			if ((absf(GM.room - 16.0) < 0.00001)):
-				GM.vset(v_wee, "v_image_single", 3.0)
+				GM.vsetb(v_wee, "image_single", 3.0)
 			GM.vb(v_wee, "alarm")[int(1.0)] = 25.0
 		if (((self.script_view_check(self)))) >= 0.5:
 			(GM.f_sound_play(173.0))

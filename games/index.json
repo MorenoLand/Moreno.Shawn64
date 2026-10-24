@@ -144,6 +144,51 @@
   ]
  },
  {
+  "slug": "fwm",
+  "title": "FWM",
+  "credit": "Shawn64's Creations",
+  "size": [
+   640,
+   480
+  ]
+ },
+ {
+  "slug": "gm_hoops",
+  "title": "GM Hoops",
+  "credit": "Shawn64's Creations",
+  "size": [
+   800,
+   600
+  ]
+ },
+ {
+  "slug": "mw2",
+  "title": "MW2",
+  "credit": "Shawn64's Creations",
+  "size": [
+   800,
+   600
+  ]
+ },
+ {
+  "slug": "galaxy_arcade",
+  "title": "Galaxy Arcade",
+  "credit": "Shawn64's Creations",
+  "size": [
+   800,
+   600
+  ]
+ },
+ {
+  "slug": "galaxy_arcade_2",
+  "title": "Galaxy Arcade 2",
+  "credit": "Shawn64's Creations",
+  "size": [
+   800,
+   600
+  ]
+ },
+ {
   "slug": "mini_golf_pro",
   "title": "Mini Golf Pro",
   "credit": "S64 Games, 2004/2005",

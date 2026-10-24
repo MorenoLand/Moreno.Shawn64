@@ -1,8 +1,7 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_alive = 0.0
-var v_image_single = 0.0
 func ev_create():
-	v_image_single = (GM.f_random(3.0))
+	image_single = (GM.f_random(3.0))
 	alarm[int(0.0)] = (1.0 + (GM.f_random(75.0)))
 	direction = (40.0 + (GM.f_random(100.0)))
 	speed = (GM.f_random(10.0))

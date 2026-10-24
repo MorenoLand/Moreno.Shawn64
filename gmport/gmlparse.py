@@ -265,7 +265,14 @@ class Parser:
             self.expect_sym(')')
             e = ('paren', e)
         elif t[0] == 'id':
-            if self.is_sym('('):
+            if t[1] in OLD_VIEW_NAMES and (self.is_sym('(') or self.is_sym('[')):
+                t = ('id', OLD_VIEW_NAMES[t[1]])
+            if t[1] in PAREN_ARRAYS and self.is_sym('('):
+                self.next()
+                idx = [self.expr()]
+                self.expect_sym(')')
+                e = ('index', ('id', t[1]), idx)
+            elif self.is_sym('('):
                 self.next()
                 args = []
                 while not self.is_sym(')'):
@@ -295,6 +302,13 @@ class Parser:
                 e = ('index', e, idx)
             else:
                 return e
+
+
+OLD_VIEW_NAMES = {'view_left': 'view_xview', 'view_top': 'view_yview', 'view_width': 'view_wview', 'view_height': 'view_hview'}
+PAREN_ARRAYS = {'alarm', 'view_left', 'view_top', 'view_width', 'view_height', 'view_xview', 'view_yview', 'view_wview', 'view_hview',
+                'view_visible', 'view_xport', 'view_yport', 'view_wport', 'view_hport', 'view_hborder', 'view_vborder',
+                'view_hspeed', 'view_vspeed', 'view_object', 'view_angle', 'background_visible', 'background_foreground',
+                'background_index', 'background_x', 'background_y', 'background_hspeed', 'background_vspeed'}
 
 
 def parse(src):

@@ -3,5 +3,5 @@ func ev_create():
 	if (((absf(y - 980.0) < 0.00001) and (absf(GM.room - 1.0) < 0.00001))):
 		sprite_index = 642.0
 	v_hitme = 1.0
-	v_image_single = 0.0
+	image_single = 0.0
 	depth = depth + (((0.99 * y)) / 1200.0)

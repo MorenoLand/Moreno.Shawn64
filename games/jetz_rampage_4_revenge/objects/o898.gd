@@ -1,6 +1,6 @@
 extends "res://games/jetz_rampage_4_revenge/objects/o563.gd"
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 	v_peter = y
 	v_mypower = 3.0
 	v_firepower = 20.0

@@ -53,7 +53,7 @@ INSTANCE_VARS = {
     'mask_index': ('mask_index', R), 'id': ('id', R), 'object_index': ('object_index', R),
     'sprite_width': ('sprite_width', R), 'sprite_height': ('sprite_height', R),
     'sprite_xoffset': ('sprite_xoffset', R), 'sprite_yoffset': ('sprite_yoffset', R),
-    'image_number': ('image_number', R), 'bbox_left': ('bbox_left', R), 'bbox_right': ('bbox_right', R),
+    'image_single': ('image_single', R), 'image_number': ('image_number', R), 'bbox_left': ('bbox_left', R), 'bbox_right': ('bbox_right', R),
     'bbox_top': ('bbox_top', R), 'bbox_bottom': ('bbox_bottom', R), 'path_index': ('path_index', R),
     'path_position': ('path_position', R), 'path_speed': ('path_speed', R),
     'timeline_index': ('timeline_index', R), 'timeline_position': ('timeline_position', R),

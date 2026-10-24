@@ -1,8 +1,7 @@
 extends "res://games/jetz_rampage_4_revenge/objects/o655.gd"
-var v_image_single = 0.0
 var v_wee = 0.0
 func ev_create():
-	v_image_single = 1.0
+	image_single = 1.0
 	v_hitornot = 0.0
 	if ((absf(GM.vget(7.0, "v_guyright") - 1.0) < 0.00001)):
 		vspeed = GM.vb(7.0, "vspeed")

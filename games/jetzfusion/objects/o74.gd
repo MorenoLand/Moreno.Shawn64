@@ -6,4 +6,4 @@ func ev_create():
 		alarm[int(0.0)] = 1.0
 func ev_step():
 	if ((5.0 - v_mypower) > 0.0):
-		v_image_single = (5.0 - v_mypower)
+		image_single = (5.0 - v_mypower)

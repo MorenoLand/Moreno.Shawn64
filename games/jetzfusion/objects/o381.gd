@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w513.other = self
 				GM.vset(_w513, "v_mytext", "Tapeworm:  Hmmm, if you could just drop about ummm 3 people into my grinder in 30 seconds I could make a killa stew.  Just grab them when there hanging out of the building and push enter to drop them into the grinder.  Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w513.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

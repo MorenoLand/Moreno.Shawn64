@@ -1,6 +1,5 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_alive = 0.0
-var v_image_single = 0.0
 func ev_create():
 	(GM.f_sound_play(21.0))
 	if ((GM.vb(7.0, "hspeed") > 0.0)):
@@ -31,7 +30,7 @@ func ev_col_338():
 	(GM.f_instance_create((x + (-150.0)), (y + (-150.0)), 59.0))
 	self.ev_user(0.0)
 func ev_col_330():
-	if (not (((absf(v_image_single - 4.0) < 0.00001)))):
+	if (not (((absf(image_single - 4.0) < 0.00001)))):
 		(GM.f_instance_create((x + (-150.0)), (y + (-150.0)), 59.0))
 		self.ev_user(0.0)
 func ev_col_284():
@@ -44,7 +43,7 @@ func ev_col_224():
 	(GM.f_instance_create((x + (-150.0)), (y + (-150.0)), 59.0))
 	self.ev_user(0.0)
 func ev_col_223():
-	if (not (((absf(v_image_single - 4.0) < 0.00001)))):
+	if (not (((absf(image_single - 4.0) < 0.00001)))):
 		(GM.f_instance_create((x + (-150.0)), (y + (-150.0)), 59.0))
 		self.ev_user(0.0)
 func ev_col_222():
@@ -79,11 +78,11 @@ func ev_col_78():
 		(GM.f_instance_create((x + (-150.0)), (y + (-150.0)), 59.0))
 		self.ev_user(0.0)
 func ev_col_77():
-	if (not (((absf(v_image_single - 4.0) < 0.00001)))):
+	if (not (((absf(image_single - 4.0) < 0.00001)))):
 		(GM.f_instance_create((x + (-150.0)), (y + (-150.0)), 59.0))
 		self.ev_user(0.0)
 func ev_col_71():
-	if (not (((absf(v_image_single - 10.0) < 0.00001)))):
+	if (not (((absf(image_single - 10.0) < 0.00001)))):
 		(GM.f_instance_create((x + (-150.0)), (y + (-150.0)), 59.0))
 		self.ev_user(0.0)
 func ev_col_70():

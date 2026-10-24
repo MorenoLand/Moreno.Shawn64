@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w586.other = self
 				GM.vset(_w586, "v_mytext", "HIM:  Yeah... Yeah... Now lets see if you can dodge a air raid for 20 seconds with a messed up jetpack!  NOWAY YOU CAN BEAT THIS.  But if you do you can have $400.  Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w586.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

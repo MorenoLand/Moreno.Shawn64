@@ -6,7 +6,7 @@ func script_view_check(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argume
 	if not (((GM.f_instance_exists(argument0))) >= 0.5):
 		return 0.0
 	else:
-		if ((((GM.vb(argument0, "bbox_right") > GM.aget(GM.vget(self, "v_view_left"), 0.0)) and (GM.vb(argument0, "x") < GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), GM.aget(GM.vget(self, "v_view_width"), 0.0)))) and (GM.vb(argument0, "bbox_bottom") > GM.aget(GM.vget(self, "v_view_top"), 0.0))) and (GM.vb(argument0, "y") < GM.add(GM.aget(GM.vget(self, "v_view_top"), 0.0), GM.aget(GM.vget(self, "v_view_height"), 0.0)))):
+		if ((((GM.vb(argument0, "bbox_right") > GM.view_xview[int(0.0)]) and (GM.vb(argument0, "x") < (GM.view_xview[int(0.0)] + GM.view_wview[int(0.0)]))) and (GM.vb(argument0, "bbox_bottom") > GM.view_yview[int(0.0)])) and (GM.vb(argument0, "y") < (GM.view_yview[int(0.0)] + GM.view_hview[int(0.0)]))):
 			return 1.0
 		else:
 			return 0.0

@@ -1,9 +1,9 @@
 extends "res://gm/gm_inst.gd"
 func script_hover(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argument3 = 0.0, argument4 = 0.0, argument5 = 0.0, argument6 = 0.0, argument7 = 0.0, argument8 = 0.0, argument9 = 0.0, argument10 = 0.0, argument11 = 0.0, argument12 = 0.0, argument13 = 0.0, argument14 = 0.0, argument15 = 0.0):
 	if (((GM.f_position_meeting(GM.vb(GM.vget(self, "v_orb"), "x"), GM.vb(GM.vget(self, "v_orb"), "y"), self)))) >= 0.5:
-		GM.vset(self, "v_image_single", 1.0)
+		image_single = 1.0
 	else:
-		GM.vset(self, "v_image_single", 0.0)
+		image_single = 0.0
 	return 0.0
 func script_Outside_Wrap(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argument3 = 0.0, argument4 = 0.0, argument5 = 0.0, argument6 = 0.0, argument7 = 0.0, argument8 = 0.0, argument9 = 0.0, argument10 = 0.0, argument11 = 0.0, argument12 = 0.0, argument13 = 0.0, argument14 = 0.0, argument15 = 0.0):
 	if (((x < 0.0) and (hspeed < 0.0))):
@@ -50,13 +50,13 @@ func script_adddamage(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argumen
 		(GM.f_instance_create(0.0, 0.0, 76.0))
 	return 0.0
 func script_dosound(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argument3 = 0.0, argument4 = 0.0, argument5 = 0.0, argument6 = 0.0, argument7 = 0.0, argument8 = 0.0, argument9 = 0.0, argument10 = 0.0, argument11 = 0.0, argument12 = 0.0, argument13 = 0.0, argument14 = 0.0, argument15 = 0.0):
-	(GM.f_sound_volume(argument0, (1.0 - (((GM.f_distance_to_point(self, GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), ((GM.aget(GM.vget(self, "v_view_width"), 0.0) / 2.0))), y)) / 10000.0)))))
-	(GM.f_sound_pan(argument0, (0.5 - (((((GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), ((GM.aget(GM.vget(self, "v_view_width"), 0.0) / 2.0)))) - x)) / 1000.0)))))
+	(GM.f_sound_volume(argument0, (1.0 - (((GM.f_distance_to_point(self, (GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0))), y)) / 10000.0)))))
+	(GM.f_sound_pan(argument0, (0.5 - ((((((GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0)))) - x)) / 1000.0)))))
 	(GM.f_sound_play(argument0))
 	return 0.0
 func script_screamsscript(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argument3 = 0.0, argument4 = 0.0, argument5 = 0.0, argument6 = 0.0, argument7 = 0.0, argument8 = 0.0, argument9 = 0.0, argument10 = 0.0, argument11 = 0.0, argument12 = 0.0, argument13 = 0.0, argument14 = 0.0, argument15 = 0.0):
-	(GM.f_sound_volume(argument0, (1.0 - (((GM.f_distance_to_point(self, GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), ((GM.aget(GM.vget(self, "v_view_width"), 0.0) / 2.0))), y)) / 10000.0)))))
-	(GM.f_sound_pan(argument0, (0.5 - (((((GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), ((GM.aget(GM.vget(self, "v_view_width"), 0.0) / 2.0)))) - x)) / 1000.0)))))
+	(GM.f_sound_volume(argument0, (1.0 - (((GM.f_distance_to_point(self, (GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0))), y)) / 10000.0)))))
+	(GM.f_sound_pan(argument0, (0.5 - ((((((GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0)))) - x)) / 1000.0)))))
 	if not ((((GM.f_sound_isplaying(argument0)))) >= 0.5):
 		(GM.f_sound_play(argument0))
 	return 0.0

@@ -1,13 +1,12 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_hitme = 0.0
-var v_image_single = 0.0
 var v_mypower = 0.0
 var v_poom = 0.0
 var v_randoms = 0.0
 func ev_create():
 	v_hitme = 1.0
 	v_mypower = 3.0
-	v_image_single = 0.0
+	image_single = 0.0
 	depth = (x + y)
 	if ((absf(sprite_index - 322.0) < 0.00001)):
 		depth = ((x + y) - 40.0)
@@ -28,11 +27,11 @@ func ev_alarm_1():
 func ev_alarm_0():
 	v_hitme = 1.0
 func ev_col_166():
-	if (((absf(sprite_index - 48.0) < 0.00001) and (absf(v_image_single - 0.0) < 0.00001))):
+	if (((absf(sprite_index - 48.0) < 0.00001) and (absf(image_single - 0.0) < 0.00001))):
 		(GM.f_sound_play(32.0))
 		for _r316 in range(int((25.0))):
 			(GM.f_instance_create(((x + 40.0) + (GM.f_random(40.0))), ((y + 40.0) + (GM.f_random(40.0))), 27.0))
-		v_image_single = 1.0
+		image_single = 1.0
 		v_hitme = 0.0
 func ev_col_14():
 	if ((absf(v_hitme - 1.0) < 0.00001)):
@@ -47,13 +46,13 @@ func ev_col_14():
 				(GM.f_instance_create(((x + 40.0) + (GM.f_random(40.0))), ((y + 40.0) + (GM.f_random(40.0))), 27.0))
 		v_mypower = v_mypower - 1.0
 		v_randoms = (GM.f_round((GM.f_random(3.0))))
-		if ((((absf(v_image_single - 0.0) < 0.00001) and (absf(sprite_index - 47.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
+		if ((((absf(image_single - 0.0) < 0.00001) and (absf(sprite_index - 47.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
 			alarm[int(1.0)] = (1.0 + (GM.f_random(49.0)))
-		if ((((absf(v_image_single - 0.0) < 0.00001) and (absf(sprite_index - 48.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
+		if ((((absf(image_single - 0.0) < 0.00001) and (absf(sprite_index - 48.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
 			alarm[int(1.0)] = (1.0 + (GM.f_random(49.0)))
-		if ((((absf(v_image_single - 0.0) < 0.00001) and (absf(sprite_index - 300.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
+		if ((((absf(image_single - 0.0) < 0.00001) and (absf(sprite_index - 300.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
 			alarm[int(1.0)] = (1.0 + (GM.f_random(49.0)))
-		if ((((absf(v_image_single - 0.0) < 0.00001) and (absf(sprite_index - 305.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
+		if ((((absf(image_single - 0.0) < 0.00001) and (absf(sprite_index - 305.0) < 0.00001)) and (absf(v_randoms - 0.0) < 0.00001))):
 			alarm[int(1.0)] = (1.0 + (GM.f_random(49.0)))
 		v_randoms = (GM.f_round((GM.f_random(9.0))))
 		if ((absf(v_randoms - 0.0) < 0.00001)):
@@ -91,19 +90,19 @@ func ev_col_14():
 										continue
 									_w324.other = self
 									(GM.f_instance_create(GM.vb(142.0, "x"), (GM.vb(142.0, "y") - 20.0), 143.0))
-		if not (((absf(v_image_single - 1.0) < 0.00001))):
-			if ((((absf(sprite_index - 47.0) < 0.00001) or (absf(sprite_index - 48.0) < 0.00001)) and (absf(v_image_single - 0.0) < 0.00001))):
+		if not (((absf(image_single - 1.0) < 0.00001))):
+			if ((((absf(sprite_index - 47.0) < 0.00001) or (absf(sprite_index - 48.0) < 0.00001)) and (absf(image_single - 0.0) < 0.00001))):
 				(GM.f_sound_play(32.0))
 				for _r325 in range(int((25.0))):
 					(GM.f_instance_create(((x + 40.0) + (GM.f_random(40.0))), ((y + 40.0) + (GM.f_random(40.0))), 27.0))
-			if ((((absf(sprite_index - 216.0) < 0.00001) or (absf(sprite_index - 271.0) < 0.00001)) and (absf(v_image_single - 0.0) < 0.00001))):
+			if ((((absf(sprite_index - 216.0) < 0.00001) or (absf(sprite_index - 271.0) < 0.00001)) and (absf(image_single - 0.0) < 0.00001))):
 				(GM.f_sound_play(32.0))
 				for _r326 in range(int((25.0))):
 					(GM.f_instance_create(((x + 40.0) + (GM.f_random(40.0))), ((y + 40.0) + (GM.f_random(40.0))), 27.0))
-			if ((((absf(sprite_index - 300.0) < 0.00001) or (absf(sprite_index - 305.0) < 0.00001)) and (absf(v_image_single - 0.0) < 0.00001))):
+			if ((((absf(sprite_index - 300.0) < 0.00001) or (absf(sprite_index - 305.0) < 0.00001)) and (absf(image_single - 0.0) < 0.00001))):
 				(GM.f_sound_play(32.0))
 				for _r327 in range(int((25.0))):
 					(GM.f_instance_create(((x + 40.0) + (GM.f_random(40.0))), ((y + 40.0) + (GM.f_random(40.0))), 27.0))
-			v_image_single = 1.0
+			image_single = 1.0
 			alarm[int(0.0)] = 5.0
 			v_hitme = 0.0

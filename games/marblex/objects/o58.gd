@@ -100,32 +100,32 @@ func ev_col_18():
 		if _w57._dead:
 			continue
 		_w57.other = self
-		alarm[int(0.0)] = 50.0
+		_w57.alarm[int(0.0)] = 50.0
 	for _w58 in GM.with_list((28.0), self):
 		if _w58._dead:
 			continue
 		_w58.other = self
-		alarm[int(0.0)] = 50.0
+		_w58.alarm[int(0.0)] = 50.0
 	for _w59 in GM.with_list((37.0), self):
 		if _w59._dead:
 			continue
 		_w59.other = self
-		alarm[int(0.0)] = 50.0
+		_w59.alarm[int(0.0)] = 50.0
 	for _w60 in GM.with_list((56.0), self):
 		if _w60._dead:
 			continue
 		_w60.other = self
-		alarm[int(0.0)] = 50.0
+		_w60.alarm[int(0.0)] = 50.0
 	for _w61 in GM.with_list((47.0), self):
 		if _w61._dead:
 			continue
 		_w61.other = self
-		alarm[int(0.0)] = 50.0
+		_w61.alarm[int(0.0)] = 50.0
 	for _w62 in GM.with_list((54.0), self):
 		if _w62._dead:
 			continue
 		_w62.other = self
-		alarm[int(0.0)] = 50.0
+		_w62.alarm[int(0.0)] = 50.0
 	for _w63 in GM.with_list((3.0), self):
 		if _w63._dead:
 			continue
@@ -178,32 +178,32 @@ func ev_col_3():
 			if _w71._dead:
 				continue
 			_w71.other = self
-			alarm[int(0.0)] = 50.0
+			_w71.alarm[int(0.0)] = 50.0
 		for _w72 in GM.with_list((28.0), self):
 			if _w72._dead:
 				continue
 			_w72.other = self
-			alarm[int(0.0)] = 50.0
+			_w72.alarm[int(0.0)] = 50.0
 		for _w73 in GM.with_list((37.0), self):
 			if _w73._dead:
 				continue
 			_w73.other = self
-			alarm[int(0.0)] = 50.0
+			_w73.alarm[int(0.0)] = 50.0
 		for _w74 in GM.with_list((47.0), self):
 			if _w74._dead:
 				continue
 			_w74.other = self
-			alarm[int(0.0)] = 50.0
+			_w74.alarm[int(0.0)] = 50.0
 		for _w75 in GM.with_list((56.0), self):
 			if _w75._dead:
 				continue
 			_w75.other = self
-			alarm[int(0.0)] = 50.0
+			_w75.alarm[int(0.0)] = 50.0
 		for _w76 in GM.with_list((54.0), self):
 			if _w76._dead:
 				continue
 			_w76.other = self
-			alarm[int(0.0)] = 50.0
+			_w76.alarm[int(0.0)] = 50.0
 	else:
 		(GM.f_sound_play(3.0))
 		for _w77 in GM.with_list((self.other), self):

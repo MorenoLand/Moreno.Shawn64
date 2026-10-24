@@ -1639,7 +1639,7 @@ func _mouse():
 			var m = "ev_mouse_%d" % n
 			if not es.has(m):
 				continue
-			var btn = n % 3 + 1
+			var btn = (n if n <= 2 else (n - 4 if n <= 6 else n - 7)) + 1
 			var fire = false
 			if n <= 2:
 				fire = mouse_down.has(btn)
@@ -3986,6 +3986,52 @@ func f_external_call(id, a0 = null, a1 = null, a2 = null, a3 = null, a4 = null, 
 
 func f_external_free(dll):
 	return 0.0
+
+func f_external_define2(dll, name, a2 = null, a3 = null, a4 = null, a5 = null, a6 = null, a7 = null):
+	var id = ext_next
+	ext_next += 1
+	ext_defs[id] = {"name": name, "res": 0}
+	return float(id)
+
+
+func f_external_call2(id, a0 = null, a1 = null, a2 = null, a3 = null, a4 = null, a5 = null, a6 = null, a7 = null):
+	return 0.0
+
+
+var highscores := []
+
+
+func _highscore_table():
+	if highscores.is_empty():
+		for k in range(10):
+			highscores.append({"name": "<nobody>", "score": 0.0})
+	return highscores
+
+
+func f_highscore_add(name, score):
+	var t = _highscore_table()
+	t.append({"name": str(name), "score": float(score)})
+	t.sort_custom(func(a, b): return a["score"] > b["score"])
+	t.resize(10)
+	return 0.0
+
+
+func f_highscore_value(place):
+	var t = _highscore_table()
+	var k = int(place) - 1
+	return t[k]["score"] if k >= 0 and k < t.size() else 0.0
+
+
+func f_highscore_name(place):
+	var t = _highscore_table()
+	var k = int(place) - 1
+	return t[k]["name"] if k >= 0 and k < t.size() else ""
+
+
+func f_highscore_clear():
+	highscores = []
+	return 0.0
+
 
 
 func f_mplay_ipaddress():

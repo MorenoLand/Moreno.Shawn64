@@ -1,12 +1,11 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
-var v_image_single = 0.0
 func ev_create():
 	if ((absf(GM.vget(7.0, "v_guyright") - 1.0) < 0.00001)):
 		direction = direction + ((-5.0) + (GM.f_random(10.0)))
 	else:
 		direction = direction + (175.0 + (GM.f_random(10.0)))
 	speed = speed + (1.0 + (GM.f_random(4.0)))
-	v_image_single = 2.0
+	image_single = 2.0
 	hspeed = hspeed + GM.vb(7.0, "hspeed")
 	vspeed = vspeed + GM.vb(7.0, "vspeed")
 	alarm[int(0.0)] = (1.0 + (GM.f_random(5.0)))

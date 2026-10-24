@@ -4,7 +4,7 @@ var v_throwpeople = 0.0
 var v_woot = 0.0
 var v_wow = 0.0
 func ev_create():
-	(GM.f_sprite_replace(1.0, ("." + "\\Images\\nodamager.gif"), 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0))
+	(GM.f_sprite_replace(1.0, GM.add(GM.working_directory, "\\Images\\nodamager.gif"), 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0))
 	alarm[int(0.0)] = 180.0
 	v_throwpeople = 0.0
 	v_gogo = 1.0

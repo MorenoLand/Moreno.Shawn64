@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w443.other = self
 				GM.vset(_w443, "v_mytext", "Shawn64:  You know whats worse than a group of noobs?  A group of moderators.  Kill Muzein, Chronic, and Xception for a large sum of $400.  Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w443.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

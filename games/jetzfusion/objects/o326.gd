@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w465.other = self
 				GM.vset(_w465, "v_mytext", "Alf Fly:  I'm a human skull collector.  If you could just bring my 5 skulls in 30 seconds I would give you $300.  Can you do it please?  Push Enter")
-				alarm[int(0.0)] = 15.0
+				_w465.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

@@ -11,7 +11,7 @@ func ev_col_7():
 					continue
 				_w428.other = self
 				GM.vset(_w428, "v_mytext", "C109-E: *laugh* *laugh* You should of seen the little worthless human girl cry when her boomerang flew onto that building over there. *laugh* *laugh*  It might be of some use to you.  Push Enter to go find it. ")
-				alarm[int(0.0)] = 15.0
+				_w428.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(313.0)) - 0.0) < 0.00001))):

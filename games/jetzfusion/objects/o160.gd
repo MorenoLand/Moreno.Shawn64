@@ -12,7 +12,7 @@ func ev_col_7():
 						continue
 					_w158.other = self
 					GM.vset(_w158, "v_mytext", "M703-8E: You really think you can get this chainsaw from me you pathetic human?  Push Enter if your stupid.  I'll blow you to hell!")
-					alarm[int(0.0)] = 15.0
+					_w158.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

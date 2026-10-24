@@ -16,8 +16,6 @@ var v_poo = 0.0
 var v_pooo = 0.0
 var v_show = 0.0
 var v_thrower = 0.0
-var v_view_left = 0.0
-var v_view_top = 0.0
 var v_wow = 0.0
 var v_wow2 = 0.0
 var v_wow3 = 0.0
@@ -82,8 +80,8 @@ func ev_draw():
 				(GM.f_draw_roundrect(GM.vb(0.0, "x"), (GM.vb(0.0, "y") - 20.0), (GM.vb(0.0, "x") + 60.0), (GM.vb(0.0, "y") - 10.0)))
 				v_brush_color = 255.0
 				(GM.f_draw_roundrect(GM.vb(0.0, "x"), (GM.vb(0.0, "y") - 20.0), (GM.vb(0.0, "x") + ((60.0 / 20.0) * GM.vget(3.0, "v_bombpower"))), (GM.vb(0.0, "y") - 10.0)))
-	(GM.f_draw_sprite(238.0, (-1.0), GM.aget(v_view_left, 0.0), GM.aget(v_view_top, 0.0)))
-	(GM.f_draw_sprite(268.0, (-1.0), GM.add(GM.aget(v_view_left, 0.0), 133.0), GM.add(GM.aget(v_view_top, 0.0), 2.0)))
+	(GM.f_draw_sprite(238.0, (-1.0), GM.view_xview[int(0.0)], GM.view_yview[int(0.0)]))
+	(GM.f_draw_sprite(268.0, (-1.0), (GM.view_xview[int(0.0)] + 133.0), (GM.view_yview[int(0.0)] + 2.0)))
 	GM.font_align = 1.0
 	if (((absf(v_show - 1.0) < 0.00001))):
 		(GM.f_draw_set_color(0.0))
@@ -95,49 +93,49 @@ func ev_draw():
 		(GM.f_draw_text((GM.view_xview[0] + 500.0), (GM.view_yview[0] + 27.0), ("" + (GM.f_string(v_mytext3)))))
 	if (((absf((GM.f_instance_number(2.0)) - 1.0) < 0.00001))):
 		if (((absf(GM.vget(0.0, "v_weaponselect") - 1.0) < 0.00001))):
-			(GM.f_draw_sprite(3.0, (-1.0), GM.add(GM.aget(v_view_left, 0.0), 220.0), GM.add(GM.aget(v_view_top, 0.0), 10.0)))
+			(GM.f_draw_sprite(3.0, (-1.0), (GM.view_xview[int(0.0)] + 220.0), (GM.view_yview[int(0.0)] + 10.0)))
 		else:
 			if (((absf(GM.vget(0.0, "v_weaponselect") - 2.0) < 0.00001))):
-				(GM.f_draw_sprite(153.0, (-1.0), GM.add(GM.aget(v_view_left, 0.0), 220.0), GM.add(GM.aget(v_view_top, 0.0), 10.0)))
+				(GM.f_draw_sprite(153.0, (-1.0), (GM.view_xview[int(0.0)] + 220.0), (GM.view_yview[int(0.0)] + 10.0)))
 			else:
 				if (((absf(GM.vget(0.0, "v_weaponselect") - 3.0) < 0.00001))):
-					(GM.f_draw_sprite(176.0, (-1.0), GM.add(GM.aget(v_view_left, 0.0), 220.0), GM.add(GM.aget(v_view_top, 0.0), 10.0)))
+					(GM.f_draw_sprite(176.0, (-1.0), (GM.view_xview[int(0.0)] + 220.0), (GM.view_yview[int(0.0)] + 10.0)))
 				else:
 					if (((absf(GM.vget(0.0, "v_weaponselect") - 4.0) < 0.00001))):
-						(GM.f_draw_sprite(174.0, (-1.0), GM.add(GM.aget(v_view_left, 0.0), 220.0), GM.add(GM.aget(v_view_top, 0.0), 10.0)))
+						(GM.f_draw_sprite(174.0, (-1.0), (GM.view_xview[int(0.0)] + 220.0), (GM.view_yview[int(0.0)] + 10.0)))
 					else:
 						if (((absf(GM.vget(0.0, "v_weaponselect") - 5.0) < 0.00001))):
-							(GM.f_draw_sprite(104.0, (-1.0), GM.add(GM.aget(v_view_left, 0.0), 230.0), GM.add(GM.aget(v_view_top, 0.0), 20.0)))
+							(GM.f_draw_sprite(104.0, (-1.0), (GM.view_xview[int(0.0)] + 230.0), (GM.view_yview[int(0.0)] + 20.0)))
 							(GM.f_action_draw_font("Times New Roman", 0.0, 0.0, 0.0))
 							(GM.f_draw_set_color(0.0))
-							(GM.f_draw_text(GM.add(GM.aget(v_view_left, 0.0), 175.0), GM.add(GM.aget(v_view_top, 0.0), 30.0), ("Ammo: " + (GM.f_string(GM.G["bombs"])))))
+							(GM.f_draw_text((GM.view_xview[int(0.0)] + 175.0), (GM.view_yview[int(0.0)] + 30.0), ("Ammo: " + (GM.f_string(GM.G["bombs"])))))
 						else:
 							if (((absf(GM.vget(0.0, "v_weaponselect") - 6.0) < 0.00001))):
-								(GM.f_draw_sprite(187.0, (-1.0), GM.add(GM.aget(v_view_left, 0.0), 220.0), GM.add(GM.aget(v_view_top, 0.0), 10.0)))
+								(GM.f_draw_sprite(187.0, (-1.0), (GM.view_xview[int(0.0)] + 220.0), (GM.view_yview[int(0.0)] + 10.0)))
 								(GM.f_action_draw_font("Times New Roman", 0.0, 0.0, 0.0))
 								(GM.f_draw_set_color(0.0))
-								(GM.f_draw_text(GM.add(GM.aget(v_view_left, 0.0), 175.0), GM.add(GM.aget(v_view_top, 0.0), 30.0), ("Ammo: " + (GM.f_string(GM.G["bombs"])))))
+								(GM.f_draw_text((GM.view_xview[int(0.0)] + 175.0), (GM.view_yview[int(0.0)] + 30.0), ("Ammo: " + (GM.f_string(GM.G["bombs"])))))
 	if (((absf(v_cheat - 1.0) < 0.00001))):
 		(GM.f_action_draw_font("System", 0.0, 0.0, 0.0))
 		(GM.f_draw_set_color(0.0))
-		(GM.f_draw_text(GM.add(GM.aget(v_view_left, 0.0), 40.0), GM.add(GM.aget(v_view_top, 0.0), 540.0), (GM.keyboard_string + "|")))
+		(GM.f_draw_text((GM.view_xview[int(0.0)] + 40.0), (GM.view_yview[int(0.0)] + 540.0), GM.add(GM.keyboard_string, "|")))
 	v_pen_color = 0.0
 	v_brush_color = 16711680.0
-	(GM.f_draw_rectangle(GM.add(GM.aget(v_view_left, 0.0), 2.0), GM.add(GM.aget(v_view_top, 0.0), 1.0), GM.add(GM.aget(v_view_left, 0.0), 128.0), GM.add(GM.aget(v_view_top, 0.0), 24.0)))
+	(GM.f_draw_rectangle((GM.view_xview[int(0.0)] + 2.0), (GM.view_yview[int(0.0)] + 1.0), (GM.view_xview[int(0.0)] + 128.0), (GM.view_yview[int(0.0)] + 24.0)))
 	v_brush_color = 255.0
-	(GM.f_draw_rectangle(GM.add(GM.aget(v_view_left, 0.0), 2.0), GM.add(GM.aget(v_view_top, 0.0), 1.0), GM.add(GM.aget(v_view_left, 0.0), ((128.0 / 100.0) * GM.G["lives"])), GM.add(GM.aget(v_view_top, 0.0), 24.0)))
+	(GM.f_draw_rectangle((GM.view_xview[int(0.0)] + 2.0), (GM.view_yview[int(0.0)] + 1.0), (GM.view_xview[int(0.0)] + ((128.0 / 100.0) * GM.G["lives"])), (GM.view_yview[int(0.0)] + 24.0)))
 	v_pen_color = 0.0
 	v_brush_color = 16711680.0
-	(GM.f_draw_rectangle(GM.add(GM.aget(v_view_left, 0.0), 2.0), GM.add(GM.aget(v_view_top, 0.0), 26.0), GM.add(GM.aget(v_view_left, 0.0), 128.0), GM.add(GM.aget(v_view_top, 0.0), 48.0)))
+	(GM.f_draw_rectangle((GM.view_xview[int(0.0)] + 2.0), (GM.view_yview[int(0.0)] + 26.0), (GM.view_xview[int(0.0)] + 128.0), (GM.view_yview[int(0.0)] + 48.0)))
 	v_brush_color = 255.0
-	(GM.f_draw_rectangle(GM.add(GM.aget(v_view_left, 0.0), 2.0), GM.add(GM.aget(v_view_top, 0.0), 26.0), GM.add(GM.aget(v_view_left, 0.0), ((128.0 / 100.0) * GM.G["poo"])), GM.add(GM.aget(v_view_top, 0.0), 48.0)))
+	(GM.f_draw_rectangle((GM.view_xview[int(0.0)] + 2.0), (GM.view_yview[int(0.0)] + 26.0), (GM.view_xview[int(0.0)] + ((128.0 / 100.0) * GM.G["poo"])), (GM.view_yview[int(0.0)] + 48.0)))
 	(GM.f_action_draw_font("System", 0.0, 0.0, 0.0))
 	(GM.f_draw_set_color(0.0))
-	(GM.f_draw_text(GM.add(GM.aget(v_view_left, 0.0), 65.0), GM.add(GM.aget(v_view_top, 0.0), 3.0), "Destruction"))
-	(GM.f_draw_text(GM.add(GM.aget(v_view_left, 0.0), 65.0), GM.add(GM.aget(v_view_top, 0.0), 28.0), "Health"))
+	(GM.f_draw_text((GM.view_xview[int(0.0)] + 65.0), (GM.view_yview[int(0.0)] + 3.0), "Destruction"))
+	(GM.f_draw_text((GM.view_xview[int(0.0)] + 65.0), (GM.view_yview[int(0.0)] + 28.0), "Health"))
 	(GM.f_action_draw_font("Courier", 15.0, 0.0, 0.0))
 	(GM.f_draw_set_color(16777215.0))
-	(GM.f_draw_text(GM.add(GM.aget(v_view_left, 0.0), 400.0), 580.0, ("Money - $" + (GM.f_string(v_currentmoney)))))
+	(GM.f_draw_text((GM.view_xview[int(0.0)] + 400.0), 580.0, ("Money - $" + (GM.f_string(v_currentmoney)))))
 func ev_keypress_32():
 	(self.script_game_pause(0.0, 0.0, 0.0, 0.0, 0.0))
 func ev_keypress_27():

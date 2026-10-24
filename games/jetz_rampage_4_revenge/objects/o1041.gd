@@ -6,7 +6,7 @@ func ev_create():
 	hspeed = (-17.0)
 	v_mypower = 35.0
 	v_otherz = (GM.f_instance_create(x, 1125.0, 771.0))
-	GM.vset(v_otherz, "v_image_single", 0.0)
+	GM.vsetb(v_otherz, "image_single", 0.0)
 func ev_destroy():
 	for _w917 in GM.with_list((v_otherz), self):
 		if _w917._dead:
@@ -19,7 +19,7 @@ func ev_step():
 	if ((absf(gravity - 0.0) < 0.00001)):
 		if ((absf((GM.f_instance_number(791.0)) - 0.0) < 0.00001)):
 			(GM.f_sound_volume(222.0, (1.0 - (((GM.f_distance_to_point(self, (GM.view_xview[0] + 400.0), (GM.view_yview[0] + 300.0))) / 3000.0)))))
-			(GM.f_sound_pan(222.0, (0.5 - (((((GM.add(GM.aget(v_view_left, 0.0), ((GM.aget(v_view_width, 0.0) / 2.0)))) - x)) / 1000.0)))))
+			(GM.f_sound_pan(222.0, (0.5 - ((((((GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0)))) - x)) / 1000.0)))))
 		if ((hspeed > 0.0)):
 			(GM.f_instance_create((x + 4.0), (y + 41.0), 490.0))
 		else:

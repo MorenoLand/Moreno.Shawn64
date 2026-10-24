@@ -1,7 +1,5 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_noobstokill = 0.0
-var v_view_left = 0.0
-var v_view_width = 0.0
 var v_xxx = 0.0
 func ev_create():
 	v_noobstokill = 0.0
@@ -9,7 +7,7 @@ func ev_step():
 	if ((((GM.f_instance_number(295.0)) < 30.0))):
 		while true:
 			v_xxx = (GM.f_random(GM.room_width))
-			if (((v_xxx < (GM.aget(v_view_left, 0.0) - 40.0)) or (v_xxx > GM.add(GM.aget(v_view_left, 0.0), GM.aget(v_view_width, 0.0))))):
+			if (((v_xxx < (GM.view_xview[int(0.0)] - 40.0)) or (v_xxx > (GM.view_xview[int(0.0)] + GM.view_wview[int(0.0)])))):
 				break
 		(GM.f_instance_create(v_xxx, 480.0, 295.0))
 	if (not ((((GM.f_sound_isplaying(60.0)))) >= 0.5)):

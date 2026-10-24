@@ -1,7 +1,6 @@
 extends "res://games/jetzfusion/scripts.gd"
-var v_image_single = 0.0
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 	(GM.f_action_move(self, "010000000", (3.0 + (GM.f_random(3.0))), 0.0))
 func ev_col_17():
 	vspeed = 0.0

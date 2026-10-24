@@ -1,7 +1,7 @@
 extends "res://games/jetz_rampage_4_revenge/objects/o684.gd"
 func ev_create():
 	v_mypower = 3.0
-	v_image_single = 0.0
+	image_single = 0.0
 	v_firepower = 14.0
 func ev_col_656():
 	(GM.f_instance_create(x, y, 688.0))

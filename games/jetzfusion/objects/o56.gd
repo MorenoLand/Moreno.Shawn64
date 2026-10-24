@@ -1,6 +1,5 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_hitornot = 0.0
-var v_image_single = 0.0
 var v_spite_height = 0.0
 func ev_create():
 	gravity_direction = 270.0
@@ -23,7 +22,7 @@ func ev_col_464():
 func ev_col_338():
 	self.ev_user(0.0)
 func ev_col_330():
-	if (not (((absf(v_image_single - 4.0) < 0.00001)))):
+	if (not (((absf(image_single - 4.0) < 0.00001)))):
 		self.ev_user(0.0)
 func ev_col_253():
 	self.ev_user(0.0)
@@ -32,7 +31,7 @@ func ev_col_244():
 		(self.script_adddamage(0.0, 0.0, 0.0, 0.0, 0.0))
 		self.ev_user(0.0)
 func ev_col_223():
-	if (not (((absf(v_image_single - 4.0) < 0.00001)))):
+	if (not (((absf(image_single - 4.0) < 0.00001)))):
 		self.ev_user(0.0)
 func ev_col_222():
 	self.ev_user(0.0)
@@ -51,10 +50,10 @@ func ev_col_85():
 func ev_col_80():
 	self.ev_user(0.0)
 func ev_col_77():
-	if (not (((absf(v_image_single - 4.0) < 0.00001)))):
+	if (not (((absf(image_single - 4.0) < 0.00001)))):
 		self.ev_user(0.0)
 func ev_col_71():
-	if (not (((absf(v_image_single - 10.0) < 0.00001)))):
+	if (not (((absf(image_single - 10.0) < 0.00001)))):
 		self.ev_user(0.0)
 func ev_col_66():
 	self.ev_user(0.0)

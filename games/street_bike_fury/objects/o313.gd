@@ -19,7 +19,7 @@ func ev_col_0():
 					continue
 				_w139.other = self
 				GM.vset(_w139, "v_flametime", GM.vget(_w139, "v_flametime") - 0.13)
-				alarm[int(10.0)] = 80.0
+				_w139.alarm[int(10.0)] = 80.0
 				if ((GM.vget(_w139, "v_flametime") < 0.0)):
 					for _w140 in GM.with_list((0.0), _w139):
 						if _w140._dead:
@@ -31,7 +31,7 @@ func ev_col_0():
 							GM.vsetb(GM.vget(_w140, "v_this"), "hspeed", ((GM.vb(_w140.other, "hspeed") - 10.0) + (GM.f_random(20.0))))
 							GM.vsetb(GM.vget(_w140, "v_this"), "vspeed", ((GM.vb(_w140.other, "vspeed") - 10.0) + (GM.f_random(20.0))))
 						GM.vset(_w140, "v_damaged", (-1.0))
-						alarm[int(10.0)] = 20.0
+						_w140.alarm[int(10.0)] = 20.0
 						GM.health = GM.health - 0.1
 			(GM.f_instance_destroy(self))
 func ev_draw():

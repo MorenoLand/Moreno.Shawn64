@@ -1,6 +1,5 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_blah = 0.0
-var v_view_left = 0.0
 func ev_create():
 	y = (-50.0)
 	v_blah = 0.0
@@ -48,4 +47,4 @@ func ev_step():
 		GM.background_hspeed[int(1.0)] = 0.0
 		GM.background_hspeed[int(0.0)] = 0.0
 func ev_draw():
-	(GM.f_draw_sprite(319.0, (-1.0), GM.add(GM.aget(v_view_left, 2.0), 189.0), 35.0))
+	(GM.f_draw_sprite(319.0, (-1.0), (GM.view_xview[int(2.0)] + 189.0), 35.0))

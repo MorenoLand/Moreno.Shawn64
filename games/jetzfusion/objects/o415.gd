@@ -1,7 +1,6 @@
 extends "res://games/jetzfusion/scripts.gd"
-var v_image_single = 0.0
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 	gravity_direction = 270.0
 	gravity = 0.2
 func ev_col_17():

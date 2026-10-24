@@ -9,6 +9,7 @@ def q(s):
 def strarg(v):
     v = v.strip()
     if v[:1] in ('"', "'"):
+        v = v.rstrip('; ' + chr(9) + chr(13) + chr(10))
         if v.count(v[0]) % 2 == 1:
             v += v[0]
         return v
@@ -268,6 +269,8 @@ def make(ctx):
         'action_path': lambda a: 'path_start(%s, %s, %s, %s)' % (e(a, 0), e(a, 1), e(a, 2), e(a, 3)),
         'action_set_cursor': lambda a: '',
         'action_if_health': lambda a: 'health %s %s' % (['==', '<', '>'][int(e(a, 1))] if e(a, 1) in ('0', '1', '2') else '==', e(a, 0)),
+        'gm4_font': lambda a: 'action_draw_font(%s, %s, %s, 0); draw_set_color(%s)' % (q(sd(a, 0).strip()), e(a, 1), e(a, 3), e(a, 2)),
+        'gm4_sprite': lambda a: 'sprite_index = %s; image_speed = %s' % (e(a, 0), e(a, 1)),
         'action_line_color': lambda a: 'draw_set_color(%s)' % e(a, 0),
     }
 
@@ -323,7 +326,7 @@ def to_gml(actions, ctx):
             return 'exit', i + 1
         if k == 5:
             body, j = item(i + 1) if i + 1 < n_ else ('', i + 1)
-            return 'repeat (%s) %s' % (n(a['args'][0]) if a['args'] else '1', body), j
+            return 'repeat (%s) %s' % (n(a['args'][0]) if a['args'] else '1', body or ';'), j
         text = action_text(a)
         if a['question']:
             body, j = item(i + 1) if i + 1 < n_ else (';', i + 1)

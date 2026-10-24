@@ -1,6 +1,6 @@
 extends "res://games/jetzfusion/objects/o440.gd"
 func ev_create():
-	v_image_single = 0.0
+	image_single = 0.0
 	gravity_direction = 270.0
 	gravity = 0.1
 func ev_col_448():

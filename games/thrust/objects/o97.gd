@@ -53,6 +53,6 @@ func ev_col_0():
 			_w47.other = self
 			if ((absf(GM.vget(_w47, "v_exploded") - 0.0) < 0.00001)):
 				(GM.f_motion_add(_w47, (GM.f_random(360.0)), 20.0))
-				alarm[int(5.0)] = 15.0
+				_w47.alarm[int(5.0)] = 15.0
 				GM.vset(_w47, "v_exploded", 1.0)
 		(GM.f_instance_destroy(self))

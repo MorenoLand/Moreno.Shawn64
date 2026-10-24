@@ -17,8 +17,6 @@ var v_movenow = 0.0
 var v_myhealth = 0.0
 var v_mymoney = 0.0
 var v_shotready = 0.0
-var v_view_left = {}
-var v_view_top = {}
 var v_weapon = 0.0
 var v_woot = 0.0
 var v_woot2 = 0.0
@@ -79,7 +77,7 @@ func ev_col_1134():
 	v_myhealth = v_myhealth - 0.1
 func ev_col_962():
 	if ((speed > 3.0)):
-		GM.vset(self.other, "v_image_single", 1.0)
+		GM.vsetb(self.other, "image_single", 1.0)
 		GM.vb(self.other, "alarm")[int(0.0)] = 3.0
 		(GM.f_sound_play(144.0))
 	(GM.f_move_bounce_solid(self, 0.0))
@@ -371,9 +369,9 @@ func ev_draw():
 			(GM.f_draw_sprite(1007.0, (-1.0), (x - 17.0), (y - 3.0)))
 	GM.font_align = 1.0
 	if ((absf(GM.view_current - 1.0) < 0.00001)):
-		(GM.f_draw_sprite(842.0, ((GM.f_point_direction(GM.add(GM.aget(v_view_left, 1.0), 400.0), GM.add(GM.aget(v_view_top, 1.0), 150.0), (GM.vb(979.0, "x") + (GM.vb(979.0, "sprite_width") / 2.0)), (GM.vb(979.0, "y") + (GM.vb(979.0, "sprite_height") / 2.0)))) / 10.0), GM.add(GM.aget(v_view_left, 1.0), 5.0), GM.add(GM.aget(v_view_top, 1.0), 30.0)))
-		(GM.f_draw_healthbar(GM.add(GM.aget(v_view_left, 1.0), 5.0), GM.add(GM.aget(v_view_top, 1.0), 4.0), GM.add(GM.add(GM.aget(v_view_left, 1.0), 5.0), 189.0), GM.add(GM.aget(v_view_top, 1.0), 24.0), v_myhealth, 0.0, 255.0, 16711680.0, 0.0, 0.0, 0.0))
-		(GM.f_draw_sprite(822.0, 0.0, GM.aget(v_view_left, 1.0), GM.add(GM.aget(v_view_top, 1.0), 295.0)))
+		(GM.f_draw_sprite(842.0, ((GM.f_point_direction((GM.view_xview[int(1.0)] + 400.0), (GM.view_yview[int(1.0)] + 150.0), (GM.vb(979.0, "x") + (GM.vb(979.0, "sprite_width") / 2.0)), (GM.vb(979.0, "y") + (GM.vb(979.0, "sprite_height") / 2.0)))) / 10.0), (GM.view_xview[int(1.0)] + 5.0), (GM.view_yview[int(1.0)] + 30.0)))
+		(GM.f_draw_healthbar((GM.view_xview[int(1.0)] + 5.0), (GM.view_yview[int(1.0)] + 4.0), ((GM.view_xview[int(1.0)] + 5.0) + 189.0), (GM.view_yview[int(1.0)] + 24.0), v_myhealth, 0.0, 255.0, 16711680.0, 0.0, 0.0, 0.0))
+		(GM.f_draw_sprite(822.0, 0.0, GM.view_xview[int(1.0)], (GM.view_yview[int(1.0)] + 295.0)))
 func ev_keypress_74():
 	(GM.f_sound_play(152.0))
 	if ((absf(v_guyright - 1.0) < 0.00001)):

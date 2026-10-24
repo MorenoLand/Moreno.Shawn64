@@ -13,7 +13,7 @@ func script_view_check(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argume
 	if not (((GM.f_instance_exists(argument0))) >= 0.5):
 		return 0.0
 	else:
-		if ((((GM.vb(argument0, "bbox_right") > GM.aget(GM.vget(self, "v_view_left"), 0.0)) and (GM.vb(argument0, "x") < GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), GM.aget(GM.vget(self, "v_view_width"), 0.0)))) and (GM.vb(argument0, "bbox_bottom") > GM.aget(GM.vget(self, "v_view_top"), 0.0))) and (GM.vb(argument0, "y") < GM.add(GM.aget(GM.vget(self, "v_view_top"), 0.0), GM.aget(GM.vget(self, "v_view_height"), 0.0)))):
+		if ((((GM.vb(argument0, "bbox_right") > GM.view_xview[int(0.0)]) and (GM.vb(argument0, "x") < (GM.view_xview[int(0.0)] + GM.view_wview[int(0.0)]))) and (GM.vb(argument0, "bbox_bottom") > GM.view_yview[int(0.0)])) and (GM.vb(argument0, "y") < (GM.view_yview[int(0.0)] + GM.view_hview[int(0.0)]))):
 			return 1.0
 		else:
 			return 0.0
@@ -297,8 +297,8 @@ func script_addyellow(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argumen
 	GM.vset(GM.vget(self, "v_shizzeds"), "v_mypower", 5.0)
 	return 0.0
 func script_copzapin(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argument3 = 0.0, argument4 = 0.0, argument5 = 0.0, argument6 = 0.0, argument7 = 0.0, argument8 = 0.0, argument9 = 0.0, argument10 = 0.0, argument11 = 0.0, argument12 = 0.0, argument13 = 0.0, argument14 = 0.0, argument15 = 0.0):
-	(GM.f_sound_volume(205.0, (1.0 - (((GM.f_distance_to_point(self, GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), ((GM.aget(GM.vget(self, "v_view_width"), 0.0) / 2.0))), y)) / 5000.0)))))
-	(GM.f_sound_pan(205.0, (0.5 - (((((GM.add(GM.aget(GM.vget(self, "v_view_left"), 0.0), ((GM.aget(GM.vget(self, "v_view_width"), 0.0) / 2.0)))) - x)) / 1000.0)))))
+	(GM.f_sound_volume(205.0, (1.0 - (((GM.f_distance_to_point(self, (GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0))), y)) / 5000.0)))))
+	(GM.f_sound_pan(205.0, (0.5 - ((((((GM.view_xview[int(0.0)] + ((GM.view_wview[int(0.0)] / 2.0)))) - x)) / 1000.0)))))
 	(GM.f_sound_play(205.0))
 	return 0.0
 func script_addsilver(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argument3 = 0.0, argument4 = 0.0, argument5 = 0.0, argument6 = 0.0, argument7 = 0.0, argument8 = 0.0, argument9 = 0.0, argument10 = 0.0, argument11 = 0.0, argument12 = 0.0, argument13 = 0.0, argument14 = 0.0, argument15 = 0.0):
@@ -415,7 +415,7 @@ func script_mp3_list(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, argument
 	GM.aset(GM.G["music"], l_a, (-1.0))
 	GM.aset(GM.G["musicName"], l_a, (-1.0))
 	GM.G["total"] = 0.0
-	l_b = (GM.f_file_find_first(("." + "\\music\\custom_music\\*.mp3"), 0.0))
+	l_b = (GM.f_file_find_first(GM.add(GM.working_directory, "\\music\\custom_music\\*.mp3"), 0.0))
 	if ((l_b != "")):
 		GM.aset(GM.G["music"], l_a, (GM.f_sound_add(GM.add("music\\custom_music\\", l_b), 1.0, 0.0, 1.0)))
 		GM.aset(GM.G["musicName"], l_a, (GM.f_string_replace(l_b, ".mp3", "")))
@@ -455,7 +455,7 @@ func script_waydirection4(argument0 = 0.0, argument1 = 0.0, argument2 = 0.0, arg
 	for _r952 in range(int((35.0))):
 		(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 637.0))
 	visible = 1.0
-	GM.vset(self, "v_image_single", 0.0)
+	image_single = 0.0
 	gravity = 0.3
 	gravity_direction = 270.0
 	direction = (GM.f_random(360.0))

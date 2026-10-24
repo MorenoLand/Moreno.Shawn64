@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w354.other = self
 				GM.vset(_w354, "v_mytext", "MuZzLe:  Want to do a motor cycle challenge?  Collect all the tires within my record of 30 seconds for $100.  Up Accelerates, Right and Left adjust levels in the air, and control does a wheelie.  Push Enter!")
-				alarm[int(0.0)] = 15.0
+				_w354.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

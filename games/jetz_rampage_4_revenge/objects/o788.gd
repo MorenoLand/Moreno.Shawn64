@@ -1,5 +1,4 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
-var v_image_single = 0.0
 var v_wee = 0.0
 var v_yyy = 0.0
 func ev_create():
@@ -24,7 +23,7 @@ func ev_col_7():
 	(GM.f_sound_play(221.0))
 	(GM.f_instance_destroy(self))
 func ev_other_10():
-	v_image_single = 0.0
+	image_single = 0.0
 	gravity = 0.0
 	hspeed = 0.0
 	vspeed = 0.0

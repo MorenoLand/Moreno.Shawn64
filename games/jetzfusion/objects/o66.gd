@@ -3,12 +3,9 @@ var v_alive = 0.0
 var v_burned = 0.0
 var v_char = 0.0
 var v_girl = 0.0
-var v_image_single = 0.0
 var v_mypower = 0.0
 var v_poom = 0.0
 var v_scream = 0.0
-var v_view_left = 0.0
-var v_view_width = 0.0
 var v_whater = 0.0
 var v_wow1 = 0.0
 var v_wow2 = 0.0
@@ -108,7 +105,7 @@ func ev_destroy():
 		if ((((GM.f_instance_number(66.0)) < 20.0))):
 			while true:
 				v_xxx = (GM.f_random(GM.room_width))
-				if (((v_xxx < (GM.aget(v_view_left, 0.0) - 40.0)) or (v_xxx > GM.add(GM.aget(v_view_left, 0.0), GM.aget(v_view_width, 0.0))))):
+				if (((v_xxx < (GM.view_xview[int(0.0)] - 40.0)) or (v_xxx > (GM.view_xview[int(0.0)] + GM.view_wview[int(0.0)])))):
 					break
 			(GM.f_instance_create(v_xxx, 580.0, 66.0))
 func ev_alarm_5():
@@ -647,7 +644,7 @@ func ev_col_279():
 				(self.script_screamsscript(14.0))
 			if ((absf(v_char - 11.0) < 0.00001)):
 				(self.script_screamsscript(8.0))
-			v_image_single = 1.0
+			image_single = 1.0
 			speed = 0.1
 			alarm[int(2.0)] = 20.0
 			v_alive = 0.0
@@ -704,7 +701,7 @@ func ev_col_166():
 			(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 33.0))
 		for _r77 in range(int((10.0))):
 			(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 46.0))
-		v_image_single = 1.0
+		image_single = 1.0
 		speed = 0.1
 		alarm[int(2.0)] = 5.0
 		if (((absf(v_alive - 1.0) < 0.00001))):

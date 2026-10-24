@@ -28,7 +28,7 @@ func ev_alarm_1():
 		if _w144._dead:
 			continue
 		_w144.other = self
-		alarm[int(11.0)] = 1.0
+		_w144.alarm[int(11.0)] = 1.0
 func ev_alarm_0():
 	(GM.f_sound_play(98.0))
 	(GM.f_instance_create(GM.view_xview[0], GM.view_yview[0], 315.0))

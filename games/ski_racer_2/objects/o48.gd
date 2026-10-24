@@ -1,6 +1,5 @@
 extends "res://games/ski_racer_2/scripts.gd"
 var v_blinker = 0.0
-var v_image_single = 0.0
 var v_is = 0.0
 var v_right = 0.0
 var v_showme = 0.0
@@ -25,7 +24,7 @@ func ev_create():
 		sprite_index = 34.0
 	if ((GM.G["p1"] == "blink")):
 		sprite_index = 36.0
-	v_image_single = (GM.vb(0.0, "direction") / 5.625)
+	image_single = (GM.vb(0.0, "direction") / 5.625)
 	v_thing1 = y
 	gravity_direction = 270.0
 	gravity = 0.3

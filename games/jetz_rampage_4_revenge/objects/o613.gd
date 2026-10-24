@@ -1,13 +1,12 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_fluh = 0.0
-var v_image_single = 0.0
 func ev_create():
 	if ((absf(GM.room - 1.0) < 0.00001)):
 		sprite_index = 519.0
 	if ((absf(GM.room - 16.0) < 0.00001)):
 		sprite_index = 871.0
 	(self.script_adddamage())
-	v_image_single = (image_number - 1.0)
+	image_single = (image_number - 1.0)
 	gravity_direction = 270.0
 	gravity = 0.4
 func ev_col_656():

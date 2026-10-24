@@ -1,5 +1,4 @@
 extends "res://games/svsj/scripts.gd"
-var v_image_single = 0.0
 var v_talk = 0.0
 var v_talking = 0.0
 var v_wow = 0.0
@@ -30,21 +29,21 @@ func ev_step():
 	if not ((((GM.f_mouse_check_button(1.0)))) >= 0.5):
 		if not ((((GM.f_mouse_check_button(2.0)))) >= 0.5):
 			hspeed = 0.0
-			v_image_single = 1.0
+			image_single = 1.0
 	if (((GM.f_mouse_check_button(1.0)))) >= 0.5:
 		if ((absf(v_wow - 1.0) < 0.00001)):
 			(GM.f_sound_play(11.0))
 			alarm[int(0.0)] = 3.0
 			v_wow = 0.0
 		hspeed = (-5.0)
-		v_image_single = (-1.0)
+		image_single = (-1.0)
 	if (((GM.f_mouse_check_button(2.0)))) >= 0.5:
 		if ((absf(v_wow - 1.0) < 0.00001)):
 			(GM.f_sound_play(11.0))
 			alarm[int(0.0)] = 3.0
 			v_wow = 0.0
 		hspeed = 5.0
-		v_image_single = (-1.0)
+		image_single = (-1.0)
 func ev_col_6():
 	hspeed = 0.0
 func ev_col_5():

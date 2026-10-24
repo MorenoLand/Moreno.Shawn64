@@ -1,5 +1,4 @@
 extends "res://games/jetzfusion/scripts.gd"
-var v_image_single = 0.0
 func ev_step():
 	if ((((GM.view_xview[0] - sprite_width) < x))):
 		if ((((GM.view_xview[0] + 800.0) > x))):
@@ -10,4 +9,4 @@ func ev_other_7():
 		(GM.f_instance_create(((x + 70.0) + (GM.f_random(40.0))), ((y + 100.0) + (GM.f_random(30.0))), 27.0))
 	(GM.f_sound_play(42.0))
 	(GM.f_sound_play(34.0))
-	v_image_single = 12.0
+	image_single = 12.0

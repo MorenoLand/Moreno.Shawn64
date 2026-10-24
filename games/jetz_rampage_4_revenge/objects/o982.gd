@@ -5,16 +5,12 @@ var v_centery = 0.0
 var v_i = 0.0
 var v_j = 0.0
 var v_pen_color = 0.0
-var v_view_height = 0.0
-var v_view_left = {}
-var v_view_top = {}
-var v_view_width = 0.0
 var v_wee = 0.0
 func ev_draw():
 	if ((((GM.f_keyboard_check(16.0))) >= 0.5 and (absf(GM.vget(7.0, "v_movenow") - 1.0) < 0.00001))):
 		v_pen_color = (GM.f_make_color(68.0, 68.0, 68.0))
-		v_centerx = GM.add(GM.aget(v_view_left, 0.0), (GM.aget(v_view_width, 0.0) / 2.0))
-		v_centery = GM.add(GM.aget(v_view_top, 0.0), (GM.aget(v_view_height, 0.0) / 2.0))
+		v_centerx = (GM.view_xview[int(0.0)] + (GM.view_wview[int(0.0)] / 2.0))
+		v_centery = (GM.view_yview[int(0.0)] + (GM.view_hview[int(0.0)] / 2.0))
 		(GM.f_draw_sprite(465.0, 0.0, v_centerx, v_centery))
 		v_i = 0.0
 		while (v_i < 3.0):

@@ -1,6 +1,5 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_grrr = 0.0
-var v_image_single = 0.0
 var v_shot = 0.0
 func ev_create():
 	gravity_direction = 270.0
@@ -28,6 +27,6 @@ func ev_col_489():
 			vspeed = 0.0
 			hspeed = 0.0
 func ev_other_7():
-	v_image_single = (image_number - 1.0)
+	image_single = (image_number - 1.0)
 func ev_other_0():
 	(GM.f_instance_destroy(self))

@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w601.other = self
 				GM.vset(_w601, "v_mytext", "Scubachef:  Ahhhh.  There are some more bombs you missed.  These ones may be harder to deactivate.  $400 reward for it thought so push enter.")
-				alarm[int(0.0)] = 15.0
+				_w601.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

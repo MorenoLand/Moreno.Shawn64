@@ -91,6 +91,16 @@ var image_number:
 	get:
 		return GM.sprite_dim(sprite_index, 4)
 
+var image_single:
+	get:
+		return image_index if image_speed == 0.0 else -1.0
+	set(v):
+		if v >= 0.0:
+			image_index = v
+			image_speed = 0.0
+		else:
+			image_speed = 1.0
+
 var bbox_left:
 	get:
 		return GM.inst_bbox(self, x, y)[0]

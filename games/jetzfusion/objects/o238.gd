@@ -8,7 +8,7 @@ func ev_col_7():
 						continue
 					_w306.other = self
 					GM.vset(_w306, "v_mytext", "Beanjo: More people!  This time you have to move faster!  I don't have much time to get out of here before I am caught!  $400 sound good this time?  Push enter!")
-					alarm[int(0.0)] = 15.0
+					_w306.alarm[int(0.0)] = 15.0
 	if (((absf((GM.f_instance_number(242.0)) - 0.0) < 0.00001))):
 		if ((((GM.f_instance_number(245.0)) > 0.0))):
 			(GM.f_sound_play(19.0))

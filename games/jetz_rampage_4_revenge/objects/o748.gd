@@ -83,9 +83,9 @@ func ev_other_10():
 	GM.vsetb(v_wows, "vspeed", GM.vb(v_wows, "vspeed") + vspeed)
 	GM.vsetb(v_wows, "speed", GM.vb(v_wows, "speed") - (GM.f_random(1.0)))
 	if ((hspeed > 0.0)):
-		GM.vset(v_wows, "v_image_single", 0.0)
+		GM.vsetb(v_wows, "image_single", 0.0)
 	else:
-		GM.vset(v_wows, "v_image_single", 1.0)
+		GM.vsetb(v_wows, "image_single", 1.0)
 	v_woot = (GM.f_instance_create(x, y, 711.0))
 	if ((absf(v_persond - 1.0) < 0.00001)):
 		GM.vsetb(v_woot, "sprite_index", 504.0)

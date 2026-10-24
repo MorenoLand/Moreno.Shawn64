@@ -1,0 +1,1 @@
+["f_action_draw_font", "f_draw_set_color", "f_draw_text", "f_game_load", "f_game_save", "f_get_open_filename", "f_get_save_filename", "f_instance_create", "f_instance_destroy", "f_instance_number", "f_motion_set", "f_move_bounce_solid", "f_random", "f_sound_loop", "f_sound_play", "f_sound_replace", "f_sound_stop", "f_string"]

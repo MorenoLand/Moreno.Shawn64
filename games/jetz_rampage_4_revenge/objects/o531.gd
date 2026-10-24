@@ -2,7 +2,6 @@ extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_bridge = 0.0
 var v_fluh = 0.0
 var v_grrr = 0.0
-var v_image_single = 0.0
 var v_mypower = 0.0
 var v_onelectric = 0.0
 var v_onfire = 0.0
@@ -151,7 +150,7 @@ func ev_alarm_7():
 	if ((absf(v_sheets - 0.0) < 0.00001)):
 		v_wee = (GM.f_instance_create(x, y, 914.0))
 		GM.vsetb(v_wee, "depth", depth)
-		GM.vset(v_wee, "v_image_single", 0.0)
+		GM.vsetb(v_wee, "image_single", 0.0)
 		v_sheets = 1.0
 	else:
 		if ((absf(v_sheets - 1.0) < 0.00001)):
@@ -160,7 +159,7 @@ func ev_alarm_7():
 			if ((absf(v_sheets - 2.0) < 0.00001)):
 				v_wee = (GM.f_instance_create(x, y, 914.0))
 				GM.vsetb(v_wee, "depth", depth)
-				GM.vset(v_wee, "v_image_single", 1.0)
+				GM.vsetb(v_wee, "image_single", 1.0)
 				v_sheets = 0.0
 	alarm[int(7.0)] = 2.0
 func ev_alarm_6():
@@ -331,8 +330,8 @@ func ev_col_772():
 			if ((absf(sprite_index - 712.0) < 0.00001)):
 				sprite_index = 713.0
 			direction = 180.0
-		v_image_single = 0.0
-		v_image_single = (-1.0)
+		image_single = 0.0
+		image_single = (-1.0)
 		if ((absf(v_persond - 13.0) < 0.00001)):
 			speed = (12.0 + (GM.f_random(2.0)))
 		else:
@@ -443,7 +442,7 @@ func ev_col_656():
 					GM.vsetb(v_sett, "direction", ((GM.f_point_direction((x + (sprite_width / 2.0)), (y + (sprite_height / 2.0)), GM.vb(v_fluh, "x"), GM.vb(v_fluh, "y"))) - 180.0))
 					GM.vsetb(v_sett, "speed", GM.vb(v_sett, "speed") + (5.0 + (GM.f_random(10.0))))
 					GM.vsetb(v_sett, "depth", (depth + 1.0))
-					GM.vset(v_sett, "v_image_single", 0.0)
+					GM.vsetb(v_sett, "image_single", 0.0)
 					GM.vset(v_sett, "v_grrr", v_grrr)
 					GM.vset(v_sett, "v_gore", ((y + sprite_height) - 6.0))
 					v_sett = (GM.f_instance_create(((x + 9.0) + (GM.f_random(13.0))), (y + 45.0), 645.0))
@@ -451,7 +450,7 @@ func ev_col_656():
 					GM.vsetb(v_sett, "direction", ((GM.f_point_direction((x + (sprite_width / 2.0)), (y + (sprite_height / 2.0)), GM.vb(v_fluh, "x"), GM.vb(v_fluh, "y"))) - 180.0))
 					GM.vsetb(v_sett, "speed", GM.vb(v_sett, "speed") + (5.0 + (GM.f_random(10.0))))
 					GM.vsetb(v_sett, "depth", depth)
-					GM.vset(v_sett, "v_image_single", 0.0)
+					GM.vsetb(v_sett, "image_single", 0.0)
 					GM.vset(v_sett, "v_grrr", v_grrr)
 					GM.vset(v_sett, "v_gore", ((y + sprite_height) - 6.0))
 					v_sett = (GM.f_instance_create(((x + 9.0) + (GM.f_random(13.0))), (y + 45.0), 645.0))
@@ -459,14 +458,14 @@ func ev_col_656():
 					GM.vsetb(v_sett, "direction", ((GM.f_point_direction((x + (sprite_width / 2.0)), (y + (sprite_height / 2.0)), GM.vb(v_fluh, "x"), GM.vb(v_fluh, "y"))) - 180.0))
 					GM.vsetb(v_sett, "speed", GM.vb(v_sett, "speed") + (5.0 + (GM.f_random(10.0))))
 					GM.vsetb(v_sett, "depth", depth)
-					GM.vset(v_sett, "v_image_single", 0.0)
+					GM.vsetb(v_sett, "image_single", 0.0)
 					GM.vset(v_sett, "v_grrr", v_grrr)
 					GM.vset(v_sett, "v_gore", ((y + sprite_height) - 6.0))
 					v_sett = (GM.f_instance_create(((x + 5.0) + (GM.f_random(9.0))), ((y + 34.0) + (GM.f_random(2.0))), 646.0))
 					v_fluh = GM.vget(self.other, "v_wooper")
 					GM.vsetb(v_sett, "direction", ((GM.f_point_direction((x + (sprite_width / 2.0)), (y + (sprite_height / 2.0)), GM.vb(v_fluh, "x"), GM.vb(v_fluh, "y"))) - 180.0))
 					GM.vsetb(v_sett, "speed", GM.vb(v_sett, "speed") + (5.0 + (GM.f_random(10.0))))
-					GM.vset(v_sett, "v_image_single", 0.0)
+					GM.vsetb(v_sett, "image_single", 0.0)
 					GM.vsetb(v_sett, "depth", depth)
 					GM.vset(v_sett, "v_grrr", v_grrr)
 					GM.vset(v_sett, "v_gore", ((y + sprite_height) - 6.0))
@@ -474,7 +473,7 @@ func ev_col_656():
 					v_fluh = GM.vget(self.other, "v_wooper")
 					GM.vsetb(v_sett, "direction", ((GM.f_point_direction((x + (sprite_width / 2.0)), (y + (sprite_height / 2.0)), GM.vb(v_fluh, "x"), GM.vb(v_fluh, "y"))) - 180.0))
 					GM.vsetb(v_sett, "speed", GM.vb(v_sett, "speed") + (5.0 + (GM.f_random(10.0))))
-					GM.vset(v_sett, "v_image_single", 1.0)
+					GM.vsetb(v_sett, "image_single", 1.0)
 					GM.vsetb(v_sett, "depth", (depth + 2.0))
 					GM.vset(v_sett, "v_grrr", v_grrr)
 					GM.vset(v_sett, "v_gore", ((y + sprite_height) - 6.0))
@@ -561,8 +560,8 @@ func ev_col_545():
 				if ((absf(sprite_index - 712.0) < 0.00001)):
 					sprite_index = 713.0
 				direction = 180.0
-			v_image_single = 0.0
-			v_image_single = (-1.0)
+			image_single = 0.0
+			image_single = (-1.0)
 			if ((absf(v_persond - 13.0) < 0.00001)):
 				speed = (12.0 + (GM.f_random(2.0)))
 			else:
@@ -640,7 +639,7 @@ func ev_other_13():
 			v_mypower = (-1.0)
 			v_onelectric = 1.0
 			speed = 0.5
-			v_image_single = 2.0
+			image_single = 2.0
 			alarm[int(3.0)] = 20.0
 			alarm[int(7.0)] = 2.0
 func ev_other_12():
@@ -685,7 +684,7 @@ func ev_other_12():
 		if ((((v_randoom <= 5.0)) and ((GM.vb(self.other, "y") <= (y + 30.0)))) and not (((absf(depth - (-11.0)) < 0.00001)))):
 			GM.vset(v_sett, "v_spurt", 1.0)
 		if ((absf(v_bridge - 1.0) < 0.00001)):
-			GM.vset(v_sett, "v_image_single", 0.0)
+			GM.vsetb(v_sett, "image_single", 0.0)
 		GM.vsetb(v_sett, "hspeed", GM.vb(v_sett, "hspeed") + hspeed)
 		if ((absf(v_onfire - 1.0) < 0.00001)):
 			GM.vset(v_sett, "v_onfire", 1.0)
@@ -794,29 +793,29 @@ func ev_other_12():
 		GM.vsetb(v_sett, "vspeed", GM.vb(v_sett, "vspeed") + vspeed)
 		GM.vsetb(v_sett, "depth", depth)
 		if ((hspeed > 0.0)):
-			GM.vset(v_sett, "v_image_single", 0.0)
+			GM.vsetb(v_sett, "image_single", 0.0)
 		else:
-			GM.vset(v_sett, "v_image_single", 1.0)
+			GM.vsetb(v_sett, "image_single", 1.0)
 		GM.vset(v_sett, "v_grrr", v_grrr)
 		v_sett = (GM.f_instance_create(((x + 9.0) + (GM.f_random(13.0))), (y + 45.0), 645.0))
 		GM.vsetb(v_sett, "hspeed", GM.vb(v_sett, "hspeed") + hspeed)
 		GM.vsetb(v_sett, "vspeed", GM.vb(v_sett, "vspeed") + vspeed)
 		GM.vsetb(v_sett, "depth", depth)
 		if ((hspeed > 0.0)):
-			GM.vset(v_sett, "v_image_single", 0.0)
+			GM.vsetb(v_sett, "image_single", 0.0)
 		else:
-			GM.vset(v_sett, "v_image_single", 1.0)
+			GM.vsetb(v_sett, "image_single", 1.0)
 		GM.vset(v_sett, "v_grrr", v_grrr)
 		v_sett = (GM.f_instance_create(((x + 5.0) + (GM.f_random(9.0))), ((y + 34.0) + (GM.f_random(2.0))), 646.0))
 		GM.vsetb(v_sett, "hspeed", GM.vb(v_sett, "hspeed") + hspeed)
 		GM.vsetb(v_sett, "vspeed", GM.vb(v_sett, "vspeed") + vspeed)
-		GM.vset(v_sett, "v_image_single", 0.0)
+		GM.vsetb(v_sett, "image_single", 0.0)
 		GM.vsetb(v_sett, "depth", depth)
 		GM.vset(v_sett, "v_grrr", v_grrr)
 		v_sett = (GM.f_instance_create(((x + 5.0) + (GM.f_random(9.0))), ((y + 34.0) + (GM.f_random(2.0))), 646.0))
 		GM.vsetb(v_sett, "hspeed", GM.vb(v_sett, "hspeed") + hspeed)
 		GM.vsetb(v_sett, "vspeed", GM.vb(v_sett, "vspeed") + vspeed)
-		GM.vset(v_sett, "v_image_single", 1.0)
+		GM.vsetb(v_sett, "image_single", 1.0)
 		GM.vsetb(v_sett, "depth", (depth + 2.0))
 		GM.vset(v_sett, "v_grrr", v_grrr)
 		(GM.f_instance_destroy(self))

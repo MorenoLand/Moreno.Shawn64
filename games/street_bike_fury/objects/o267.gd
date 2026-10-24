@@ -12,7 +12,7 @@ func ev_col_0():
 			GM.vset(GM.vget(_w119, "v_wee"), "v_seti", (GM.vget(_w119, "v_rotate") - 90.0))
 			GM.vset(_w119, "v_tricky", 1.0)
 			GM.vset(_w119, "v_rate", (-10.0))
-			alarm[int(7.0)] = 1.0
+			_w119.alarm[int(7.0)] = 1.0
 	(GM.f_instance_create(x, y, 261.0))
 	for _r120 in range(int((100.0))):
 		v_wee = (GM.f_instance_create(x, y, 72.0))

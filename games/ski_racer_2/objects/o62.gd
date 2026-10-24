@@ -4,7 +4,7 @@ func ev_col_48():
 		if _w13._dead:
 			continue
 		_w13.other = self
-		alarm[int(0.0)] = 150.0
+		_w13.alarm[int(0.0)] = 150.0
 	for _w14 in GM.with_list((60.0), self):
 		if _w14._dead:
 			continue
@@ -21,7 +21,7 @@ func ev_col_8():
 		if _w16._dead:
 			continue
 		_w16.other = self
-		alarm[int(0.0)] = 150.0
+		_w16.alarm[int(0.0)] = 150.0
 	for _w17 in GM.with_list((60.0), self):
 		if _w17._dead:
 			continue
@@ -39,7 +39,7 @@ func ev_col_0():
 		if _w19._dead:
 			continue
 		_w19.other = self
-		alarm[int(0.0)] = 150.0
+		_w19.alarm[int(0.0)] = 150.0
 	for _w20 in GM.with_list((60.0), self):
 		if _w20._dead:
 			continue

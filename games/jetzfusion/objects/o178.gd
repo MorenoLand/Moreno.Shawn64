@@ -1,6 +1,5 @@
 extends "res://games/jetzfusion/scripts.gd"
 var v_complete = 0.0
-var v_image_single = 0.0
 var v_poom = 0.0
 func ev_create():
 	image_speed = 0.5
@@ -31,6 +30,6 @@ func ev_keypress_13():
 				_w232.other = self
 				GM.vset(_w232, "v_complete", 1.0)
 				GM.vset(_w232, "v_mytext", "Now deliver it to me!")
-				alarm[int(0.0)] = 50.0
+				_w232.alarm[int(0.0)] = 50.0
 			(GM.f_action_move(self, "000010000", 0.0, 0.0))
-			v_image_single = 1.0
+			image_single = 1.0

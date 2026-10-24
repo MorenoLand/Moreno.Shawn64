@@ -1,5 +1,4 @@
 extends "res://games/jetzfusion/scripts.gd"
-var v_image_single = 0.0
 var v_mypower = 0.0
 var v_poom = 0.0
 func ev_create():
@@ -11,37 +10,37 @@ func ev_alarm_0():
 	if ((absf(GM.room - 0.0) < 0.00001)):
 		if ((absf(v_poom - 0.0) < 0.00001)):
 			if ((absf(GM.vget(49.0, "v_s0") - 1.0) < 0.00001)):
-				v_image_single = 0.0
+				image_single = 0.0
 				GM.vset(49.0, "v_s0", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 1.0) < 0.00001)):
 			if ((absf(GM.vget(49.0, "v_s1") - 1.0) < 0.00001)):
-				v_image_single = 1.0
+				image_single = 1.0
 				GM.vset(49.0, "v_s1", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 2.0) < 0.00001)):
 			if ((absf(GM.vget(49.0, "v_s2") - 1.0) < 0.00001)):
-				v_image_single = 2.0
+				image_single = 2.0
 				GM.vset(49.0, "v_s2", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 3.0) < 0.00001)):
 			if ((absf(GM.vget(49.0, "v_s3") - 1.0) < 0.00001)):
-				v_image_single = 3.0
+				image_single = 3.0
 				GM.vset(49.0, "v_s3", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 4.0) < 0.00001)):
 			if ((absf(GM.vget(49.0, "v_s4") - 1.0) < 0.00001)):
-				v_image_single = 4.0
+				image_single = 4.0
 				GM.vset(49.0, "v_s4", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 5.0) < 0.00001)):
 			if ((absf(GM.vget(49.0, "v_s5") - 1.0) < 0.00001)):
-				v_image_single = 5.0
+				image_single = 5.0
 				GM.vset(49.0, "v_s5", 0.0)
 			else:
 				(GM.f_instance_create(x, y, 70.0))
@@ -49,37 +48,37 @@ func ev_alarm_0():
 	else:
 		if ((absf(v_poom - 0.0) < 0.00001)):
 			if ((absf(GM.vget(207.0, "v_s0") - 1.0) < 0.00001)):
-				v_image_single = 0.0
+				image_single = 0.0
 				GM.vset(207.0, "v_s0", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 1.0) < 0.00001)):
 			if ((absf(GM.vget(207.0, "v_s1") - 1.0) < 0.00001)):
-				v_image_single = 1.0
+				image_single = 1.0
 				GM.vset(207.0, "v_s1", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 2.0) < 0.00001)):
 			if ((absf(GM.vget(207.0, "v_s2") - 1.0) < 0.00001)):
-				v_image_single = 2.0
+				image_single = 2.0
 				GM.vset(207.0, "v_s2", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 3.0) < 0.00001)):
 			if ((absf(GM.vget(207.0, "v_s3") - 1.0) < 0.00001)):
-				v_image_single = 3.0
+				image_single = 3.0
 				GM.vset(207.0, "v_s3", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 4.0) < 0.00001)):
 			if ((absf(GM.vget(207.0, "v_s4") - 1.0) < 0.00001)):
-				v_image_single = 4.0
+				image_single = 4.0
 				GM.vset(207.0, "v_s4", 0.0)
 			else:
 				v_poom = v_poom + 1.0
 		if ((absf(v_poom - 5.0) < 0.00001)):
 			if ((absf(GM.vget(207.0, "v_s5") - 1.0) < 0.00001)):
-				v_image_single = 5.0
+				image_single = 5.0
 				GM.vset(207.0, "v_s5", 0.0)
 			else:
 				(GM.f_instance_create(x, y, 70.0))

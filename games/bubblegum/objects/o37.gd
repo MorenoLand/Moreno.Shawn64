@@ -12,7 +12,7 @@ func ev_step():
 			if _w42._dead:
 				continue
 			_w42.other = self
-			alarm[int(0.0)] = 35.0
+			_w42.alarm[int(0.0)] = 35.0
 	(GM.f_instance_create((x + (GM.f_random(sprite_width))), (y + (GM.f_random(sprite_height))), 39.0))
 func ev_col_7():
 	(GM.f_sound_stop(0.0))

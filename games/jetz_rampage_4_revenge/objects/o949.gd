@@ -1,14 +1,13 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
-var v_image_single = 0.0
 var v_wee = 0.0
 func ev_create():
 	gravity = 0.3
 	gravity_direction = 270.0
-	v_image_single = 0.0
+	image_single = 0.0
 func ev_step():
 	if (((GM.f_instance_number(946.0)) > 0.0)):
 		if (((GM.vb(7.0, "x") + (GM.vb(7.0, "sprite_width") / 2.0)) > (GM.vb(946.0, "x") + (GM.vb(946.0, "sprite_width") / 2.0)))):
-			v_image_single = 1.0
+			image_single = 1.0
 			if (((x + (sprite_width / 2.0)) < (GM.vb(948.0, "x") + (GM.vb(948.0, "sprite_width") / 2.0)))):
 				if ((((x + (sprite_width / 2.0)) < ((GM.vb(948.0, "x") + (GM.vb(948.0, "sprite_width") / 2.0)) - 200.0)) and (absf(vspeed - 0.0) < 0.00001))):
 					(GM.f_motion_add(self, 42.0, 10.0))
@@ -22,7 +21,7 @@ func ev_step():
 			if (((x + (sprite_width / 2.0)) < (((GM.vb(948.0, "x") + (GM.vb(948.0, "sprite_width") / 2.0))) - 200.0))):
 				hspeed = hspeed + 2.0
 		if (((GM.vb(7.0, "x") + (GM.vb(7.0, "sprite_width") / 2.0)) < (GM.vb(946.0, "x") + (GM.vb(946.0, "sprite_width") / 2.0)))):
-			v_image_single = 0.0
+			image_single = 0.0
 			if (((x + (sprite_width / 2.0)) > (GM.vb(948.0, "x") + (GM.vb(948.0, "sprite_width") / 2.0)))):
 				if ((((x + (sprite_width / 2.0)) > ((GM.vb(948.0, "x") + (GM.vb(948.0, "sprite_width") / 2.0)) + 200.0)) and (absf(vspeed - 0.0) < 0.00001))):
 					(GM.f_motion_add(self, (180.0 - 42.0), 10.0))

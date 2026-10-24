@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w288.other = self
 				GM.vset(_w288, "v_mytext", "CapnChubby:  HAHAHAH BLOOOOD BLOOOOD KILL KILL HEHE!!  NEED MORE BLOOD.  BRING ME MORE BLOOD FOR $200!")
-				alarm[int(0.0)] = 15.0
+				_w288.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf(GM.G["chainsaw"] - 1.0) < 0.00001))):

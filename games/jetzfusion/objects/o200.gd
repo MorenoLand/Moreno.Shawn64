@@ -7,7 +7,7 @@ func ev_col_7():
 					continue
 				_w268.other = self
 				GM.vset(_w268, "v_mytext", "Skiracer:  Well it appears you have defeated those two D.R. Incorporated guys.  They sucked anyway.  Now are you ready for my challenge?  Collect 25 Tokens in 30 seconds.  PUSH ENTER")
-				alarm[int(0.0)] = 15.0
+				_w268.alarm[int(0.0)] = 15.0
 func ev_keypress_13():
 	if (((absf((GM.f_instance_number(417.0)) - 0.0) < 0.00001))):
 		if (((absf((GM.f_instance_number(170.0)) - 0.0) < 0.00001))):

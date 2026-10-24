@@ -7,7 +7,7 @@ var v_woot2 = 0.0
 var v_woot3 = 0.0
 func ev_create():
 	v_mypower = 1.0
-	v_image_single = 0.0
+	image_single = 0.0
 	v_peter = y
 	v_firepower = 20.0
 func ev_alarm_1():

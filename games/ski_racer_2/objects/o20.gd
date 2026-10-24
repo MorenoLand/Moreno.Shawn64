@@ -1,6 +1,5 @@
 extends "res://games/ski_racer_2/scripts.gd"
 var v_rool = 0.0
-var v_view_top = 0.0
 func ev_create():
 	v_rool = (GM.f_round((GM.f_random(3.0))))
 	if ((absf(v_rool - 0.0) < 0.00001)):
@@ -14,11 +13,11 @@ func ev_create():
 	(GM.f_action_move(self, "010000000", (5.0 + (GM.f_random(5.0))), 0.0))
 func ev_step():
 	if (((absf(GM.room - 3.0) < 0.00001))):
-		if ((GM.aget(v_view_top, 0.0) < GM.aget(v_view_top, 1.0))):
-			if ((y < (GM.aget(v_view_top, 0.0) - sprite_height))):
+		if ((GM.view_yview[int(0.0)] < GM.view_yview[int(1.0)])):
+			if ((y < (GM.view_yview[int(0.0)] - sprite_height))):
 				(GM.f_instance_destroy(self))
-		if ((GM.aget(v_view_top, 1.0) < GM.aget(v_view_top, 0.0))):
-			if ((y < (GM.aget(v_view_top, 1.0) - sprite_height))):
+		if ((GM.view_yview[int(1.0)] < GM.view_yview[int(0.0)])):
+			if ((y < (GM.view_yview[int(1.0)] - sprite_height))):
 				(GM.f_instance_destroy(self))
 	else:
 		if (((y < (GM.view_yview[0] - sprite_height)))):

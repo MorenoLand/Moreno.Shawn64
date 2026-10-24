@@ -1,6 +1,5 @@
 extends "res://games/jetz_rampage_4_revenge/scripts.gd"
 var v_firepower = 0.0
-var v_image_single = 0.0
 var v_mypower = 0.0
 var v_peter = 0.0
 var v_wee = 0.0
@@ -8,7 +7,7 @@ var v_woot = 0.0
 var v_woot2 = 0.0
 var v_woot3 = 0.0
 func ev_create():
-	v_image_single = (GM.f_random((image_number - 1.0)))
+	image_single = (GM.f_random((image_number - 1.0)))
 	v_peter = y
 	v_mypower = 3.0
 	v_firepower = 20.0

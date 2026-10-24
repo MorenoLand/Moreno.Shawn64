@@ -1,6 +1,5 @@
 extends "res://games/missilewave3d/scripts.gd"
 var v_image_scale = 0.0
-var v_image_single = 0.0
 func ev_create():
 	v_image_scale = 0.001
 	speed = 8.0
@@ -29,7 +28,7 @@ func ev_step():
 		(GM.f_instance_create((x + 0.0), (y + 0.0), 9.0))
 		(GM.f_sound_play(6.0))
 		(GM.f_instance_destroy(self))
-	direction = direction + (v_image_single * 10.0)
+	direction = direction + (image_single * 10.0)
 func ev_col_17():
 	for _w5 in GM.with_list((35.0), self):
 		if _w5._dead:
